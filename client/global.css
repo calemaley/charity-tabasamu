@@ -131,3 +131,20 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* Prose styling for blog content */
+.prose-charity h3 {
+  @apply text-2xl font-bold text-charity-neutral-800 mt-8 mb-4;
+}
+
+.prose-charity p {
+  @apply mb-6 leading-relaxed;
+}
+
+.prose-charity ul {
+  @apply mb-6 pl-6;
+}
+
+.prose-charity li {
+  @apply mb-2 list-disc;
+}
