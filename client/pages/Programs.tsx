@@ -169,7 +169,7 @@ const Programs = () => {
   </div>
 
   {/* Gradient Animation Keyframes */}
-  <style jsx>{`
+  <style jsx={true}>{`
     @keyframes gradient {
       0% {
         background-position: 0% 50%;
