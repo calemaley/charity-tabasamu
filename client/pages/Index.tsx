@@ -435,9 +435,12 @@ const Index = () => {
                       {project.description}
                     </p>
                     <div className="mt-6 opacity-0 group-hover:opacity-100 transform translate-y-4 group-hover:translate-y-0 transition-all duration-500">
-                      <button className="px-6 py-2 bg-charity-orange-600 text-white rounded-lg hover:bg-charity-orange-700 transition-colors duration-200">
+                      <Link
+                        to={project.title === "Make a Donation" ? "/get-involved/donate" : project.title === "Sponsor a Child" ? "/get-involved/sponsor" : "/get-involved/volunteer"}
+                        className="inline-block px-6 py-2 bg-charity-orange-600 text-white rounded-lg hover:bg-charity-orange-700 transition-colors duration-200"
+                      >
                         Learn More
-                      </button>
+                      </Link>
                     </div>
                   </div>
                 );
