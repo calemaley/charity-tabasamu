@@ -507,9 +507,10 @@ const Index = () => {
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               {recentPrograms.map((program, index) => (
-                <div
+                <Link
                   key={index}
-                  className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 cursor-pointer group"
+                  to={`/programs/${program.title.toLowerCase().replace(/\s+/g, '-')}`}
+                  className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 cursor-pointer group block"
                 >
                   <div className="relative overflow-hidden">
                     <img
@@ -529,7 +530,7 @@ const Index = () => {
                       {program.description}
                     </p>
                   </div>
-                </div>
+                </Link>
               ))}
             </div>
           </div>
@@ -601,9 +602,10 @@ const Index = () => {
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               {recentBlogs.map((blog, index) => (
-                <article
+                <Link
                   key={index}
-                  className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 cursor-pointer group"
+                  to={`/blog/${blog.title.toLowerCase().replace(/\s+/g, '-')}`}
+                  className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 cursor-pointer group block"
                 >
                   <div className="relative overflow-hidden">
                     <img
@@ -627,7 +629,7 @@ const Index = () => {
                     </h4>
                     <p className="text-charity-neutral-600">{blog.snippet}</p>
                   </div>
-                </article>
+                </Link>
               ))}
             </div>
           </div>
