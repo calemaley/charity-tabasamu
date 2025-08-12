@@ -11,6 +11,7 @@ import About from "./pages/About";
 import Programs from "./pages/Programs";
 import GetInvolved from "./pages/GetInvolved";
 import Blog from "./pages/Blog";
+import BlogPost from "./pages/BlogPost";
 import Contact from "./pages/Contact";
 import NotFound from "./pages/NotFound";
 
