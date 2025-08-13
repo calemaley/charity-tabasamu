@@ -57,10 +57,10 @@ const BlogPost = () => {
       excerpt:
         "Follow Maria's incredible transformation from a struggling student to a community leader, made possible through our education support program.",
       content: `
-        <p>In the heart of rural Tanzania, Maria's story represents hope and determination. When we first met Maria three years ago, she was a 14-year-old girl struggling to attend school regularly due to her family's financial constraints.</p>
-        
+        <p>In the heart of rural Kenya, Maria's story represents hope and determination. When we first met Maria three years ago, she was a 14-year-old girl struggling to attend school regularly due to her family's financial constraints.</p>
+
         <p>Like many children in her community, Maria faced numerous challenges: lack of school supplies, long distances to walk to school, and pressure to help with household chores instead of focusing on her studies. Her dreams of becoming a teacher seemed impossible.</p>
-        
+
         <h3>The Turning Point</h3>
         <p>Everything changed when our education support program reached Maria's village. Through our comprehensive approach, we were able to provide:</p>
         <ul>
@@ -69,17 +69,17 @@ const BlogPost = () => {
           <li>After-school tutoring support</li>
           <li>Nutritional meals during school hours</li>
         </ul>
-        
+
         <p>But more importantly, we worked with Maria's family to understand the importance of education and how it could benefit the entire community.</p>
-        
+
         <h3>The Transformation</h3>
         <p>With consistent support and encouragement, Maria's grades improved dramatically. She became one of the top students in her class and started helping other struggling students with their studies.</p>
-        
+
         <p>Today, Maria is in her final year of secondary school and has already been accepted to teacher training college on a full scholarship. She plans to return to her community as a qualified teacher, continuing the cycle of positive change.</p>
-        
+
         <h3>The Ripple Effect</h3>
         <p>Maria's success has inspired other families in her community to prioritize education. Her younger siblings are now regular attendees at school, and she has become a role model for other girls in her village.</p>
-        
+
         <p>This is the power of education - it doesn't just transform individual lives, it transforms entire communities. Maria's story is one of hundreds we could share, each representing a family whose future has been forever changed through education.</p>
       `,
       image: "https://i.ibb.co/vxjcpZjD/Screenshot-from-2025-08-12-23-27-35.png",
