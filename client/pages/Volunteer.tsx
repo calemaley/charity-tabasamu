@@ -174,7 +174,7 @@ const Volunteer = () => {
     "Certificate of completion and recommendation letters",
     "Professional development and skill building",
     "Lifelong friendships and global network",
-    "Travel opportunities within Tanzania",
+    "Travel opportunities within Kenya",
     "Alumni network and continued engagement"
   ];
 
