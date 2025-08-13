@@ -309,19 +309,22 @@ const Programs = () => {
                   animation="scaleIn"
                   delay={index * 100}
                 >
-                  <div className="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 group">
+                  <Link
+                    to={program.link || "/get-involved"}
+                    className="block bg-white p-6 rounded-xl shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 group"
+                  >
                     <div className="w-12 h-12 bg-charity-orange-100 rounded-full flex items-center justify-center mb-4 group-hover:bg-charity-orange-200 transition-colors duration-300">
                       <IconComponent className="h-6 w-6 text-charity-orange-600 group-hover:scale-110 transition-transform duration-300" />
                     </div>
 
-                    <h3 className="text-xl font-bold text-charity-neutral-800 mb-3">
+                    <h3 className="text-xl font-bold text-charity-neutral-800 mb-3 group-hover:text-charity-orange-600 transition-colors duration-200">
                       {program.title}
                     </h3>
                     <p className="text-charity-neutral-600 mb-4 text-sm leading-relaxed">
                       {program.description}
                     </p>
 
-                    <div className="space-y-2 text-sm">
+                    <div className="space-y-2 text-sm mb-4">
                       <div className="flex items-center text-charity-neutral-500">
                         <Clock className="h-4 w-4 mr-2" />
                         <span>{program.duration}</span>
@@ -335,7 +338,12 @@ const Programs = () => {
                         <span>{program.participants}</span>
                       </div>
                     </div>
-                  </div>
+
+                    <div className="flex items-center text-charity-orange-600 text-sm font-medium group-hover:text-charity-orange-700">
+                      <span>Learn More</span>
+                      <ArrowRight className="ml-1 h-4 w-4 group-hover:translate-x-1 transition-transform duration-200" />
+                    </div>
+                  </Link>
                 </AnimatedSection>
               );
             })}
