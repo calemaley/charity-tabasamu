@@ -395,6 +395,117 @@ const BlogPost = () => {
               </div>
             </div>
           </AnimatedSection>
+
+          {/* Comments Section */}
+          <AnimatedSection animation="slideUp" delay={300}>
+            <div className="mt-16 pt-8 border-t border-charity-neutral-200">
+              <h4 className="text-2xl font-bold text-charity-neutral-800 mb-8">
+                Comments ({comments.length})
+              </h4>
+
+              {/* Add Comment Form */}
+              <div className="mb-8 p-6 bg-charity-neutral-50 rounded-xl">
+                <h5 className="text-lg font-semibold text-charity-neutral-800 mb-4">
+                  Leave a Comment
+                </h5>
+                <div className="space-y-4">
+                  <textarea
+                    value={newComment}
+                    onChange={(e) => setNewComment(e.target.value)}
+                    placeholder="Share your thoughts..."
+                    className="w-full px-4 py-3 border border-charity-neutral-300 rounded-lg focus:ring-2 focus:ring-charity-orange-500 focus:border-transparent resize-none"
+                    rows={4}
+                  />
+                  <button
+                    onClick={handleComment}
+                    disabled={!newComment.trim()}
+                    className="inline-flex items-center px-6 py-3 bg-charity-orange-600 hover:bg-charity-orange-700 disabled:bg-charity-neutral-300 disabled:cursor-not-allowed text-white rounded-lg transition-colors duration-200"
+                  >
+                    <Send className="mr-2 h-4 w-4" />
+                    Post Comment
+                  </button>
+                </div>
+              </div>
+
+              {/* Comments List */}
+              <div className="space-y-6">
+                {comments.map((comment) => (
+                  <div key={comment.id} className="bg-white p-6 rounded-xl border border-charity-neutral-200">
+                    {/* Comment Header */}
+                    <div className="flex items-center justify-between mb-4">
+                      <div className="flex items-center space-x-3">
+                        <div className="w-10 h-10 bg-charity-orange-100 rounded-full flex items-center justify-center">
+                          <User className="h-5 w-5 text-charity-orange-600" />
+                        </div>
+                        <div>
+                          <p className="font-medium text-charity-neutral-800">{comment.author}</p>
+                          <p className="text-sm text-charity-neutral-500">{comment.date}</p>
+                        </div>
+                      </div>
+                      <button
+                        onClick={() => setReplyingTo(replyingTo === comment.id ? null : comment.id)}
+                        className="flex items-center gap-1 text-charity-neutral-500 hover:text-charity-orange-600 transition-colors duration-200"
+                      >
+                        <Reply className="h-4 w-4" />
+                        <span className="text-sm">Reply</span>
+                      </button>
+                    </div>
+
+                    {/* Comment Content */}
+                    <p className="text-charity-neutral-700 mb-4">{comment.content}</p>
+
+                    {/* Reply Form */}
+                    {replyingTo === comment.id && (
+                      <div className="mt-4 p-4 bg-charity-neutral-50 rounded-lg">
+                        <textarea
+                          value={newReply}
+                          onChange={(e) => setNewReply(e.target.value)}
+                          placeholder="Write a reply..."
+                          className="w-full px-3 py-2 border border-charity-neutral-300 rounded-lg focus:ring-2 focus:ring-charity-orange-500 focus:border-transparent resize-none"
+                          rows={3}
+                        />
+                        <div className="flex gap-2 mt-3">
+                          <button
+                            onClick={() => handleReply(comment.id)}
+                            disabled={!newReply.trim()}
+                            className="px-4 py-2 bg-charity-orange-600 hover:bg-charity-orange-700 disabled:bg-charity-neutral-300 disabled:cursor-not-allowed text-white rounded-lg text-sm transition-colors duration-200"
+                          >
+                            Reply
+                          </button>
+                          <button
+                            onClick={() => setReplyingTo(null)}
+                            className="px-4 py-2 bg-charity-neutral-200 hover:bg-charity-neutral-300 text-charity-neutral-700 rounded-lg text-sm transition-colors duration-200"
+                          >
+                            Cancel
+                          </button>
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Replies */}
+                    {comment.replies.length > 0 && (
+                      <div className="mt-6 space-y-4 ml-8">
+                        {comment.replies.map((reply) => (
+                          <div key={reply.id} className="p-4 bg-charity-neutral-50 rounded-lg border-l-4 border-charity-orange-200">
+                            <div className="flex items-center space-x-3 mb-2">
+                              <div className="w-8 h-8 bg-charity-orange-100 rounded-full flex items-center justify-center">
+                                <User className="h-4 w-4 text-charity-orange-600" />
+                              </div>
+                              <div>
+                                <p className="font-medium text-charity-neutral-800 text-sm">{reply.author}</p>
+                                <p className="text-xs text-charity-neutral-500">{reply.date}</p>
+                              </div>
+                            </div>
+                            <p className="text-charity-neutral-700 text-sm">{reply.content}</p>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </div>
+          </AnimatedSection>
         </div>
       </section>
 
