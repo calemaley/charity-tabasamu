@@ -73,6 +73,7 @@ const Programs = () => {
       duration: "3-6 months",
       location: "Rural schools across Tanzania",
       participants: "50+ volunteers annually",
+      link: "/programs/school-volunteering",
     },
     {
       icon: Stethoscope,
@@ -82,6 +83,7 @@ const Programs = () => {
       duration: "6-12 months",
       location: "Partner hospitals",
       participants: "20+ interns annually",
+      link: "/programs/hospital-internships",
     },
     {
       icon: Droplets,
