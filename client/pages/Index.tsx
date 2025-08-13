@@ -314,7 +314,7 @@ const Index = () => {
                   stronger communities through education, healthcare, and
                   sustainable development. Since our founding, we've been
                   committed to creating lasting positive change for children and
-                  families across Tanzania.
+                  families across Kenya.
                 </p>
                 <p className="text-charity-neutral-600">
                   Our comprehensive programs focus on providing quality education,
