@@ -99,7 +99,7 @@ const BlogPost = () => {
       excerpt:
         "Our healthcare initiative brings essential medical services to underserved populations across Kenya.",
       content: `
-        <p>Access to healthcare is a fundamental human right, yet for many communities in rural Tanzania, quality medical care remains out of reach. Our mobile clinic program is changing that reality, one village at a time.</p>
+        <p>Access to healthcare is a fundamental human right, yet for many communities in rural Kenya, quality medical care remains out of reach. Our mobile clinic program is changing that reality, one village at a time.</p>
         
         <h3>The Challenge</h3>
         <p>Rural communities often face significant barriers to healthcare:</p>
