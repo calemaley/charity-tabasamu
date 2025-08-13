@@ -634,7 +634,7 @@ const Volunteer = () => {
                 name: "Sarah Johnson",
                 role: "Education Volunteer",
                 duration: "6 months",
-                quote: "Teaching in Tanzania changed my perspective on education and life. The children's enthusiasm despite limited resources was truly inspiring.",
+                quote: "Teaching in Kenya changed my perspective on education and life. The children's enthusiasm despite limited resources was truly inspiring.",
                 image: "https://i.ibb.co/vxjcpZjD/Screenshot-from-2025-08-12-23-27-35.png"
               },
               {
