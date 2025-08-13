@@ -38,22 +38,22 @@ const HospitalInternships = () => {
 
   const hospitals = [
     {
-      id: "mwanza-general",
-      name: "Mwanza Regional Hospital",
-      location: "Mwanza Region",
-      type: "General Hospital",
-      beds: 400,
+      id: "kenyatta-national",
+      name: "Kenyatta National Hospital",
+      location: "Nairobi",
+      type: "National Referral Hospital",
+      beds: 1800,
       departments: ["Emergency", "Surgery", "Pediatrics", "Maternity", "Internal Medicine"],
-      internPositions: 8,
-      description: "Major referral hospital serving the Lake Zone with modern facilities.",
+      internPositions: 20,
+      description: "Kenya's largest hospital and main referral center with modern facilities.",
       image: "https://i.ibb.co/vxjcpZjD/Screenshot-from-2025-08-12-23-27-35.png",
-      specialties: ["Cardiology", "Orthopedics", "Radiology"],
-      requirements: "4th year medical students or above"
+      specialties: ["Cardiac Surgery", "Transplantation", "Advanced Diagnostics"],
+      requirements: "Medical degree students (all levels)"
     },
     {
-      id: "kilimanjaro-christian",
-      name: "Kilimanjaro Christian Medical Centre",
-      location: "Moshi, Kilimanjaro",
+      id: "moi-teaching",
+      name: "Moi Teaching and Referral Hospital",
+      location: "Eldoret, Uasin Gishu",
       type: "Teaching Hospital",
       beds: 630,
       departments: ["Oncology", "Neurosurgery", "ICU", "Pediatrics", "Obstetrics"],
@@ -64,17 +64,17 @@ const HospitalInternships = () => {
       requirements: "Final year medical students"
     },
     {
-      id: "muhimbili-national",
-      name: "Muhimbili National Hospital",
-      location: "Dar es Salaam",
-      type: "National Referral Hospital",
-      beds: 1500,
-      departments: ["Cardiology", "Nephrology", "Psychiatry", "Burns Unit", "Trauma"],
-      internPositions: 20,
-      description: "Tanzania's largest hospital and main referral center.",
+      id: "coast-general",
+      name: "Coast General Hospital",
+      location: "Mombasa",
+      type: "General Hospital",
+      beds: 400,
+      departments: ["Emergency", "Surgery", "Pediatrics", "Maternity", "Internal Medicine"],
+      internPositions: 8,
+      description: "Major referral hospital serving the coastal region with modern facilities.",
       image: "https://i.ibb.co/vxjcpZjD/Screenshot-from-2025-08-12-23-27-35.png",
-      specialties: ["Cardiac Surgery", "Transplantation", "Advanced Diagnostics"],
-      requirements: "Medical degree students (all levels)"
+      specialties: ["Cardiology", "Orthopedics", "Radiology"],
+      requirements: "4th year medical students or above"
     }
   ];
 
