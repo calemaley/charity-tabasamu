@@ -43,7 +43,7 @@ const Blog = () => {
       id: 2,
       title: "Mobile Clinics Reach Remote Communities",
       excerpt:
-        "Our healthcare initiative brings essential medical services to underserved populations across Tanzania.",
+        "Our healthcare initiative brings essential medical services to underserved populations across Kenya.",
       content: "Breaking down barriers to healthcare access...",
       image: "https://i.ibb.co/vxjcpZjD/Screenshot-from-2025-08-12-23-27-35.png",
       category: "healthcare",
