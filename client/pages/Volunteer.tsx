@@ -623,7 +623,7 @@ const Volunteer = () => {
               </h2>
               <p className="text-lg text-charity-neutral-600 max-w-2xl mx-auto">
                 Hear from our volunteers about their transformative experiences
-                and the impact they've made in Tanzania.
+                and the impact they've made in Kenya.
               </p>
             </div>
           </AnimatedSection>
