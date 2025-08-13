@@ -97,7 +97,7 @@ const BlogPost = () => {
       title: "Mobile Clinics Reach Remote Areas",
       subtitle: "Bringing Healthcare to Underserved Communities",
       excerpt:
-        "Our healthcare initiative brings essential medical services to underserved populations across Tanzania.",
+        "Our healthcare initiative brings essential medical services to underserved populations across Kenya.",
       content: `
         <p>Access to healthcare is a fundamental human right, yet for many communities in rural Tanzania, quality medical care remains out of reach. Our mobile clinic program is changing that reality, one village at a time.</p>
         
