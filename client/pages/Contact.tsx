@@ -31,6 +31,7 @@ const Contact = () => {
   });
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const [showMap, setShowMap] = useState(false);
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
@@ -64,6 +65,25 @@ const Contact = () => {
       ...formData,
       [e.target.name]: e.target.value,
     });
+  };
+
+  const handleGetDirections = () => {
+    // Tabasamu Charity Office coordinates (Nairobi, Kenya)
+    const lat = -1.2864;
+    const lng = 36.8172;
+    const address = "123 Charity Street, Nairobi, Kenya";
+
+    // Try Google Maps first, fallback to Apple Maps on iOS
+    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+
+    if (isIOS) {
+      window.open(`maps://maps.google.com/maps?q=${lat},${lng}+(${encodeURIComponent(address)})`, '_blank');
+    } else {
+      window.open(`https://www.google.com/maps/search/?api=1&query=${lat},${lng}`, '_blank');
+    }
+
+    // Also show embedded map
+    setShowMap(true);
   };
 
   const contactInfo = [
@@ -311,10 +331,10 @@ const Contact = () => {
               <div className="bg-gradient-to-br from-white to-charity-neutral-50 p-8 rounded-3xl shadow-2xl border border-charity-neutral-100">
                 <div className="text-center mb-8">
                   <h3 className="text-3xl font-bold text-charity-neutral-800 mb-4">
-                    Send Us a Message
+                    Professional Contact Form
                   </h3>
                   <p className="text-charity-neutral-600">
-                    We'd love to hear from you. Tell us about your interest in our programs.
+                    Please provide your details and inquiry. Our team will respond to your message within 24 hours during business days.
                   </p>
                 </div>
 
@@ -325,10 +345,10 @@ const Contact = () => {
                         <CheckCircle className="h-10 w-10 text-charity-green-600" />
                       </div>
                       <h4 className="text-2xl font-bold text-charity-green-700 mb-3">
-                        Message Sent Successfully!
+                        Your Message Has Been Received
                       </h4>
                       <p className="text-charity-neutral-600 mb-6">
-                        Thank you for reaching out. Our team will get back to you within 24 hours.
+                        Thank you for contacting Tabasamu Charity. A member of our professional team will review your inquiry and respond within one business day. You will receive a confirmation email shortly.
                       </p>
                       <div className="flex justify-center space-x-2">
                         {[...Array(3)].map((_, i) => (
@@ -429,7 +449,7 @@ const Contact = () => {
                       className="w-full px-8 py-4 bg-gradient-to-r from-charity-orange-600 to-charity-orange-700 hover:from-charity-orange-700 hover:to-charity-orange-800 text-white rounded-xl font-bold transition-all duration-300 transform hover:scale-105 hover:shadow-lg flex items-center justify-center group"
                     >
                       <Send className="h-5 w-5 mr-3 group-hover:translate-x-1 transition-transform duration-200" />
-                      Send Message
+                      Submit Professional Inquiry
                     </button>
                   </form>
                 )}
@@ -523,10 +543,59 @@ const Contact = () => {
                     </div>
                   </div>
 
-                  <button className="w-full px-6 py-3 bg-charity-orange-600 hover:bg-charity-orange-700 text-white rounded-xl font-semibold transition-all duration-300 transform hover:scale-105 flex items-center justify-center group">
+                  <button
+                    onClick={handleGetDirections}
+                    className="w-full px-6 py-3 bg-charity-orange-600 hover:bg-charity-orange-700 text-white rounded-xl font-semibold transition-all duration-300 transform hover:scale-105 flex items-center justify-center group"
+                  >
                     <MapPin className="h-4 w-4 mr-2 group-hover:scale-110 transition-transform duration-200" />
                     Get Directions
                   </button>
+
+                  {/* Interactive Map Modal */}
+                  {showMap && (
+                    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4" onClick={() => setShowMap(false)}>
+                      <div className="bg-white rounded-2xl shadow-2xl max-w-4xl w-full max-h-[80vh] overflow-hidden" onClick={(e) => e.stopPropagation()}>
+                        <div className="p-6 border-b border-charity-neutral-200 flex justify-between items-center">
+                          <h3 className="text-2xl font-bold text-charity-neutral-800">Tabasamu Charity Location</h3>
+                          <button
+                            onClick={() => setShowMap(false)}
+                            className="w-8 h-8 bg-charity-neutral-100 hover:bg-charity-neutral-200 rounded-full flex items-center justify-center transition-colors duration-200"
+                          >
+                            ×
+                          </button>
+                        </div>
+                        <div className="p-6">
+                          <div className="mb-4">
+                            <p className="text-charity-neutral-700 mb-2"><strong>Address:</strong> 123 Charity Street, Nairobi, Kenya</p>
+                            <p className="text-charity-neutral-700 mb-2"><strong>Postal Code:</strong> P.O. Box 12345</p>
+                            <p className="text-charity-neutral-700"><strong>Coordinates:</strong> -1.2864°, 36.8172°</p>
+                          </div>
+                          <div className="w-full h-96 bg-gradient-to-br from-charity-green-200 to-charity-orange-200 rounded-xl overflow-hidden relative">
+                            <iframe
+                              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d127642.82090936383!2d36.71701949726562!3d-1.2864004999999998!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x182f1172d84d49a7%3A0xf7cf0254b297924c!2sNairobi%2C%20Kenya!5e0!3m2!1sen!2s!4v1703123456789!5m2!1sen!2s"
+                              width="100%"
+                              height="100%"
+                              style={{ border: 0 }}
+                              allowFullScreen
+                              loading="lazy"
+                              referrerPolicy="no-referrer-when-downgrade"
+                              title="Tabasamu Charity Location"
+                            />
+                            <div className="absolute top-4 right-4">
+                              <a
+                                href="https://www.google.com/maps/search/?api=1&query=-1.2864,36.8172"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="px-4 py-2 bg-charity-orange-600 hover:bg-charity-orange-700 text-white rounded-lg font-semibold transition-colors duration-200 shadow-lg"
+                              >
+                                Open in Maps
+                              </a>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  )}
                 </div>
 
                 {/* Social Media */}
