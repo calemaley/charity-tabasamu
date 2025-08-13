@@ -71,7 +71,7 @@ const Programs = () => {
       description:
         "Volunteers work directly with children in schools, providing educational support and mentorship.",
       duration: "3-6 months",
-      location: "Rural schools across Tanzania",
+      location: "Rural schools across Kenya",
       participants: "50+ volunteers annually",
       link: "/programs/school-volunteering",
     },
