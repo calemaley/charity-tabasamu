@@ -89,7 +89,7 @@ const BlogPost = () => {
       readTime: "5 min read",
       likes: 42,
       comments: 12,
-      tags: ["education", "success-story", "community-impact", "tanzania"],
+      tags: ["education", "success-story", "community-impact", "kenya"],
     },
     {
       id: 2,
