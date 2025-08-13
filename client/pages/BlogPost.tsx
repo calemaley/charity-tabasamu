@@ -19,6 +19,33 @@ import AnimatedSection from "@/components/AnimatedSection";
 
 const BlogPost = () => {
   const { slug } = useParams();
+  const [isLiked, setIsLiked] = useState(false);
+  const [comments, setComments] = useState([
+    {
+      id: 1,
+      author: "John Doe",
+      date: "March 16, 2024",
+      content: "This is such an inspiring story! Maria's journey really shows the power of education.",
+      replies: [
+        {
+          id: 11,
+          author: "Sarah Johnson",
+          date: "March 16, 2024",
+          content: "Thank you John! We're so proud of Maria and all our students who are making such incredible progress."
+        }
+      ]
+    },
+    {
+      id: 2,
+      author: "Emma Wilson",
+      date: "March 15, 2024",
+      content: "I've been following Tabasamu's work for years and stories like this make me so proud to be a supporter.",
+      replies: []
+    }
+  ]);
+  const [newComment, setNewComment] = useState("");
+  const [replyingTo, setReplyingTo] = useState<number | null>(null);
+  const [newReply, setNewReply] = useState("");
 
   // Sample blog data - in a real app, this would come from an API or CMS
   const blogPosts = [
