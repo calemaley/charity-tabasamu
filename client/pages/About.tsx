@@ -176,7 +176,7 @@ const About = () => {
                   Our Mission
                 </h2>
                 <p className="text-lg text-charity-neutral-600 mb-6 leading-relaxed">
-                  To empower children and communities in Tanzania through
+                  To empower children and communities in Kenya through
                   quality education, accessible healthcare, and sustainable
                   development programs that create lasting positive change.
                 </p>
