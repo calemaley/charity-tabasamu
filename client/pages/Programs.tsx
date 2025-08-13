@@ -125,7 +125,7 @@ const Programs = () => {
     {
       title: "Mobile Clinic Outreach",
       date: "July 2-5, 2024",
-      location: "Mwanza Region",
+      location: "Kisumu Region",
       description:
         "Free health screenings and medical care for rural communities.",
     },
