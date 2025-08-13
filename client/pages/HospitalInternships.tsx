@@ -149,7 +149,7 @@ const HospitalInternships = () => {
               </h1>
               <p className="text-xl md:text-2xl max-w-3xl mx-auto opacity-90">
                 Gain invaluable medical experience while serving underserved communities
-                in Tanzania's leading healthcare institutions
+                in Kenya's leading healthcare institutions
               </p>
             </div>
           </AnimatedSection>
