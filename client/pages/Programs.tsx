@@ -118,7 +118,7 @@ const Programs = () => {
     {
       title: "Annual School Supply Drive",
       date: "June 15, 2024",
-      location: "Dar es Salaam Community Center",
+      location: "Nairobi Community Center",
       description:
         "Join us for our biggest school supply collection event of the year.",
     },
