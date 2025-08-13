@@ -36,6 +36,12 @@ const App = () => (
           <Route path="/programs/hospital-internships" element={<HospitalInternships />} />
           <Route path="/programs/*" element={<Programs />} />
           <Route path="/get-involved" element={<GetInvolved />} />
+          <Route path="/get-involved/sponsor" element={<Sponsor />} />
+          <Route path="/get-involved/donate" element={<Donate />} />
+          <Route path="/get-involved/volunteer" element={<Volunteer />} />
+          <Route path="/sponsor" element={<Sponsor />} />
+          <Route path="/donate" element={<Donate />} />
+          <Route path="/volunteer" element={<Volunteer />} />
           <Route path="/get-involved/*" element={<GetInvolved />} />
           <Route path="/blog" element={<Blog />} />
           <Route path="/blog/:slug" element={<BlogPost />} />
