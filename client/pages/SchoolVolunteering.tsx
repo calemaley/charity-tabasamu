@@ -32,9 +32,9 @@ const SchoolVolunteering = () => {
 
   const schools = [
     {
-      id: "mwanza-primary",
-      name: "Mwanza Primary School",
-      location: "Mwanza Region",
+      id: "kisumu-primary",
+      name: "Kisumu Primary School",
+      location: "Kisumu County",
       students: 420,
       needVolunteers: 6,
       subjects: ["Mathematics", "English", "Science", "Swahili"],
@@ -43,9 +43,9 @@ const SchoolVolunteering = () => {
       urgency: "high"
     },
     {
-      id: "arusha-secondary",
-      name: "Arusha Community Secondary",
-      location: "Arusha Region",
+      id: "eldoret-secondary",
+      name: "Eldoret Community Secondary",
+      location: "Uasin Gishu County",
       students: 280,
       needVolunteers: 4,
       subjects: ["Mathematics", "Physics", "Chemistry", "Biology", "English"],
@@ -54,9 +54,9 @@ const SchoolVolunteering = () => {
       urgency: "medium"
     },
     {
-      id: "dodoma-girls",
-      name: "Dodoma Girls Education Center",
-      location: "Dodoma Region",
+      id: "nakuru-girls",
+      name: "Nakuru Girls Education Center",
+      location: "Nakuru County",
       students: 180,
       needVolunteers: 3,
       subjects: ["Life Skills", "English", "Mathematics", "Computer Studies"],
