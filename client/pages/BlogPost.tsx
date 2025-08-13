@@ -190,6 +190,55 @@ const BlogPost = () => {
   // Find the blog post by slug
   const post = blogPosts.find((p) => p.slug === slug);
 
+  // Handler functions
+  const handleLike = () => setIsLiked(!isLiked);
+
+  const handleShare = () => {
+    if (navigator.share) {
+      navigator.share({
+        title: post?.title,
+        text: post?.excerpt,
+        url: window.location.href
+      });
+    } else {
+      navigator.clipboard.writeText(window.location.href);
+      alert('Link copied to clipboard!');
+    }
+  };
+
+  const handleComment = () => {
+    if (newComment.trim()) {
+      const comment = {
+        id: Date.now(),
+        author: "Anonymous User", // In real app, this would be the logged-in user
+        date: new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }),
+        content: newComment,
+        replies: []
+      };
+      setComments([comment, ...comments]);
+      setNewComment("");
+    }
+  };
+
+  const handleReply = (commentId: number) => {
+    if (newReply.trim()) {
+      const reply = {
+        id: Date.now(),
+        author: "Anonymous User", // In real app, this would be the logged-in user
+        date: new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }),
+        content: newReply
+      };
+
+      setComments(prev => prev.map(comment =>
+        comment.id === commentId
+          ? { ...comment, replies: [...comment.replies, reply] }
+          : comment
+      ));
+      setNewReply("");
+      setReplyingTo(null);
+    }
+  };
+
   // If post not found, show 404
   if (!post) {
     return (
