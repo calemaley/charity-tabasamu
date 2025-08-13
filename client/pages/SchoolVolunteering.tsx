@@ -123,7 +123,7 @@ const SchoolVolunteering = () => {
               </h1>
               <p className="text-xl md:text-2xl max-w-3xl mx-auto opacity-90">
                 Join our education initiative and make a lasting impact on children's lives
-                through quality teaching and mentorship in rural Tanzania
+                through quality teaching and mentorship in rural Kenya
               </p>
             </div>
           </AnimatedSection>
