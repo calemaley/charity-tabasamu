@@ -43,7 +43,7 @@ const Volunteer = () => {
       category: "Education",
       description: "Support teachers and students in primary and secondary schools",
       duration: "3-6 months",
-      location: "Various schools across Tanzania",
+      location: "Various schools across Kenya",
       requirements: ["High school diploma", "Teaching experience preferred", "Basic Swahili helpful"],
       responsibilities: [
         "Assist teachers with classroom activities",
