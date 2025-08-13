@@ -1,4 +1,5 @@
 import { useParams, Link } from "react-router-dom";
+import { useState } from "react";
 import {
   Calendar,
   User,
@@ -9,6 +10,8 @@ import {
   Share2,
   Tag,
   Clock,
+  Send,
+  Reply,
 } from "lucide-react";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
