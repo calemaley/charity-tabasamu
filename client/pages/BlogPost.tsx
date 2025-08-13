@@ -326,15 +326,23 @@ const BlogPost = () => {
               </div>
               
               <div className="flex items-center gap-4">
-                <div className="flex items-center gap-1 text-charity-neutral-500">
-                  <Heart className="h-4 w-4" />
-                  <span className="text-sm">{post.likes}</span>
-                </div>
+                <button
+                  onClick={handleLike}
+                  className={`flex items-center gap-1 cursor-pointer transition-colors duration-200 ${
+                    isLiked ? 'text-red-500 hover:text-red-600' : 'text-charity-neutral-500 hover:text-charity-orange-600'
+                  }`}
+                >
+                  <Heart className={`h-4 w-4 ${isLiked ? 'fill-current' : ''}`} />
+                  <span className="text-sm">{post.likes + (isLiked ? 1 : 0)}</span>
+                </button>
                 <div className="flex items-center gap-1 text-charity-neutral-500">
                   <MessageCircle className="h-4 w-4" />
-                  <span className="text-sm">{post.comments}</span>
+                  <span className="text-sm">{comments.length}</span>
                 </div>
-                <button className="p-2 text-charity-neutral-500 hover:text-charity-orange-600">
+                <button
+                  onClick={handleShare}
+                  className="p-2 text-charity-neutral-500 hover:text-charity-orange-600 transition-colors duration-200"
+                >
                   <Share2 className="h-4 w-4" />
                 </button>
               </div>
