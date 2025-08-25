@@ -61,7 +61,7 @@ const Navigation = () => {
               <img
                 src="https://cdn.builder.io/api/v1/image/assets%2Fde779a14d1ab4ec09cf8fa4e9c38ad5e%2F1c5373d728e64db5ab1f1f166fe14982?format=webp&width=800"
                 alt="Tabasamu Logo"
-                className="h-28 w-auto"
+                className="h-36 w-auto"
               />
             </Link>
           </div>

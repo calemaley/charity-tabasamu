@@ -21,7 +21,9 @@ const Footer = () => {
       attributionControl: false,
     });
 
-    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png").addTo(map);
+    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png").addTo(
+      map,
+    );
 
     L.marker([-1.2921, 36.8219])
       .addTo(map)
@@ -37,7 +39,7 @@ const Footer = () => {
             <img
               src="https://cdn.builder.io/api/v1/image/assets%2Fde779a14d1ab4ec09cf8fa4e9c38ad5e%2F1c5373d728e64db5ab1f1f166fe14982?format=webp&width=800"
               alt="Tabasamu Logo"
-              className="h-16 w-auto"
+              className="h-24 w-auto"
             />
             <p className="text-charity-neutral-300 text-sm leading-relaxed">
               Tabasamu Charity is dedicated to improving the lives of children
