@@ -16,10 +16,12 @@ import {
   ArrowRight,
   Star,
   Award,
+  ChevronDown,
 } from "lucide-react";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import AnimatedSection from "@/components/AnimatedSection";
+import { redirectToPayment, CAMPAIGN_SOURCES } from "@/lib/payment";
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -37,8 +39,8 @@ const Contact = () => {
     const handleMouseMove = (e: MouseEvent) => {
       setMousePosition({ x: e.clientX, y: e.clientY });
     };
-    window.addEventListener('mousemove', handleMouseMove);
-    return () => window.removeEventListener('mousemove', handleMouseMove);
+    window.addEventListener("mousemove", handleMouseMove);
+    return () => window.removeEventListener("mousemove", handleMouseMove);
   }, []);
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -77,9 +79,15 @@ const Contact = () => {
     const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
 
     if (isIOS) {
-      window.open(`maps://maps.google.com/maps?q=${lat},${lng}+(${encodeURIComponent(address)})`, '_blank');
+      window.open(
+        `maps://maps.google.com/maps?q=${lat},${lng}+(${encodeURIComponent(address)})`,
+        "_blank",
+      );
     } else {
-      window.open(`https://www.google.com/maps/search/?api=1&query=${lat},${lng}`, '_blank');
+      window.open(
+        `https://www.google.com/maps/search/?api=1&query=${lat},${lng}`,
+        "_blank",
+      );
     }
 
     // Also show embedded map
@@ -90,11 +98,7 @@ const Contact = () => {
     {
       icon: MapPin,
       title: "Visit Our Office",
-      details: [
-        "123 Charity Street",
-        "Nairobi, Kenya",
-        "P.O. Box 12345",
-      ],
+      details: ["123 Charity Street", "Nairobi, Kenya", "P.O. Box 12345"],
       action: "Get Directions",
       color: "orange",
     },
@@ -156,39 +160,191 @@ const Contact = () => {
       {/* Hero Section with Map Background */}
       <section className="relative min-h-screen overflow-hidden">
         {/* Animated Map Background */}
-        <div 
+        <div
           className="absolute inset-0 opacity-20"
           style={{
             background: `radial-gradient(circle at ${mousePosition.x}px ${mousePosition.y}px, rgba(251, 146, 60, 0.3) 0%, rgba(34, 197, 94, 0.2) 50%, transparent 70%)`,
-            transition: 'background 0.3s ease'
+            transition: "background 0.3s ease",
           }}
         />
-        
-        {/* Kenya Map SVG Background */}
-        <div className="absolute inset-0 opacity-10">
+
+        {/* Enhanced Kenya Map SVG Background */}
+        <div className="absolute inset-0 opacity-15">
           <svg
             viewBox="0 0 800 600"
             className="w-full h-full object-cover"
             style={{
               transform: `translate(${mousePosition.x * 0.01}px, ${mousePosition.y * 0.01}px)`,
-              transition: 'transform 0.1s ease-out'
+              transition: "transform 0.1s ease-out",
             }}
           >
-            {/* Simplified Kenya map outline */}
+            {/* Simplified Kenya map outline with gradient */}
+            <defs>
+              <linearGradient
+                id="kenyaGradient"
+                x1="0%"
+                y1="0%"
+                x2="100%"
+                y2="100%"
+              >
+                <stop offset="0%" stopColor="#F97316" stopOpacity="0.3" />
+                <stop offset="50%" stopColor="#16A34A" stopOpacity="0.3" />
+                <stop offset="100%" stopColor="#F97316" stopOpacity="0.3" />
+              </linearGradient>
+              <filter id="glow">
+                <feGaussianBlur stdDeviation="3" result="coloredBlur" />
+                <feMerge>
+                  <feMergeNode in="coloredBlur" />
+                  <feMergeNode in="SourceGraphic" />
+                </feMerge>
+              </filter>
+            </defs>
+
             <path
               d="M200,150 L300,120 L400,140 L500,160 L580,180 L600,220 L580,280 L560,350 L520,420 L480,450 L420,460 L360,450 L300,430 L250,400 L200,350 L180,300 L170,250 L180,200 Z"
-              fill="currentColor"
-              className="text-charity-green-300 animate-pulse"
-              style={{ animationDuration: '4s' }}
+              fill="url(#kenyaGradient)"
+              className="animate-pulse"
+              style={{ animationDuration: "6s" }}
+              filter="url(#glow)"
             />
-            {/* Major cities markers */}
-            <circle cx="320" cy="280" r="8" fill="currentColor" className="text-charity-orange-500 animate-bounce" style={{ animationDelay: '0s', animationDuration: '2s' }} />
-            <circle cx="450" cy="320" r="6" fill="currentColor" className="text-charity-green-500 animate-bounce" style={{ animationDelay: '0.5s', animationDuration: '2s' }} />
-            <circle cx="380" cy="200" r="5" fill="currentColor" className="text-charity-orange-400 animate-bounce" style={{ animationDelay: '1s', animationDuration: '2s' }} />
-            
-            {/* Connecting lines */}
-            <line x1="320" y1="280" x2="450" y2="320" stroke="currentColor" strokeWidth="2" className="text-charity-neutral-300 opacity-50" />
-            <line x1="320" y1="280" x2="380" y2="200" stroke="currentColor" strokeWidth="2" className="text-charity-neutral-300 opacity-50" />
+
+            {/* Major cities markers with enhanced animations */}
+            <g className="cities">
+              <circle
+                cx="320"
+                cy="280"
+                r="8"
+                fill="#F97316"
+                className="animate-bounce cursor-pointer"
+                style={{ animationDelay: "0s", animationDuration: "3s" }}
+                opacity="0.8"
+              >
+                <animate
+                  attributeName="r"
+                  values="8;12;8"
+                  dur="4s"
+                  repeatCount="indefinite"
+                />
+              </circle>
+              <text
+                x="325"
+                y="275"
+                fill="#F97316"
+                fontSize="12"
+                className="font-bold opacity-70"
+              >
+                Nairobi
+              </text>
+
+              <circle
+                cx="450"
+                cy="320"
+                r="6"
+                fill="#16A34A"
+                className="animate-bounce cursor-pointer"
+                style={{ animationDelay: "1s", animationDuration: "3s" }}
+                opacity="0.8"
+              >
+                <animate
+                  attributeName="r"
+                  values="6;10;6"
+                  dur="3s"
+                  repeatCount="indefinite"
+                />
+              </circle>
+              <text
+                x="455"
+                y="315"
+                fill="#16A34A"
+                fontSize="10"
+                className="font-medium opacity-70"
+              >
+                Mombasa
+              </text>
+
+              <circle
+                cx="380"
+                cy="200"
+                r="5"
+                fill="#F59E0B"
+                className="animate-bounce cursor-pointer"
+                style={{ animationDelay: "2s", animationDuration: "3s" }}
+                opacity="0.8"
+              >
+                <animate
+                  attributeName="r"
+                  values="5;8;5"
+                  dur="2.5s"
+                  repeatCount="indefinite"
+                />
+              </circle>
+              <text
+                x="385"
+                y="195"
+                fill="#F59E0B"
+                fontSize="10"
+                className="font-medium opacity-70"
+              >
+                Nakuru
+              </text>
+            </g>
+
+            {/* Enhanced connecting lines with animation */}
+            <g className="connections">
+              <line
+                x1="320"
+                y1="280"
+                x2="450"
+                y2="320"
+                stroke="#16A34A"
+                strokeWidth="2"
+                className="opacity-40"
+                strokeDasharray="5,5"
+              >
+                <animate
+                  attributeName="stroke-dashoffset"
+                  values="0;10"
+                  dur="2s"
+                  repeatCount="indefinite"
+                />
+              </line>
+              <line
+                x1="320"
+                y1="280"
+                x2="380"
+                y2="200"
+                stroke="#F97316"
+                strokeWidth="2"
+                className="opacity-40"
+                strokeDasharray="5,5"
+              >
+                <animate
+                  attributeName="stroke-dashoffset"
+                  values="0;10"
+                  dur="2.5s"
+                  repeatCount="indefinite"
+                />
+              </line>
+            </g>
+
+            {/* Decorative elements */}
+            <g className="decorations">
+              {[...Array(8)].map((_, i) => (
+                <circle
+                  key={i}
+                  cx={200 + i * 70}
+                  cy={100 + Math.sin(i) * 50}
+                  r="2"
+                  fill="#F97316"
+                  opacity="0.3"
+                  className="animate-ping"
+                  style={{
+                    animationDelay: `${i * 0.5}s`,
+                    animationDuration: "4s",
+                  }}
+                />
+              ))}
+            </g>
           </svg>
         </div>
 
@@ -202,14 +358,14 @@ const Contact = () => {
                 left: `${Math.random() * 100}%`,
                 top: `${Math.random() * 100}%`,
                 animationDelay: `${Math.random() * 5}s`,
-                animationDuration: `${3 + Math.random() * 4}s`
+                animationDuration: `${3 + Math.random() * 4}s`,
               }}
             />
           ))}
         </div>
 
         <Navigation />
-        
+
         {/* Hero Content */}
         <div className="relative z-10 min-h-screen flex items-center">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
@@ -222,15 +378,21 @@ const Contact = () => {
                   Get In Touch
                 </h1>
                 <p className="text-xl md:text-2xl max-w-3xl mx-auto text-charity-neutral-700 leading-relaxed">
-                  Ready to make a difference? Connect with our team and discover how you can 
-                  join our mission to transform lives across Kenya.
+                  Ready to make a difference? Connect with our team and discover
+                  how you can join our mission to transform lives across Kenya.
                 </p>
                 <div className="mt-8 flex justify-center">
-                  <button 
-                    onClick={() => document.getElementById('contact-form')?.scrollIntoView({ behavior: 'smooth' })}
+                  <button
+                    onClick={() =>
+                      document
+                        .getElementById("contact-form")
+                        ?.scrollIntoView({ behavior: "smooth" })
+                    }
                     className="group inline-flex items-center px-8 py-4 bg-charity-orange-600 hover:bg-charity-orange-700 text-white rounded-full transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
                   >
-                    <span className="text-lg font-semibold">Start Conversation</span>
+                    <span className="text-lg font-semibold">
+                      Start Conversation
+                    </span>
                     <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform duration-200" />
                   </button>
                 </div>
@@ -252,7 +414,7 @@ const Contact = () => {
         {/* Background decoration */}
         <div className="absolute top-0 right-0 w-96 h-96 bg-charity-orange-100 rounded-full -translate-y-1/2 translate-x-1/2 opacity-50"></div>
         <div className="absolute bottom-0 left-0 w-64 h-64 bg-charity-green-100 rounded-full translate-y-1/2 -translate-x-1/2 opacity-50"></div>
-        
+
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <AnimatedSection animation="slideUp">
             <div className="text-center mb-16">
@@ -260,8 +422,8 @@ const Contact = () => {
                 Multiple Ways to Connect
               </h2>
               <p className="text-lg text-charity-neutral-600 max-w-2xl mx-auto">
-                Choose the method that works best for you. We're here to help and 
-                answer any questions about our programs and opportunities.
+                Choose the method that works best for you. We're here to help
+                and answer any questions about our programs and opportunities.
               </p>
             </div>
           </AnimatedSection>
@@ -277,33 +439,55 @@ const Contact = () => {
                 >
                   <div className="group relative">
                     {/* Card */}
-                    <div className="bg-white/80 backdrop-blur-sm p-8 rounded-2xl shadow-lg border border-white/20 hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 hover:scale-105">
-                      {/* Gradient border effect */}
-                      <div className="absolute inset-0 bg-gradient-to-r from-charity-orange-400 to-charity-green-400 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 -z-10 blur-sm"></div>
-                      
-                      <div className="text-center">
-                        <div className={`w-16 h-16 mx-auto mb-6 rounded-2xl bg-gradient-to-br from-charity-${info.color}-400 to-charity-${info.color}-600 flex items-center justify-center group-hover:scale-110 group-hover:rotate-6 transition-all duration-300 shadow-lg`}>
-                          <IconComponent className="h-8 w-8 text-white" />
+                    <div className="relative bg-white/90 backdrop-blur-md p-8 rounded-2xl shadow-lg border border-white/30 hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-3 hover:scale-105 overflow-hidden">
+                      {/* Animated gradient border effect */}
+                      <div className="absolute inset-0 bg-gradient-to-r from-charity-orange-400 via-charity-green-400 to-charity-orange-400 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 -z-10 blur-sm animate-pulse"></div>
+
+                      {/* Floating particles on hover */}
+                      <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                        {[...Array(6)].map((_, i) => (
+                          <div
+                            key={i}
+                            className="absolute w-1 h-1 bg-charity-orange-400 rounded-full animate-bounce"
+                            style={{
+                              left: `${20 + i * 15}%`,
+                              top: `${20 + (i % 3) * 20}%`,
+                              animationDelay: `${i * 0.2}s`,
+                              animationDuration: "2s",
+                            }}
+                          />
+                        ))}
+                      </div>
+
+                      <div className="text-center relative z-10">
+                        <div
+                          className={`w-16 h-16 mx-auto mb-6 rounded-2xl bg-gradient-to-br from-charity-${info.color}-400 to-charity-${info.color}-600 flex items-center justify-center group-hover:scale-125 group-hover:rotate-12 transition-all duration-500 shadow-lg group-hover:shadow-xl relative overflow-hidden`}
+                        >
+                          <div className="absolute inset-0 bg-white opacity-0 group-hover:opacity-20 transition-opacity duration-300"></div>
+                          <IconComponent className="h-8 w-8 text-white group-hover:scale-110 transition-transform duration-300" />
                         </div>
 
-                        <h3 className="text-xl font-bold text-charity-neutral-800 mb-4 group-hover:text-charity-orange-600 transition-colors duration-300">
+                        <h3 className="text-xl font-bold text-charity-neutral-800 mb-4 group-hover:text-charity-orange-600 transition-colors duration-300 group-hover:scale-105">
                           {info.title}
                         </h3>
 
-                        <div className="space-y-2 mb-6">
+                        <div className="space-y-3 mb-6">
                           {info.details.map((detail, detailIndex) => (
                             <p
                               key={detailIndex}
-                              className="text-charity-neutral-600 group-hover:text-charity-neutral-700 transition-colors duration-300"
+                              className="text-charity-neutral-600 group-hover:text-charity-neutral-700 transition-all duration-300 transform group-hover:translate-x-1"
+                              style={{
+                                transitionDelay: `${detailIndex * 50}ms`,
+                              }}
                             >
                               {detail}
                             </p>
                           ))}
                         </div>
 
-                        <button className="inline-flex items-center text-charity-orange-600 hover:text-charity-orange-700 font-medium transition-all duration-300 group-hover:scale-105">
+                        <button className="inline-flex items-center text-charity-orange-600 hover:text-charity-orange-700 font-medium transition-all duration-300 group-hover:scale-110 group-hover:translate-y-1 px-4 py-2 rounded-lg group-hover:bg-charity-orange-50">
                           <span>{info.action}</span>
-                          <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform duration-200" />
+                          <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-2 group-hover:scale-125 transition-all duration-300" />
                         </button>
                       </div>
                     </div>
@@ -316,7 +500,10 @@ const Contact = () => {
       </section>
 
       {/* Contact Form Section */}
-      <section id="contact-form" className="py-20 bg-white relative overflow-hidden">
+      <section
+        id="contact-form"
+        className="py-20 bg-white relative overflow-hidden"
+      >
         {/* Background patterns */}
         <div className="absolute inset-0 opacity-5">
           <div className="absolute top-20 left-20 w-32 h-32 border-4 border-charity-orange-300 rounded-full"></div>
@@ -334,7 +521,9 @@ const Contact = () => {
                     Professional Contact Form
                   </h3>
                   <p className="text-charity-neutral-600">
-                    Please provide your details and inquiry. Our team will respond to your message within 24 hours during business days.
+                    Please provide your details and inquiry. Our team will
+                    respond to your message within 24 hours during business
+                    days.
                   </p>
                 </div>
 
@@ -348,7 +537,10 @@ const Contact = () => {
                         Your Message Has Been Received
                       </h4>
                       <p className="text-charity-neutral-600 mb-6">
-                        Thank you for contacting Tabasamu Charity. A member of our professional team will review your inquiry and respond within one business day. You will receive a confirmation email shortly.
+                        Thank you for contacting Tabasamu Charity. A member of
+                        our professional team will review your inquiry and
+                        respond within one business day. You will receive a
+                        confirmation email shortly.
                       </p>
                       <div className="flex justify-center space-x-2">
                         {[...Array(3)].map((_, i) => (
@@ -362,95 +554,142 @@ const Contact = () => {
                     </div>
                   </AnimatedSection>
                 ) : (
-                  <form onSubmit={handleSubmit} className="space-y-6">
+                  <form onSubmit={handleSubmit} className="space-y-8">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                      <div className="group">
-                        <label className="block text-sm font-semibold text-charity-neutral-700 mb-3">
+                      <div className="group relative">
+                        <label className="block text-sm font-semibold text-charity-neutral-700 mb-3 transition-colors duration-300 group-focus-within:text-charity-orange-600">
                           Full Name *
                         </label>
-                        <input
-                          type="text"
-                          name="name"
-                          required
-                          value={formData.name}
-                          onChange={handleChange}
-                          className="w-full px-4 py-4 border-2 border-charity-neutral-200 rounded-xl focus:ring-2 focus:ring-charity-orange-500 focus:border-charity-orange-500 transition-all duration-300 group-hover:border-charity-orange-300"
-                          placeholder="Your full name"
-                        />
+                        <div className="relative">
+                          <input
+                            type="text"
+                            name="name"
+                            required
+                            value={formData.name}
+                            onChange={handleChange}
+                            className="w-full px-4 py-4 border-2 border-charity-neutral-200 rounded-xl focus:ring-2 focus:ring-charity-orange-500 focus:border-charity-orange-500 transition-all duration-300 group-hover:border-charity-orange-300 focus:scale-[1.02] bg-white/80 backdrop-blur-sm"
+                            placeholder="Your full name"
+                          />
+                          <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-charity-orange-400 to-charity-green-400 opacity-0 group-focus-within:opacity-20 transition-opacity duration-300 pointer-events-none"></div>
+                        </div>
                       </div>
 
-                      <div className="group">
-                        <label className="block text-sm font-semibold text-charity-neutral-700 mb-3">
+                      <div className="group relative">
+                        <label className="block text-sm font-semibold text-charity-neutral-700 mb-3 transition-colors duration-300 group-focus-within:text-charity-orange-600">
                           Email Address *
                         </label>
-                        <input
-                          type="email"
-                          name="email"
-                          required
-                          value={formData.email}
-                          onChange={handleChange}
-                          className="w-full px-4 py-4 border-2 border-charity-neutral-200 rounded-xl focus:ring-2 focus:ring-charity-orange-500 focus:border-charity-orange-500 transition-all duration-300 group-hover:border-charity-orange-300"
-                          placeholder="your@email.com"
-                        />
+                        <div className="relative">
+                          <input
+                            type="email"
+                            name="email"
+                            required
+                            value={formData.email}
+                            onChange={handleChange}
+                            className="w-full px-4 py-4 border-2 border-charity-neutral-200 rounded-xl focus:ring-2 focus:ring-charity-orange-500 focus:border-charity-orange-500 transition-all duration-300 group-hover:border-charity-orange-300 focus:scale-[1.02] bg-white/80 backdrop-blur-sm"
+                            placeholder="your@email.com"
+                          />
+                          <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-charity-orange-400 to-charity-green-400 opacity-0 group-focus-within:opacity-20 transition-opacity duration-300 pointer-events-none"></div>
+                        </div>
                       </div>
                     </div>
 
-                    <div className="group">
-                      <label className="block text-sm font-semibold text-charity-neutral-700 mb-3">
+                    <div className="group relative">
+                      <label className="block text-sm font-semibold text-charity-neutral-700 mb-3 transition-colors duration-300 group-focus-within:text-charity-orange-600">
                         Inquiry Type
                       </label>
-                      <select
-                        name="type"
-                        value={formData.type}
-                        onChange={handleChange}
-                        className="w-full px-4 py-4 border-2 border-charity-neutral-200 rounded-xl focus:ring-2 focus:ring-charity-orange-500 focus:border-charity-orange-500 transition-all duration-300 group-hover:border-charity-orange-300"
-                      >
-                        <option value="general">General Inquiry</option>
-                        <option value="volunteer">Volunteering</option>
-                        <option value="donation">Donations</option>
-                        <option value="sponsorship">Child Sponsorship</option>
-                        <option value="partnership">Partnerships</option>
-                        <option value="media">Media & Press</option>
-                      </select>
+                      <div className="relative">
+                        <select
+                          name="type"
+                          value={formData.type}
+                          onChange={handleChange}
+                          className="w-full px-4 py-4 border-2 border-charity-neutral-200 rounded-xl focus:ring-2 focus:ring-charity-orange-500 focus:border-charity-orange-500 transition-all duration-300 group-hover:border-charity-orange-300 focus:scale-[1.02] bg-white/80 backdrop-blur-sm appearance-none cursor-pointer"
+                        >
+                          <option value="general">💬 General Inquiry</option>
+                          <option value="volunteer">👥 Volunteering</option>
+                          <option value="donation">💝 Donations</option>
+                          <option value="sponsorship">
+                            🧒 Child Sponsorship
+                          </option>
+                          <option value="partnership">🤝 Partnerships</option>
+                          <option value="media">📰 Media & Press</option>
+                        </select>
+                        <div className="absolute inset-y-0 right-4 flex items-center pointer-events-none">
+                          <ChevronDown className="h-5 w-5 text-charity-neutral-500" />
+                        </div>
+                        <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-charity-orange-400 to-charity-green-400 opacity-0 group-focus-within:opacity-20 transition-opacity duration-300 pointer-events-none"></div>
+                      </div>
                     </div>
 
-                    <div className="group">
-                      <label className="block text-sm font-semibold text-charity-neutral-700 mb-3">
+                    <div className="group relative">
+                      <label className="block text-sm font-semibold text-charity-neutral-700 mb-3 transition-colors duration-300 group-focus-within:text-charity-orange-600">
                         Subject *
                       </label>
-                      <input
-                        type="text"
-                        name="subject"
-                        required
-                        value={formData.subject}
-                        onChange={handleChange}
-                        className="w-full px-4 py-4 border-2 border-charity-neutral-200 rounded-xl focus:ring-2 focus:ring-charity-orange-500 focus:border-charity-orange-500 transition-all duration-300 group-hover:border-charity-orange-300"
-                        placeholder="Brief subject of your message"
-                      />
+                      <div className="relative">
+                        <input
+                          type="text"
+                          name="subject"
+                          required
+                          value={formData.subject}
+                          onChange={handleChange}
+                          className="w-full px-4 py-4 border-2 border-charity-neutral-200 rounded-xl focus:ring-2 focus:ring-charity-orange-500 focus:border-charity-orange-500 transition-all duration-300 group-hover:border-charity-orange-300 focus:scale-[1.02] bg-white/80 backdrop-blur-sm"
+                          placeholder="Brief subject of your message"
+                        />
+                        <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-charity-orange-400 to-charity-green-400 opacity-0 group-focus-within:opacity-20 transition-opacity duration-300 pointer-events-none"></div>
+                      </div>
                     </div>
 
-                    <div className="group">
-                      <label className="block text-sm font-semibold text-charity-neutral-700 mb-3">
+                    <div className="group relative">
+                      <label className="block text-sm font-semibold text-charity-neutral-700 mb-3 transition-colors duration-300 group-focus-within:text-charity-orange-600">
                         Message *
                       </label>
-                      <textarea
-                        name="message"
-                        required
-                        rows={6}
-                        value={formData.message}
-                        onChange={handleChange}
-                        className="w-full px-4 py-4 border-2 border-charity-neutral-200 rounded-xl focus:ring-2 focus:ring-charity-orange-500 focus:border-charity-orange-500 transition-all duration-300 group-hover:border-charity-orange-300 resize-none"
-                        placeholder="Tell us more about your inquiry..."
-                      />
+                      <div className="relative">
+                        <textarea
+                          name="message"
+                          required
+                          rows={6}
+                          value={formData.message}
+                          onChange={handleChange}
+                          className="w-full px-4 py-4 border-2 border-charity-neutral-200 rounded-xl focus:ring-2 focus:ring-charity-orange-500 focus:border-charity-orange-500 transition-all duration-300 group-hover:border-charity-orange-300 resize-none focus:scale-[1.02] bg-white/80 backdrop-blur-sm"
+                          placeholder="Tell us more about your inquiry..."
+                        />
+                        <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-charity-orange-400 to-charity-green-400 opacity-0 group-focus-within:opacity-20 transition-opacity duration-300 pointer-events-none"></div>
+                        <div className="absolute bottom-4 right-4 text-xs text-charity-neutral-400 pointer-events-none">
+                          {formData.message.length}/500
+                        </div>
+                      </div>
                     </div>
 
-                    <button
-                      type="submit"
-                      className="w-full px-8 py-4 bg-gradient-to-r from-charity-orange-600 to-charity-orange-700 hover:from-charity-orange-700 hover:to-charity-orange-800 text-white rounded-xl font-bold transition-all duration-300 transform hover:scale-105 hover:shadow-lg flex items-center justify-center group"
-                    >
-                      <Send className="h-5 w-5 mr-3 group-hover:translate-x-1 transition-transform duration-200" />
-                      Submit Professional Inquiry
-                    </button>
+                    <div className="space-y-4">
+                      <button
+                        type="submit"
+                        className="w-full relative px-8 py-4 bg-gradient-to-r from-charity-orange-600 to-charity-orange-700 hover:from-charity-orange-700 hover:to-charity-orange-800 text-white rounded-xl font-bold transition-all duration-300 transform hover:scale-105 hover:shadow-2xl flex items-center justify-center group overflow-hidden"
+                      >
+                        <div className="absolute inset-0 bg-gradient-to-r from-charity-orange-400 to-charity-green-400 opacity-0 group-hover:opacity-30 transition-opacity duration-300"></div>
+                        <Send className="h-5 w-5 mr-3 group-hover:translate-x-1 group-hover:rotate-12 transition-all duration-200 relative z-10" />
+                        <span className="relative z-10">
+                          Submit Professional Inquiry
+                        </span>
+                        <div className="absolute inset-0 rounded-xl bg-white opacity-0 group-hover:opacity-10 transition-opacity duration-300"></div>
+                      </button>
+
+                      <div className="text-center">
+                        <p className="text-sm text-charity-neutral-600 mb-3">
+                          Want to make an immediate impact?
+                        </p>
+                        <button
+                          onClick={() =>
+                            redirectToPayment("donationUrl", {
+                              source: CAMPAIGN_SOURCES.contact,
+                              campaign: "contact-form-cta",
+                            })
+                          }
+                          className="inline-flex items-center px-6 py-2 bg-charity-green-600 hover:bg-charity-green-700 text-white rounded-lg font-medium transition-all duration-200 transform hover:scale-105 shadow-md hover:shadow-lg"
+                        >
+                          <Heart className="h-4 w-4 mr-2" />
+                          Donate Now
+                        </button>
+                      </div>
+                    </div>
                   </form>
                 )}
               </div>
@@ -475,19 +714,27 @@ const Contact = () => {
                       <div
                         key={index}
                         className={`flex justify-between items-center p-4 rounded-xl transition-all duration-300 ${
-                          schedule.available 
-                            ? 'bg-white/70 hover:bg-white/90 shadow-sm' 
-                            : 'bg-charity-neutral-100/50'
+                          schedule.available
+                            ? "bg-white/70 hover:bg-white/90 shadow-sm"
+                            : "bg-charity-neutral-100/50"
                         }`}
                       >
-                        <span className={`font-semibold ${
-                          schedule.available ? 'text-charity-neutral-800' : 'text-charity-neutral-500'
-                        }`}>
+                        <span
+                          className={`font-semibold ${
+                            schedule.available
+                              ? "text-charity-neutral-800"
+                              : "text-charity-neutral-500"
+                          }`}
+                        >
                           {schedule.day}
                         </span>
-                        <span className={`${
-                          schedule.available ? 'text-charity-green-600' : 'text-charity-neutral-500'
-                        } font-medium`}>
+                        <span
+                          className={`${
+                            schedule.available
+                              ? "text-charity-green-600"
+                              : "text-charity-neutral-500"
+                          } font-medium`}
+                        >
                           {schedule.hours}
                         </span>
                       </div>
@@ -496,7 +743,8 @@ const Contact = () => {
 
                   <div className="mt-6 p-4 bg-charity-orange-100 rounded-xl border-l-4 border-charity-orange-500">
                     <p className="text-sm text-charity-orange-800">
-                      <strong>Emergency Contact:</strong> For urgent matters outside office hours, call +254 123 456 789
+                      <strong>Emergency Contact:</strong> For urgent matters
+                      outside office hours, call +254 123 456 789
                     </p>
                   </div>
                 </div>
@@ -516,16 +764,25 @@ const Contact = () => {
                     <div className="w-full h-48 bg-gradient-to-br from-charity-green-200 to-charity-orange-200 rounded-2xl overflow-hidden relative">
                       {/* Interactive map placeholder with Kenya outline */}
                       <div className="absolute inset-0 flex items-center justify-center">
-                        <svg viewBox="0 0 300 200" className="w-full h-full opacity-60">
+                        <svg
+                          viewBox="0 0 300 200"
+                          className="w-full h-full opacity-60"
+                        >
                           <path
                             d="M80,60 L120,50 L160,55 L200,65 L230,75 L240,90 L230,115 L220,140 L200,160 L180,170 L160,165 L140,155 L120,145 L100,135 L80,120 L70,100 L65,80 L70,65 Z"
                             fill="currentColor"
                             className="text-charity-green-400 group-hover:text-charity-green-500 transition-colors duration-300"
                           />
-                          <circle cx="130" cy="110" r="4" fill="currentColor" className="text-charity-orange-600 animate-pulse" />
+                          <circle
+                            cx="130"
+                            cy="110"
+                            r="4"
+                            fill="currentColor"
+                            className="text-charity-orange-600 animate-pulse"
+                          />
                         </svg>
                       </div>
-                      
+
                       {/* Location marker */}
                       <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 group-hover:scale-125 transition-transform duration-300">
                         <div className="w-4 h-4 bg-charity-orange-500 rounded-full border-2 border-white shadow-lg"></div>
@@ -553,10 +810,18 @@ const Contact = () => {
 
                   {/* Interactive Map Modal */}
                   {showMap && (
-                    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4" onClick={() => setShowMap(false)}>
-                      <div className="bg-white rounded-2xl shadow-2xl max-w-4xl w-full max-h-[80vh] overflow-hidden" onClick={(e) => e.stopPropagation()}>
+                    <div
+                      className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+                      onClick={() => setShowMap(false)}
+                    >
+                      <div
+                        className="bg-white rounded-2xl shadow-2xl max-w-4xl w-full max-h-[80vh] overflow-hidden"
+                        onClick={(e) => e.stopPropagation()}
+                      >
                         <div className="p-6 border-b border-charity-neutral-200 flex justify-between items-center">
-                          <h3 className="text-2xl font-bold text-charity-neutral-800">Tabasamu Charity Location</h3>
+                          <h3 className="text-2xl font-bold text-charity-neutral-800">
+                            Tabasamu Charity Location
+                          </h3>
                           <button
                             onClick={() => setShowMap(false)}
                             className="w-8 h-8 bg-charity-neutral-100 hover:bg-charity-neutral-200 rounded-full flex items-center justify-center transition-colors duration-200"
@@ -566,9 +831,16 @@ const Contact = () => {
                         </div>
                         <div className="p-6">
                           <div className="mb-4">
-                            <p className="text-charity-neutral-700 mb-2"><strong>Address:</strong> 123 Charity Street, Nairobi, Kenya</p>
-                            <p className="text-charity-neutral-700 mb-2"><strong>Postal Code:</strong> P.O. Box 12345</p>
-                            <p className="text-charity-neutral-700"><strong>Coordinates:</strong> -1.2864°, 36.8172°</p>
+                            <p className="text-charity-neutral-700 mb-2">
+                              <strong>Address:</strong> 123 Charity Street,
+                              Nairobi, Kenya
+                            </p>
+                            <p className="text-charity-neutral-700 mb-2">
+                              <strong>Postal Code:</strong> P.O. Box 12345
+                            </p>
+                            <p className="text-charity-neutral-700">
+                              <strong>Coordinates:</strong> -1.2864°, 36.8172°
+                            </p>
                           </div>
                           <div className="w-full h-96 bg-gradient-to-br from-charity-green-200 to-charity-orange-200 rounded-xl overflow-hidden relative">
                             <iframe
@@ -606,10 +878,26 @@ const Contact = () => {
 
                   <div className="flex justify-center gap-4">
                     {[
-                      { icon: Facebook, color: "blue", hover: "hover:bg-blue-600" },
-                      { icon: Twitter, color: "cyan", hover: "hover:bg-cyan-500" },
-                      { icon: Instagram, color: "pink", hover: "hover:bg-pink-600" },
-                      { icon: Globe, color: "green", hover: "hover:bg-charity-green-600" },
+                      {
+                        icon: Facebook,
+                        color: "blue",
+                        hover: "hover:bg-blue-600",
+                      },
+                      {
+                        icon: Twitter,
+                        color: "cyan",
+                        hover: "hover:bg-cyan-500",
+                      },
+                      {
+                        icon: Instagram,
+                        color: "pink",
+                        hover: "hover:bg-pink-600",
+                      },
+                      {
+                        icon: Globe,
+                        color: "green",
+                        hover: "hover:bg-charity-green-600",
+                      },
                     ].map((social, index) => (
                       <a
                         key={index}
@@ -636,7 +924,8 @@ const Contact = () => {
                 Frequently Asked Questions
               </h2>
               <p className="text-lg text-charity-neutral-600">
-                Quick answers to common questions about our organization and programs.
+                Quick answers to common questions about our organization and
+                programs.
               </p>
             </div>
           </AnimatedSection>
@@ -670,8 +959,12 @@ const Contact = () => {
               <p className="text-charity-neutral-600 mb-6">
                 Don't see your question answered?
               </p>
-              <button 
-                onClick={() => document.getElementById('contact-form')?.scrollIntoView({ behavior: 'smooth' })}
+              <button
+                onClick={() =>
+                  document
+                    .getElementById("contact-form")
+                    ?.scrollIntoView({ behavior: "smooth" })
+                }
                 className="inline-flex items-center px-8 py-4 bg-charity-orange-600 hover:bg-charity-orange-700 text-white rounded-full font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg"
               >
                 <MessageCircle className="h-5 w-5 mr-2" />
@@ -683,7 +976,7 @@ const Contact = () => {
       </section>
 
       {/* Add floating animation keyframes */}
-      <style jsx={true}>{`
+      <style>{`
         @keyframes float {
           0%, 100% { transform: translateY(0px) rotate(0deg); }
           33% { transform: translateY(-10px) rotate(1deg); }

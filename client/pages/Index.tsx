@@ -13,10 +13,13 @@ import {
   User,
   ChevronLeft,
   ChevronRight,
+  MapPin,
+  Star,
 } from "lucide-react";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import { cn } from "@/lib/utils";
+import { redirectToPayment, CAMPAIGN_SOURCES } from "@/lib/payment";
 
 /**
  * SectionReveal: simple reveal-on-scroll wrapper using IntersectionObserver.
@@ -24,7 +27,15 @@ import { cn } from "@/lib/utils";
  *
  * Usage: wrap each major <section> content with <SectionReveal>...</SectionReveal>
  */
-const SectionReveal = ({ children, rootMargin = "-10% 0px -10% 0px", threshold = 0.12 }: { children: ReactNode; rootMargin?: string; threshold?: number }) => {
+const SectionReveal = ({
+  children,
+  rootMargin = "-10% 0px -10% 0px",
+  threshold = 0.12,
+}: {
+  children: ReactNode;
+  rootMargin?: string;
+  threshold?: number;
+}) => {
   const ref = useRef<HTMLElement | null>(null);
   const [visible, setVisible] = useState(false);
 
@@ -41,7 +52,7 @@ const SectionReveal = ({ children, rootMargin = "-10% 0px -10% 0px", threshold =
           }
         });
       },
-      { root: null, rootMargin, threshold }
+      { root: null, rootMargin, threshold },
     );
     obs.observe(el);
     return () => obs.disconnect();
@@ -53,7 +64,7 @@ const SectionReveal = ({ children, rootMargin = "-10% 0px -10% 0px", threshold =
       className={cn(
         // initial hidden state
         "transition-all duration-700 ease-out will-change-transform",
-        visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+        visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8",
       )}
       aria-hidden={!visible}
     >
@@ -64,6 +75,70 @@ const SectionReveal = ({ children, rootMargin = "-10% 0px -10% 0px", threshold =
 
 const Index = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
+
+  // Featured children for homepage (first 4)
+  const featuredChildren = [
+    {
+      id: "maria-001",
+      name: "Maria Mwangi",
+      age: 8,
+      location: "Mwanza Region",
+      school: "Mwanza Primary School",
+      grade: "Standard 3",
+      story:
+        "Maria loves mathematics and dreams of becoming a teacher. She walks 5km to school daily and helps her mother with farming after classes.",
+      image:
+        "https://images.unsplash.com/photo-1544005313-94ddf0286df2?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
+      monthlyNeed: 45,
+      interests: ["Mathematics", "Reading", "Farming"],
+      dreamJob: "Teacher",
+    },
+    {
+      id: "david-002",
+      name: "David Kimaro",
+      age: 12,
+      location: "Arusha Region",
+      school: "Arusha Community Secondary",
+      grade: "Form 1",
+      story:
+        "David is passionate about science and wants to become a doctor. His father is a subsistence farmer and struggles to pay school fees.",
+      image:
+        "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
+      monthlyNeed: 65,
+      interests: ["Biology", "Chemistry", "Football"],
+      dreamJob: "Doctor",
+    },
+    {
+      id: "grace-003",
+      name: "Grace Mtema",
+      age: 15,
+      location: "Dodoma Region",
+      school: "Dodoma Girls Education Center",
+      grade: "Form 3",
+      story:
+        "Grace excels in her studies and wants to become an engineer. She comes from a single-parent household and needs support to continue her education.",
+      image:
+        "https://images.unsplash.com/photo-1494790108755-2616c6b57a3c?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
+      monthlyNeed: 75,
+      interests: ["Mathematics", "Physics", "Technology"],
+      dreamJob: "Engineer",
+    },
+    {
+      id: "john-004",
+      name: "John Massawe",
+      age: 10,
+      location: "Kilimanjaro Region",
+      school: "Kilimanjaro Primary School",
+      grade: "Standard 5",
+      story:
+        "John is a bright student who loves to read. His parents work as casual laborers and cannot afford his educational expenses consistently.",
+      image:
+        "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
+      monthlyNeed: 50,
+      interests: ["Reading", "Writing", "History"],
+      dreamJob: "Writer",
+    },
+  ];
 
   const heroImages = [
     {
@@ -137,21 +212,24 @@ const Index = () => {
 
   const recentPrograms = [
     {
-      image: "https://i.ibb.co/vxjcpZjD/Screenshot-from-2025-08-12-23-27-35.png",
+      image:
+        "https://i.ibb.co/vxjcpZjD/Screenshot-from-2025-08-12-23-27-35.png",
       title: "School Supply Drive 2024",
       description:
         "Providing essential school supplies to over 500 children across 12 schools.",
       date: "March 2024",
     },
     {
-      image: "https://i.ibb.co/vxjcpZjD/Screenshot-from-2025-08-12-23-27-35.png",
+      image:
+        "https://i.ibb.co/vxjcpZjD/Screenshot-from-2025-08-12-23-27-35.png",
       title: "Healthcare Initiative",
       description:
         "Mobile clinics bringing healthcare services to remote communities.",
       date: "February 2024",
     },
     {
-      image: "https://i.ibb.co/vxjcpZjD/Screenshot-from-2025-08-12-23-27-35.png",
+      image:
+        "https://i.ibb.co/vxjcpZjD/Screenshot-from-2025-08-12-23-27-35.png",
       title: "Clean Water Project",
       description:
         "Installing water wells in 5 villages to provide clean drinking water.",
@@ -168,7 +246,8 @@ const Index = () => {
 
   const recentBlogs = [
     {
-      image: "https://i.ibb.co/vxjcpZjD/Screenshot-from-2025-08-12-23-27-35.png",
+      image:
+        "https://i.ibb.co/vxjcpZjD/Screenshot-from-2025-08-12-23-27-35.png",
       category: "Education",
       date: "March 15, 2024",
       title: "Transforming Lives Through Education",
@@ -177,7 +256,8 @@ const Index = () => {
       author: "Sarah Johnson",
     },
     {
-      image: "https://i.ibb.co/vxjcpZjD/Screenshot-from-2025-08-12-23-27-35.png",
+      image:
+        "https://i.ibb.co/vxjcpZjD/Screenshot-from-2025-08-12-23-27-35.png",
       category: "Healthcare",
       date: "March 10, 2024",
       title: "Mobile Clinics Reach Remote Areas",
@@ -186,7 +266,8 @@ const Index = () => {
       author: "Dr. Michael Brown",
     },
     {
-      image: "https://i.ibb.co/vxjcpZjD/Screenshot-from-2025-08-12-23-27-35.png",
+      image:
+        "https://i.ibb.co/vxjcpZjD/Screenshot-from-2025-08-12-23-27-35.png",
       category: "Community",
       date: "March 5, 2024",
       title: "Building Stronger Communities Together",
@@ -250,12 +331,17 @@ const Index = () => {
                 >
                   Join Us Today
                 </Link>
-                <Link
-                  to="/get-involved/donate"
+                <button
+                  onClick={() =>
+                    redirectToPayment("donationUrl", {
+                      source: CAMPAIGN_SOURCES.hero,
+                      campaign: "hero-donate",
+                    })
+                  }
                   className="px-8 py-3 border-2 border-white text-white hover:bg-white hover:text-charity-neutral-800 rounded-lg transition-colors duration-200 font-medium"
                 >
                   Donate Now
-                </Link>
+                </button>
               </div>
             </div>
           </div>
@@ -310,17 +396,18 @@ const Index = () => {
                   About Tabasamu Charity
                 </h2>
                 <p className="text-lg text-charity-neutral-600 leading-relaxed">
-                  Tabasamu Charity is dedicated to transforming lives and building
-                  stronger communities through education, healthcare, and
-                  sustainable development. Since our founding, we've been
+                  Tabasamu Charity is dedicated to transforming lives and
+                  building stronger communities through education, healthcare,
+                  and sustainable development. Since our founding, we've been
                   committed to creating lasting positive change for children and
                   families across Kenya.
                 </p>
                 <p className="text-charity-neutral-600">
-                  Our comprehensive programs focus on providing quality education,
-                  essential healthcare services, and opportunities for community
-                  development. Together with our volunteers and supporters, we're
-                  building a brighter future for the next generation.
+                  Our comprehensive programs focus on providing quality
+                  education, essential healthcare services, and opportunities
+                  for community development. Together with our volunteers and
+                  supporters, we're building a brighter future for the next
+                  generation.
                 </p>
                 <Link
                   to="/about"
@@ -381,13 +468,18 @@ const Index = () => {
                 <p className="text-xl mb-6 opacity-90 group-hover:opacity-100 transition-opacity duration-300">
                   Every donation creates lasting impact
                 </p>
-                <Link
-                  to="/get-involved/donate"
+                <button
+                  onClick={() =>
+                    redirectToPayment("donationUrl", {
+                      source: CAMPAIGN_SOURCES.cta,
+                      campaign: "donate-section",
+                    })
+                  }
                   className="inline-block px-8 py-3 bg-white text-charity-green-700 hover:bg-green-100 hover:scale-105 hover:shadow-lg rounded-lg font-bold transition-all duration-300 group-hover:animate-pulse"
                 >
                   DONATE NOW
                   <ArrowRight className="inline ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform duration-200" />
-                </Link>
+                </button>
               </div>
             </div>
           </div>
@@ -435,16 +527,166 @@ const Index = () => {
                       {project.description}
                     </p>
                     <div className="mt-6 opacity-0 group-hover:opacity-100 transform translate-y-4 group-hover:translate-y-0 transition-all duration-500">
-                      <Link
-                        to={project.title === "Make a Donation" ? "/get-involved/donate" : project.title === "Sponsor a Child" ? "/get-involved/sponsor" : "/get-involved/volunteer"}
-                        className="inline-block px-6 py-2 bg-charity-orange-600 text-white rounded-lg hover:bg-charity-orange-700 transition-colors duration-200"
-                      >
-                        Learn More
-                      </Link>
+                      {project.title === "Make a Donation" ? (
+                        <button
+                          onClick={() =>
+                            redirectToPayment("donationUrl", {
+                              source: CAMPAIGN_SOURCES.hero,
+                              campaign: "popular-projects-donate",
+                            })
+                          }
+                          className="inline-block px-6 py-2 bg-charity-orange-600 text-white rounded-lg hover:bg-charity-orange-700 transition-colors duration-200"
+                        >
+                          Donate Now
+                        </button>
+                      ) : project.title === "Sponsor a Child" ? (
+                        <button
+                          onClick={() =>
+                            redirectToPayment("sponsorshipUrl", {
+                              source: CAMPAIGN_SOURCES.hero,
+                              campaign: "popular-projects-sponsor",
+                            })
+                          }
+                          className="inline-block px-6 py-2 bg-charity-orange-600 text-white rounded-lg hover:bg-charity-orange-700 transition-colors duration-200"
+                        >
+                          Sponsor Now
+                        </button>
+                      ) : (
+                        <Link
+                          to="/get-involved/volunteer"
+                          className="inline-block px-6 py-2 bg-charity-orange-600 text-white rounded-lg hover:bg-charity-orange-700 transition-colors duration-200"
+                        >
+                          Learn More
+                        </Link>
+                      )}
                     </div>
                   </div>
                 );
               })}
+            </div>
+          </div>
+        </section>
+      </SectionReveal>
+
+      {/* Meet Our Children */}
+      <SectionReveal>
+        <section className="py-20 bg-white">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-16">
+              <h2 className="text-4xl font-bold text-charity-neutral-800 mb-4">
+                Meet Our Children
+              </h2>
+              <p className="text-lg text-charity-neutral-600 max-w-2xl mx-auto">
+                Every child has a unique story and dreams waiting to be
+                fulfilled. Meet some of the amazing children who need your
+                support to achieve their goals.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
+              {featuredChildren.map((child, index) => (
+                <div
+                  key={child.id}
+                  className="bg-white border border-charity-neutral-200 rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 group"
+                >
+                  <div className="relative overflow-hidden">
+                    <img
+                      src={child.image}
+                      alt={child.name}
+                      className="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-500"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                      <div className="absolute bottom-4 left-4 text-white">
+                        <p className="text-sm font-medium">
+                          Dreams of being a {child.dreamJob}
+                        </p>
+                      </div>
+                    </div>
+                    <div className="absolute top-4 right-4 bg-charity-green-500 text-white px-3 py-1 rounded-full text-sm font-medium shadow-lg">
+                      Available
+                    </div>
+                    <div className="absolute top-4 left-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                      <Star className="h-5 w-5 text-yellow-400 fill-current" />
+                    </div>
+                  </div>
+
+                  <div className="p-6">
+                    <h3 className="text-xl font-bold text-charity-neutral-800 mb-2 group-hover:text-charity-orange-600 transition-colors duration-200">
+                      {child.name}
+                    </h3>
+
+                    <div className="space-y-1 mb-4 text-sm text-charity-neutral-600">
+                      <div className="flex items-center">
+                        <Calendar className="h-4 w-4 mr-2 text-charity-orange-500" />
+                        {child.age} years old
+                      </div>
+                      <div className="flex items-center">
+                        <MapPin className="h-4 w-4 mr-2 text-charity-green-500" />
+                        {child.location}
+                      </div>
+                      <div className="flex items-center">
+                        <GraduationCap className="h-4 w-4 mr-2 text-charity-orange-500" />
+                        <span className="truncate">{child.grade}</span>
+                      </div>
+                    </div>
+
+                    <p className="text-charity-neutral-600 text-sm mb-4 line-clamp-3">
+                      {child.story}
+                    </p>
+
+                    <div className="mb-4">
+                      <div className="text-sm font-medium text-charity-neutral-700 mb-2">
+                        Interests:
+                      </div>
+                      <div className="flex flex-wrap gap-1">
+                        {child.interests.slice(0, 3).map((interest, i) => (
+                          <span
+                            key={i}
+                            className="px-2 py-1 bg-charity-green-100 text-charity-green-700 text-xs rounded-full"
+                          >
+                            {interest}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div className="border-t border-charity-neutral-200 pt-4">
+                      <div className="flex items-center justify-between mb-3">
+                        <span className="text-sm text-charity-neutral-600">
+                          Monthly Need:
+                        </span>
+                        <span className="text-lg font-bold text-charity-orange-600">
+                          ${child.monthlyNeed}
+                        </span>
+                      </div>
+
+                      <button
+                        onClick={() =>
+                          redirectToPayment("sponsorshipUrl", {
+                            childId: child.id,
+                            amount: child.monthlyNeed,
+                            source: CAMPAIGN_SOURCES.children,
+                            campaign: `sponsor-${child.name.split(" ")[0].toLowerCase()}`,
+                          })
+                        }
+                        className="block w-full px-4 py-2 bg-charity-orange-600 hover:bg-charity-orange-700 text-white rounded-lg transition-all duration-200 font-medium group-hover:transform group-hover:scale-105 shadow-md hover:shadow-lg text-center"
+                      >
+                        💝 Sponsor {child.name.split(" ")[0]}
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <div className="text-center">
+              <Link
+                to="/children"
+                className="inline-flex items-center px-8 py-4 bg-charity-green-600 hover:bg-charity-green-700 text-white rounded-xl font-bold transition-all duration-200 transform hover:scale-105 shadow-lg hover:shadow-xl text-lg"
+              >
+                View All Children
+                <ArrowRight className="ml-2 h-5 w-5" />
+              </Link>
             </div>
           </div>
         </section>
@@ -509,7 +751,7 @@ const Index = () => {
               {recentPrograms.map((program, index) => (
                 <Link
                   key={index}
-                  to={`/programs/${program.title.toLowerCase().replace(/\s+/g, '-')}`}
+                  to={`/programs/${program.title.toLowerCase().replace(/\s+/g, "-")}`}
                   className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 cursor-pointer group block"
                 >
                   <div className="relative overflow-hidden">
@@ -604,7 +846,7 @@ const Index = () => {
               {recentBlogs.map((blog, index) => (
                 <Link
                   key={index}
-                  to={`/blog/${blog.title.toLowerCase().replace(/\s+/g, '-')}`}
+                  to={`/blog/${blog.title.toLowerCase().replace(/\s+/g, "-")}`}
                   className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 cursor-pointer group block"
                 >
                   <div className="relative overflow-hidden">
