@@ -268,7 +268,20 @@ const Programs = () => {
     <>
       {/* Hero Section */}
       <section className="pt-0 relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-green-500 via-orange-400 to-orange-600 animate-gradient"></div>
+        {/* Video Background */}
+        <video
+          autoPlay
+          muted
+          loop
+          playsInline
+          className="absolute inset-0 w-full h-full object-cover opacity-30"
+        >
+          <source
+            src="https://cdn.builder.io/o/assets%2F5c188e0e2be247ef8c2c4417614bca31%2F960bc2360f2b40008465c5ea28b473c1?alt=media&token=f5dfd82b-9688-469f-ba82-1be3bac085c0&apiKey=5c188e0e2be247ef8c2c4417614bca31"
+            type="video/mp4"
+          />
+        </video>
+        <div className="absolute inset-0 bg-gradient-to-br from-green-500/70 via-orange-400/70 to-orange-600/70 animate-gradient"></div>
         <div
           className="absolute inset-0 opacity-20"
           style={{
@@ -501,8 +514,22 @@ const Programs = () => {
       </section>
 
       {/* Call to Action */}
-      <section className="py-20 bg-charity-orange-600">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="relative py-20 bg-charity-orange-600 overflow-hidden">
+        {/* Video Background */}
+        <video
+          autoPlay
+          muted
+          loop
+          playsInline
+          className="absolute inset-0 w-full h-full object-cover opacity-20"
+        >
+          <source
+            src="https://cdn.builder.io/o/assets%2F5c188e0e2be247ef8c2c4417614bca31%2F34426d4cb0cf4106b6391acf44a1fb03?alt=media&token=3e650db1-075e-4467-a45c-786174ae036e&apiKey=5c188e0e2be247ef8c2c4417614bca31"
+            type="video/mp4"
+          />
+        </video>
+        <div className="absolute inset-0 bg-charity-orange-600/60"></div>
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <AnimatedSection animation="slideUp">
             <div className="text-center text-white">
               <h2 className="text-4xl font-bold mb-6">
