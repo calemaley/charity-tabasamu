@@ -63,8 +63,22 @@ const Children = () => {
     <>
       {/* Hero Section */}
       <section className="pt-0 bg-gradient-to-br from-charity-green-500 to-charity-orange-600 relative">
+        {/* Video Background */}
+        <video
+          autoPlay
+          muted
+          loop
+          playsInline
+          className="absolute inset-0 w-full h-full object-cover opacity-25"
+        >
+          <source
+            src="https://cdn.builder.io/o/assets%2F5c188e0e2be247ef8c2c4417614bca31%2F4592ea9428a04853bb8fe1c074f89f50?alt=media&token=fdafe404-7f9f-4aa4-b069-952bf082921b&apiKey=5c188e0e2be247ef8c2c4417614bca31"
+            type="video/mp4"
+          />
+        </video>
+        <div className="absolute inset-0 bg-gradient-to-br from-charity-green-500/70 to-charity-orange-600/70"></div>
         <Navigation />
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
           <AnimatedSection animation="slideUp">
             <div className="text-center text-white">
               <Users className="h-16 w-16 mx-auto mb-6" />
