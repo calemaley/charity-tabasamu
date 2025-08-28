@@ -258,6 +258,20 @@ const Contact = () => {
     <>
       {/* Dynamic Hero Section */}
       <section className="relative min-h-screen overflow-hidden bg-gradient-to-br from-charity-orange-400 via-charity-green-400 to-charity-orange-600">
+        {/* Video Background */}
+        <video
+          autoPlay
+          muted
+          loop
+          playsInline
+          className="absolute inset-0 w-full h-full object-cover opacity-25"
+        >
+          <source
+            src="https://cdn.builder.io/o/assets%2F5c188e0e2be247ef8c2c4417614bca31%2Fa99f653325e344209444430d4cdcc206?alt=media&token=864e0e94-3328-4bb7-8460-bace1ec832ad&apiKey=5c188e0e2be247ef8c2c4417614bca31"
+            type="video/mp4"
+          />
+        </video>
+        <div className="absolute inset-0 bg-gradient-to-br from-charity-orange-400/70 via-charity-green-400/70 to-charity-orange-600/70"></div>
         {/* Animated background elements */}
         <div className="absolute inset-0">
           {[...Array(20)].map((_, i) => (
