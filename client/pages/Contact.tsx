@@ -6,20 +6,24 @@ import {
   Clock,
   Send,
   MessageCircle,
-  Users,
   Heart,
   CheckCircle,
-  Globe,
+  Instagram,
   Facebook,
   Twitter,
-  Instagram,
+  Linkedin,
   ArrowRight,
   Star,
   Award,
+  Users,
+  Globe,
+  Download,
+  Calendar,
 } from "lucide-react";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import AnimatedSection from "@/components/AnimatedSection";
+import { redirectToPayment, CAMPAIGN_SOURCES } from "@/lib/payment";
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -31,14 +35,20 @@ const Contact = () => {
   });
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-  const [showMap, setShowMap] = useState(false);
+  const [currentTime, setCurrentTime] = useState(new Date());
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
       setMousePosition({ x: e.clientX, y: e.clientY });
     };
-    window.addEventListener('mousemove', handleMouseMove);
-    return () => window.removeEventListener('mousemove', handleMouseMove);
+    window.addEventListener("mousemove", handleMouseMove);
+
+    const timer = setInterval(() => setCurrentTime(new Date()), 1000);
+
+    return () => {
+      window.removeEventListener("mousemove", handleMouseMove);
+      clearInterval(timer);
+    };
   }, []);
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -67,171 +77,260 @@ const Contact = () => {
     });
   };
 
-  const handleGetDirections = () => {
-    // Tabasamu Charity Office coordinates (Nairobi, Kenya)
-    const lat = -1.2864;
-    const lng = 36.8172;
-    const address = "123 Charity Street, Nairobi, Kenya";
-
-    // Try Google Maps first, fallback to Apple Maps on iOS
-    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
-
-    if (isIOS) {
-      window.open(`maps://maps.google.com/maps?q=${lat},${lng}+(${encodeURIComponent(address)})`, '_blank');
-    } else {
-      window.open(`https://www.google.com/maps/search/?api=1&query=${lat},${lng}`, '_blank');
-    }
-
-    // Also show embedded map
-    setShowMap(true);
+  // Working button functions
+  const handleSendEmail = () => {
+    const subject = encodeURIComponent("Inquiry from Tabasamu Website");
+    const body = encodeURIComponent(
+      "Hello Tabasamu Team,\n\nI would like to get in touch regarding...",
+    );
+    window.location.href = `mailto:hello@tabasamu.org?subject=${subject}&body=${body}`;
   };
 
-  const contactInfo = [
+  const handleCallNow = () => {
+    window.location.href = "tel:+254123456789";
+  };
+
+  const handleGetDirections = () => {
+    const address = encodeURIComponent("123 Charity St, Nairobi, Kenya");
+    window.open(
+      `https://www.google.com/maps/search/?api=1&query=${address}`,
+      "_blank",
+    );
+  };
+
+  const handleBookCall = () => {
+    // Open Calendly or similar booking service
+    window.open("https://calendly.com/tabasamu-charity/15min", "_blank");
+  };
+
+  const handleQuickDonation = () => {
+    redirectToPayment("donationUrl", {
+      source: CAMPAIGN_SOURCES.contact,
+      campaign: "quick-action",
+    });
+  };
+
+  const handleDownloadBrochure = () => {
+    // Create a downloadable PDF link
+    const link = document.createElement("a");
+    link.href = "/assets/tabasamu-brochure.pdf"; // You would need to add this file
+    link.download = "Tabasamu-Charity-Brochure.pdf";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
+  const handleSocialShare = (platform: string) => {
+    const url = window.location.href;
+    const text =
+      "Check out Tabasamu Charity - Making a difference in children's lives";
+
+    switch (platform) {
+      case "facebook":
+        window.open(
+          `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`,
+          "_blank",
+        );
+        break;
+      case "twitter":
+        window.open(
+          `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`,
+          "_blank",
+        );
+        break;
+      case "instagram":
+        // Instagram doesn't have direct sharing, so copy link
+        navigator.clipboard.writeText(url);
+        alert(
+          "Link copied! You can now paste it in your Instagram bio or story.",
+        );
+        break;
+      case "linkedin":
+        window.open(
+          `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}`,
+          "_blank",
+        );
+        break;
+    }
+  };
+
+  const contactMethods = [
     {
-      icon: MapPin,
-      title: "Visit Our Office",
-      details: [
-        "123 Charity Street",
-        "Nairobi, Kenya",
-        "P.O. Box 12345",
-      ],
-      action: "Get Directions",
-      color: "orange",
+      icon: Mail,
+      title: "Email Us",
+      subtitle: "Drop us a line anytime",
+      info: "hello@tabasamu.org",
+      action: "Send Email",
+      handler: handleSendEmail,
+      gradient: "from-blue-500 to-cyan-500",
+      bgGradient: "from-blue-50 to-cyan-50",
+      delay: 0,
     },
     {
       icon: Phone,
       title: "Call Us",
-      details: ["+254 123 456 789", "+254 987 654 321", "Mon-Fri: 8AM-5PM"],
+      subtitle: "Speak directly with our team",
+      info: "+254 123 456 789",
       action: "Call Now",
-      color: "green",
+      handler: handleCallNow,
+      gradient: "from-green-500 to-emerald-500",
+      bgGradient: "from-green-50 to-emerald-50",
+      delay: 100,
     },
     {
-      icon: Mail,
-      title: "Email Us",
-      details: [
-        "info@tabasamu.org",
-        "volunteer@tabasamu.org",
-        "Response within 24 hours",
-      ],
-      action: "Send Email",
-      color: "blue",
+      icon: MapPin,
+      title: "Visit Us",
+      subtitle: "Come see our impact firsthand",
+      info: "123 Charity St, Nairobi, Kenya",
+      action: "Get Directions",
+      handler: handleGetDirections,
+      gradient: "from-purple-500 to-pink-500",
+      bgGradient: "from-purple-50 to-pink-50",
+      delay: 200,
+    },
+  ];
+
+  const socialLinks = [
+    {
+      icon: Facebook,
+      label: "Facebook",
+      color: "bg-blue-600 hover:bg-blue-700",
+      handler: () => handleSocialShare("facebook"),
+    },
+    {
+      icon: Twitter,
+      label: "Twitter",
+      color: "bg-sky-500 hover:bg-sky-600",
+      handler: () => handleSocialShare("twitter"),
+    },
+    {
+      icon: Instagram,
+      label: "Instagram",
+      color: "bg-pink-600 hover:bg-pink-700",
+      handler: () => handleSocialShare("instagram"),
+    },
+    {
+      icon: Linkedin,
+      label: "LinkedIn",
+      color: "bg-blue-800 hover:bg-blue-900",
+      handler: () => handleSocialShare("linkedin"),
+    },
+  ];
+
+  const quickActions = [
+    {
+      title: "🎯 Book a Call",
+      description: "Schedule a 15-minute chat with our team",
+      action: "Schedule Now",
+      handler: handleBookCall,
+      gradient: "from-orange-500 to-red-500",
+    },
+    {
+      title: "💝 Quick Donation",
+      description: "Make an immediate impact today",
+      action: "Donate Now",
+      handler: handleQuickDonation,
+      gradient: "from-green-500 to-teal-500",
+    },
+    {
+      title: "📖 Download Brochure",
+      description: "Learn more about our programs",
+      action: "Download PDF",
+      handler: handleDownloadBrochure,
+      gradient: "from-purple-500 to-indigo-500",
     },
   ];
 
   const officeHours = [
-    { day: "Monday - Friday", hours: "8:00 AM - 5:00 PM", available: true },
-    { day: "Saturday", hours: "9:00 AM - 2:00 PM", available: true },
-    { day: "Sunday", hours: "Closed", available: false },
+    { day: "Mon - Fri", hours: "8:00 AM - 6:00 PM", open: true },
+    { day: "Saturday", hours: "9:00 AM - 2:00 PM", open: true },
+    { day: "Sunday", hours: "Closed", open: false },
   ];
 
-  const faqs = [
-    {
-      question: "How can I volunteer with Tabasamu Charity?",
-      answer:
-        "You can start by filling out our volunteer application form. We'll then schedule an interview and provide comprehensive training before your placement.",
-      icon: Users,
-    },
-    {
-      question: "Is my donation tax-deductible?",
-      answer:
-        "Yes, Tabasamu Charity is a registered nonprofit organization. All donations are tax-deductible and you'll receive a receipt for your records.",
-      icon: Award,
-    },
-    {
-      question: "Can I sponsor a specific child?",
-      answer:
-        "Absolutely! Our child sponsorship program allows you to form a personal connection with a child while supporting their education and healthcare needs.",
-      icon: Heart,
-    },
-    {
-      question: "Do you accept in-kind donations?",
-      answer:
-        "Yes, we accept donations of school supplies, medical equipment, and other items. Please contact us first to confirm what items are currently needed.",
-      icon: Star,
-    },
-  ];
+  const kenyaTime = new Date().toLocaleString("en-US", {
+    timeZone: "Africa/Nairobi",
+    hour12: true,
+    hour: "2-digit",
+    minute: "2-digit",
+  });
 
   return (
     <>
-      {/* Hero Section with Map Background */}
-      <section className="relative min-h-screen overflow-hidden">
-        {/* Animated Map Background */}
-        <div 
-          className="absolute inset-0 opacity-20"
-          style={{
-            background: `radial-gradient(circle at ${mousePosition.x}px ${mousePosition.y}px, rgba(251, 146, 60, 0.3) 0%, rgba(34, 197, 94, 0.2) 50%, transparent 70%)`,
-            transition: 'background 0.3s ease'
-          }}
-        />
-        
-        {/* Kenya Map SVG Background */}
-        <div className="absolute inset-0 opacity-10">
-          <svg
-            viewBox="0 0 800 600"
-            className="w-full h-full object-cover"
-            style={{
-              transform: `translate(${mousePosition.x * 0.01}px, ${mousePosition.y * 0.01}px)`,
-              transition: 'transform 0.1s ease-out'
-            }}
-          >
-            {/* Simplified Kenya map outline */}
-            <path
-              d="M200,150 L300,120 L400,140 L500,160 L580,180 L600,220 L580,280 L560,350 L520,420 L480,450 L420,460 L360,450 L300,430 L250,400 L200,350 L180,300 L170,250 L180,200 Z"
-              fill="currentColor"
-              className="text-charity-green-300 animate-pulse"
-              style={{ animationDuration: '4s' }}
-            />
-            {/* Major cities markers */}
-            <circle cx="320" cy="280" r="8" fill="currentColor" className="text-charity-orange-500 animate-bounce" style={{ animationDelay: '0s', animationDuration: '2s' }} />
-            <circle cx="450" cy="320" r="6" fill="currentColor" className="text-charity-green-500 animate-bounce" style={{ animationDelay: '0.5s', animationDuration: '2s' }} />
-            <circle cx="380" cy="200" r="5" fill="currentColor" className="text-charity-orange-400 animate-bounce" style={{ animationDelay: '1s', animationDuration: '2s' }} />
-            
-            {/* Connecting lines */}
-            <line x1="320" y1="280" x2="450" y2="320" stroke="currentColor" strokeWidth="2" className="text-charity-neutral-300 opacity-50" />
-            <line x1="320" y1="280" x2="380" y2="200" stroke="currentColor" strokeWidth="2" className="text-charity-neutral-300 opacity-50" />
-          </svg>
-        </div>
-
-        {/* Floating particles */}
+      {/* Dynamic Hero Section */}
+      <section className="relative min-h-screen overflow-hidden bg-gradient-to-br from-charity-orange-400 via-charity-green-400 to-charity-orange-600">
+        {/* Animated background elements */}
         <div className="absolute inset-0">
           {[...Array(20)].map((_, i) => (
             <div
               key={i}
-              className="absolute w-2 h-2 bg-charity-orange-400 rounded-full opacity-30 animate-float"
+              className="absolute animate-float opacity-20"
               style={{
                 left: `${Math.random() * 100}%`,
                 top: `${Math.random() * 100}%`,
                 animationDelay: `${Math.random() * 5}s`,
-                animationDuration: `${3 + Math.random() * 4}s`
+                animationDuration: `${4 + Math.random() * 4}s`,
               }}
-            />
+            >
+              {i % 4 === 0
+                ? "💌"
+                : i % 4 === 1
+                  ? "📞"
+                  : i % 4 === 2
+                    ? "🌍"
+                    : "💝"}
+            </div>
           ))}
         </div>
 
+        {/* Interactive mouse gradient */}
+        <div
+          className="absolute inset-0 opacity-30"
+          style={{
+            background: `radial-gradient(circle 300px at ${mousePosition.x}px ${mousePosition.y}px, rgba(255, 255, 255, 0.3) 0%, transparent 70%)`,
+            transition: "background 0.3s ease",
+          }}
+        />
+
         <Navigation />
-        
+
         {/* Hero Content */}
         <div className="relative z-10 min-h-screen flex items-center">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
             <AnimatedSection animation="slideUp">
-              <div className="text-center">
-                <div className="inline-flex items-center justify-center w-20 h-20 bg-charity-orange-500/20 rounded-full mb-6 backdrop-blur-sm border border-charity-orange-300/30">
-                  <MessageCircle className="h-10 w-10 text-charity-orange-600" />
+              <div className="text-center text-white">
+                <div className="inline-flex items-center justify-center w-24 h-24 bg-white/20 rounded-full mb-8 backdrop-blur-sm">
+                  <MessageCircle className="h-12 w-12 text-white animate-pulse" />
                 </div>
-                <h1 className="text-6xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-charity-orange-600 to-charity-green-600 bg-clip-text text-transparent">
-                  Get In Touch
+                <h1 className="text-6xl md:text-8xl font-bold mb-6 bg-gradient-to-r from-white to-charity-neutral-100 bg-clip-text text-transparent">
+                  Let's Connect
                 </h1>
-                <p className="text-xl md:text-2xl max-w-3xl mx-auto text-charity-neutral-700 leading-relaxed">
-                  Ready to make a difference? Connect with our team and discover how you can 
-                  join our mission to transform lives across Kenya.
+                <p className="text-2xl md:text-3xl max-w-4xl mx-auto leading-relaxed opacity-95 font-light">
+                  Ready to make a difference? We'd love to hear from you and
+                  explore how we can work together to transform lives.
                 </p>
-                <div className="mt-8 flex justify-center">
-                  <button 
-                    onClick={() => document.getElementById('contact-form')?.scrollIntoView({ behavior: 'smooth' })}
-                    className="group inline-flex items-center px-8 py-4 bg-charity-orange-600 hover:bg-charity-orange-700 text-white rounded-full transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
+                <div className="mt-10 flex flex-col sm:flex-row gap-6 justify-center">
+                  <button
+                    onClick={() =>
+                      document
+                        .getElementById("contact-methods")
+                        ?.scrollIntoView({ behavior: "smooth" })
+                    }
+                    className="group inline-flex items-center px-10 py-5 bg-white text-charity-orange-600 rounded-2xl font-bold text-xl transition-all duration-300 transform hover:scale-105 shadow-2xl hover:shadow-white/25"
                   >
-                    <span className="text-lg font-semibold">Start Conversation</span>
-                    <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform duration-200" />
+                    <span>Start Conversation</span>
+                    <ArrowRight className="ml-3 h-6 w-6 group-hover:translate-x-2 transition-transform duration-200" />
+                  </button>
+                  <button
+                    onClick={() =>
+                      redirectToPayment("donationUrl", {
+                        source: CAMPAIGN_SOURCES.contact,
+                        campaign: "hero-cta",
+                      })
+                    }
+                    className="group inline-flex items-center px-10 py-5 border-3 border-white text-white hover:bg-white hover:text-charity-orange-600 rounded-2xl font-bold text-xl transition-all duration-300 transform hover:scale-105"
+                  >
+                    <Heart className="mr-3 h-6 w-6 group-hover:scale-125 transition-transform duration-200" />
+                    <span>Quick Donate</span>
                   </button>
                 </div>
               </div>
@@ -241,132 +340,135 @@ const Contact = () => {
 
         {/* Scroll indicator */}
         <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
-          <div className="w-6 h-10 border-2 border-charity-orange-500 rounded-full flex justify-center">
-            <div className="w-1 h-3 bg-charity-orange-500 rounded-full mt-2 animate-pulse"></div>
+          <div className="w-8 h-12 border-3 border-white rounded-full flex justify-center">
+            <div className="w-2 h-4 bg-white rounded-full mt-2 animate-pulse"></div>
           </div>
         </div>
       </section>
 
-      {/* Contact Cards */}
-      <section className="py-20 bg-gradient-to-br from-charity-neutral-50 to-white relative overflow-hidden">
-        {/* Background decoration */}
-        <div className="absolute top-0 right-0 w-96 h-96 bg-charity-orange-100 rounded-full -translate-y-1/2 translate-x-1/2 opacity-50"></div>
-        <div className="absolute bottom-0 left-0 w-64 h-64 bg-charity-green-100 rounded-full translate-y-1/2 -translate-x-1/2 opacity-50"></div>
-        
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      {/* Modern Contact Methods */}
+      <section
+        id="contact-methods"
+        className="py-24 bg-gradient-to-b from-white to-charity-neutral-50"
+      >
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <AnimatedSection animation="slideUp">
-            <div className="text-center mb-16">
-              <h2 className="text-4xl font-bold text-charity-neutral-800 mb-4">
-                Multiple Ways to Connect
+            <div className="text-center mb-20">
+              <h2 className="text-5xl font-bold text-charity-neutral-800 mb-6">
+                Choose Your Way to Connect
               </h2>
-              <p className="text-lg text-charity-neutral-600 max-w-2xl mx-auto">
-                Choose the method that works best for you. We're here to help and 
-                answer any questions about our programs and opportunities.
+              <p className="text-xl text-charity-neutral-600 max-w-3xl mx-auto leading-relaxed">
+                We're here 24/7 to support your journey. Pick the method that
+                feels right for you.
               </p>
             </div>
           </AnimatedSection>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
-            {contactInfo.map((info, index) => {
-              const IconComponent = info.icon;
-              return (
-                <AnimatedSection
-                  key={index}
-                  animation="scaleIn"
-                  delay={index * 100}
-                >
-                  <div className="group relative">
-                    {/* Card */}
-                    <div className="bg-white/80 backdrop-blur-sm p-8 rounded-2xl shadow-lg border border-white/20 hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 hover:scale-105">
-                      {/* Gradient border effect */}
-                      <div className="absolute inset-0 bg-gradient-to-r from-charity-orange-400 to-charity-green-400 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 -z-10 blur-sm"></div>
-                      
-                      <div className="text-center">
-                        <div className={`w-16 h-16 mx-auto mb-6 rounded-2xl bg-gradient-to-br from-charity-${info.color}-400 to-charity-${info.color}-600 flex items-center justify-center group-hover:scale-110 group-hover:rotate-6 transition-all duration-300 shadow-lg`}>
-                          <IconComponent className="h-8 w-8 text-white" />
-                        </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
+            {contactMethods.map((method, index) => (
+              <AnimatedSection
+                key={index}
+                animation="scaleIn"
+                delay={method.delay}
+              >
+                <div className={`relative group h-full`}>
+                  {/* Animated background */}
+                  <div
+                    className={`absolute inset-0 bg-gradient-to-br ${method.bgGradient} rounded-3xl transform group-hover:scale-105 transition-transform duration-500`}
+                  ></div>
 
-                        <h3 className="text-xl font-bold text-charity-neutral-800 mb-4 group-hover:text-charity-orange-600 transition-colors duration-300">
-                          {info.title}
-                        </h3>
+                  {/* Main card */}
+                  <div className="relative bg-white rounded-3xl p-8 shadow-xl hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 h-full">
+                    {/* Icon with gradient */}
+                    <div
+                      className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${method.gradient} flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-6 transition-all duration-500 shadow-lg`}
+                    >
+                      <method.icon className="h-8 w-8 text-white" />
+                    </div>
 
-                        <div className="space-y-2 mb-6">
-                          {info.details.map((detail, detailIndex) => (
-                            <p
-                              key={detailIndex}
-                              className="text-charity-neutral-600 group-hover:text-charity-neutral-700 transition-colors duration-300"
-                            >
-                              {detail}
-                            </p>
-                          ))}
-                        </div>
+                    <h3 className="text-2xl font-bold text-charity-neutral-800 mb-3 group-hover:text-charity-orange-600 transition-colors duration-300">
+                      {method.title}
+                    </h3>
 
-                        <button className="inline-flex items-center text-charity-orange-600 hover:text-charity-orange-700 font-medium transition-all duration-300 group-hover:scale-105">
-                          <span>{info.action}</span>
-                          <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform duration-200" />
-                        </button>
-                      </div>
+                    <p className="text-charity-neutral-600 mb-4 text-lg">
+                      {method.subtitle}
+                    </p>
+
+                    <p className="text-charity-neutral-800 font-semibold mb-6 text-lg">
+                      {method.info}
+                    </p>
+
+                    <button
+                      onClick={method.handler}
+                      className={`inline-flex items-center px-6 py-3 bg-gradient-to-r ${method.gradient} text-white rounded-xl font-medium transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl`}
+                    >
+                      <span>{method.action}</span>
+                      <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform duration-200" />
+                    </button>
+
+                    {/* Decorative elements */}
+                    <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                      <Star className="h-6 w-6 text-yellow-400 fill-current animate-spin" />
                     </div>
                   </div>
-                </AnimatedSection>
-              );
-            })}
+                </div>
+              </AnimatedSection>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* Contact Form Section */}
-      <section id="contact-form" className="py-20 bg-white relative overflow-hidden">
-        {/* Background patterns */}
-        <div className="absolute inset-0 opacity-5">
-          <div className="absolute top-20 left-20 w-32 h-32 border-4 border-charity-orange-300 rounded-full"></div>
-          <div className="absolute top-40 right-32 w-24 h-24 border-4 border-charity-green-300 rounded-full"></div>
-          <div className="absolute bottom-32 left-1/4 w-40 h-40 border-4 border-charity-orange-200 rounded-full"></div>
-        </div>
+      {/* Advanced Contact Form */}
+      <section className="py-24 bg-gradient-to-br from-charity-neutral-50 to-white relative overflow-hidden">
+        {/* Background decoration */}
+        <div className="absolute top-0 left-0 w-96 h-96 bg-charity-orange-100 rounded-full -translate-x-1/2 -translate-y-1/2 opacity-50"></div>
+        <div className="absolute bottom-0 right-0 w-96 h-96 bg-charity-green-100 rounded-full translate-x-1/2 translate-y-1/2 opacity-50"></div>
 
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
             {/* Contact Form */}
             <AnimatedSection animation="slideRight">
-              <div className="bg-gradient-to-br from-white to-charity-neutral-50 p-8 rounded-3xl shadow-2xl border border-charity-neutral-100">
-                <div className="text-center mb-8">
-                  <h3 className="text-3xl font-bold text-charity-neutral-800 mb-4">
-                    Professional Contact Form
+              <div className="bg-white rounded-3xl p-10 shadow-2xl border border-charity-neutral-100">
+                <div className="text-center mb-10">
+                  <h3 className="text-4xl font-bold text-charity-neutral-800 mb-4">
+                    Send Us a Message
                   </h3>
-                  <p className="text-charity-neutral-600">
-                    Please provide your details and inquiry. Our team will respond to your message within 24 hours during business days.
+                  <p className="text-charity-neutral-600 text-lg">
+                    Your message matters to us. We'll get back to you within 24
+                    hours.
                   </p>
                 </div>
 
                 {isSubmitted ? (
                   <AnimatedSection animation="scaleIn">
-                    <div className="text-center py-12">
-                      <div className="w-20 h-20 mx-auto mb-6 bg-charity-green-100 rounded-full flex items-center justify-center">
-                        <CheckCircle className="h-10 w-10 text-charity-green-600" />
+                    <div className="text-center py-16">
+                      <div className="w-24 h-24 mx-auto mb-8 bg-charity-green-100 rounded-full flex items-center justify-center">
+                        <CheckCircle className="h-12 w-12 text-charity-green-600" />
                       </div>
-                      <h4 className="text-2xl font-bold text-charity-green-700 mb-3">
-                        Your Message Has Been Received
+                      <h4 className="text-3xl font-bold text-charity-green-700 mb-4">
+                        Message Sent Successfully! 🎉
                       </h4>
-                      <p className="text-charity-neutral-600 mb-6">
-                        Thank you for contacting Tabasamu Charity. A member of our professional team will review your inquiry and respond within one business day. You will receive a confirmation email shortly.
+                      <p className="text-charity-neutral-600 mb-8 text-lg">
+                        Thank you for reaching out. Our team will respond within
+                        24 hours!
                       </p>
-                      <div className="flex justify-center space-x-2">
-                        {[...Array(3)].map((_, i) => (
+                      <div className="flex justify-center space-x-3">
+                        {[...Array(5)].map((_, i) => (
                           <div
                             key={i}
-                            className="w-2 h-2 bg-charity-green-500 rounded-full animate-bounce"
-                            style={{ animationDelay: `${i * 0.1}s` }}
+                            className="w-3 h-3 bg-charity-green-500 rounded-full animate-bounce"
+                            style={{ animationDelay: `${i * 0.15}s` }}
                           />
                         ))}
                       </div>
                     </div>
                   </AnimatedSection>
                 ) : (
-                  <form onSubmit={handleSubmit} className="space-y-6">
+                  <form onSubmit={handleSubmit} className="space-y-8">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       <div className="group">
-                        <label className="block text-sm font-semibold text-charity-neutral-700 mb-3">
-                          Full Name *
+                        <label className="block text-sm font-bold text-charity-neutral-700 mb-3 group-focus-within:text-charity-orange-600 transition-colors duration-300">
+                          Your Name *
                         </label>
                         <input
                           type="text"
@@ -374,13 +476,13 @@ const Contact = () => {
                           required
                           value={formData.name}
                           onChange={handleChange}
-                          className="w-full px-4 py-4 border-2 border-charity-neutral-200 rounded-xl focus:ring-2 focus:ring-charity-orange-500 focus:border-charity-orange-500 transition-all duration-300 group-hover:border-charity-orange-300"
-                          placeholder="Your full name"
+                          className="w-full px-5 py-4 border-2 border-charity-neutral-200 rounded-xl focus:ring-3 focus:ring-charity-orange-500/20 focus:border-charity-orange-500 transition-all duration-300 group-hover:border-charity-orange-300 text-lg"
+                          placeholder="Enter your full name"
                         />
                       </div>
 
                       <div className="group">
-                        <label className="block text-sm font-semibold text-charity-neutral-700 mb-3">
+                        <label className="block text-sm font-bold text-charity-neutral-700 mb-3 group-focus-within:text-charity-orange-600 transition-colors duration-300">
                           Email Address *
                         </label>
                         <input
@@ -389,33 +491,39 @@ const Contact = () => {
                           required
                           value={formData.email}
                           onChange={handleChange}
-                          className="w-full px-4 py-4 border-2 border-charity-neutral-200 rounded-xl focus:ring-2 focus:ring-charity-orange-500 focus:border-charity-orange-500 transition-all duration-300 group-hover:border-charity-orange-300"
+                          className="w-full px-5 py-4 border-2 border-charity-neutral-200 rounded-xl focus:ring-3 focus:ring-charity-orange-500/20 focus:border-charity-orange-500 transition-all duration-300 group-hover:border-charity-orange-300 text-lg"
                           placeholder="your@email.com"
                         />
                       </div>
                     </div>
 
                     <div className="group">
-                      <label className="block text-sm font-semibold text-charity-neutral-700 mb-3">
-                        Inquiry Type
+                      <label className="block text-sm font-bold text-charity-neutral-700 mb-3 group-focus-within:text-charity-orange-600 transition-colors duration-300">
+                        What's this about?
                       </label>
                       <select
                         name="type"
                         value={formData.type}
                         onChange={handleChange}
-                        className="w-full px-4 py-4 border-2 border-charity-neutral-200 rounded-xl focus:ring-2 focus:ring-charity-orange-500 focus:border-charity-orange-500 transition-all duration-300 group-hover:border-charity-orange-300"
+                        className="w-full px-5 py-4 border-2 border-charity-neutral-200 rounded-xl focus:ring-3 focus:ring-charity-orange-500/20 focus:border-charity-orange-500 transition-all duration-300 group-hover:border-charity-orange-300 text-lg appearance-none cursor-pointer"
                       >
-                        <option value="general">General Inquiry</option>
-                        <option value="volunteer">Volunteering</option>
-                        <option value="donation">Donations</option>
-                        <option value="sponsorship">Child Sponsorship</option>
-                        <option value="partnership">Partnerships</option>
-                        <option value="media">Media & Press</option>
+                        <option value="general">💬 General Inquiry</option>
+                        <option value="volunteer">
+                          🙋‍♀️ I want to volunteer
+                        </option>
+                        <option value="donation">💝 Donation questions</option>
+                        <option value="sponsorship">
+                          🧒 Child sponsorship
+                        </option>
+                        <option value="partnership">
+                          🤝 Partnership opportunity
+                        </option>
+                        <option value="media">📰 Media & Press</option>
                       </select>
                     </div>
 
                     <div className="group">
-                      <label className="block text-sm font-semibold text-charity-neutral-700 mb-3">
+                      <label className="block text-sm font-bold text-charity-neutral-700 mb-3 group-focus-within:text-charity-orange-600 transition-colors duration-300">
                         Subject *
                       </label>
                       <input
@@ -424,14 +532,14 @@ const Contact = () => {
                         required
                         value={formData.subject}
                         onChange={handleChange}
-                        className="w-full px-4 py-4 border-2 border-charity-neutral-200 rounded-xl focus:ring-2 focus:ring-charity-orange-500 focus:border-charity-orange-500 transition-all duration-300 group-hover:border-charity-orange-300"
+                        className="w-full px-5 py-4 border-2 border-charity-neutral-200 rounded-xl focus:ring-3 focus:ring-charity-orange-500/20 focus:border-charity-orange-500 transition-all duration-300 group-hover:border-charity-orange-300 text-lg"
                         placeholder="Brief subject of your message"
                       />
                     </div>
 
                     <div className="group">
-                      <label className="block text-sm font-semibold text-charity-neutral-700 mb-3">
-                        Message *
+                      <label className="block text-sm font-bold text-charity-neutral-700 mb-3 group-focus-within:text-charity-orange-600 transition-colors duration-300">
+                        Your Message *
                       </label>
                       <textarea
                         name="message"
@@ -439,35 +547,42 @@ const Contact = () => {
                         rows={6}
                         value={formData.message}
                         onChange={handleChange}
-                        className="w-full px-4 py-4 border-2 border-charity-neutral-200 rounded-xl focus:ring-2 focus:ring-charity-orange-500 focus:border-charity-orange-500 transition-all duration-300 group-hover:border-charity-orange-300 resize-none"
+                        className="w-full px-5 py-4 border-2 border-charity-neutral-200 rounded-xl focus:ring-3 focus:ring-charity-orange-500/20 focus:border-charity-orange-500 transition-all duration-300 group-hover:border-charity-orange-300 resize-none text-lg"
                         placeholder="Tell us more about your inquiry..."
                       />
                     </div>
 
                     <button
                       type="submit"
-                      className="w-full px-8 py-4 bg-gradient-to-r from-charity-orange-600 to-charity-orange-700 hover:from-charity-orange-700 hover:to-charity-orange-800 text-white rounded-xl font-bold transition-all duration-300 transform hover:scale-105 hover:shadow-lg flex items-center justify-center group"
+                      className="w-full relative px-8 py-5 bg-gradient-to-r from-charity-orange-600 to-charity-orange-700 hover:from-charity-orange-700 hover:to-charity-orange-800 text-white rounded-2xl font-bold text-xl transition-all duration-300 transform hover:scale-105 hover:shadow-2xl flex items-center justify-center group overflow-hidden"
                     >
-                      <Send className="h-5 w-5 mr-3 group-hover:translate-x-1 transition-transform duration-200" />
-                      Submit Professional Inquiry
+                      <div className="absolute inset-0 bg-gradient-to-r from-charity-orange-400 to-charity-green-400 opacity-0 group-hover:opacity-30 transition-opacity duration-500"></div>
+                      <Send className="h-6 w-6 mr-3 group-hover:translate-x-1 group-hover:rotate-12 transition-all duration-200 relative z-10" />
+                      <span className="relative z-10">Send Message</span>
+                      <div className="absolute inset-0 rounded-2xl bg-white opacity-0 group-hover:opacity-10 transition-opacity duration-500"></div>
                     </button>
                   </form>
                 )}
               </div>
             </AnimatedSection>
 
-            {/* Office Info & Hours */}
+            {/* Side Information */}
             <AnimatedSection animation="slideLeft" delay={200}>
               <div className="space-y-8">
-                {/* Office Hours */}
-                <div className="bg-gradient-to-br from-charity-green-50 to-charity-orange-50 p-8 rounded-3xl shadow-xl border border-charity-green-100">
+                {/* Office Hours with Live Time */}
+                <div className="bg-gradient-to-br from-charity-green-50 to-charity-green-100 p-8 rounded-3xl shadow-xl">
                   <div className="flex items-center mb-6">
-                    <div className="w-12 h-12 bg-charity-green-500 rounded-xl flex items-center justify-center mr-4">
-                      <Clock className="h-6 w-6 text-white" />
+                    <div className="w-14 h-14 bg-charity-green-500 rounded-2xl flex items-center justify-center mr-4">
+                      <Clock className="h-7 w-7 text-white" />
                     </div>
-                    <h3 className="text-2xl font-bold text-charity-neutral-800">
-                      Office Hours
-                    </h3>
+                    <div>
+                      <h3 className="text-2xl font-bold text-charity-neutral-800">
+                        Office Hours
+                      </h3>
+                      <p className="text-charity-green-700 font-medium">
+                        Kenya Time: {kenyaTime}
+                      </p>
+                    </div>
                   </div>
 
                   <div className="space-y-4">
@@ -475,151 +590,74 @@ const Contact = () => {
                       <div
                         key={index}
                         className={`flex justify-between items-center p-4 rounded-xl transition-all duration-300 ${
-                          schedule.available 
-                            ? 'bg-white/70 hover:bg-white/90 shadow-sm' 
-                            : 'bg-charity-neutral-100/50'
+                          schedule.open
+                            ? "bg-white shadow-md"
+                            : "bg-charity-neutral-100/50"
                         }`}
                       >
-                        <span className={`font-semibold ${
-                          schedule.available ? 'text-charity-neutral-800' : 'text-charity-neutral-500'
-                        }`}>
+                        <span
+                          className={`font-bold ${schedule.open ? "text-charity-neutral-800" : "text-charity-neutral-500"}`}
+                        >
                           {schedule.day}
                         </span>
-                        <span className={`${
-                          schedule.available ? 'text-charity-green-600' : 'text-charity-neutral-500'
-                        } font-medium`}>
+                        <span
+                          className={`font-medium ${schedule.open ? "text-charity-green-600" : "text-charity-neutral-500"}`}
+                        >
                           {schedule.hours}
                         </span>
                       </div>
                     ))}
                   </div>
-
-                  <div className="mt-6 p-4 bg-charity-orange-100 rounded-xl border-l-4 border-charity-orange-500">
-                    <p className="text-sm text-charity-orange-800">
-                      <strong>Emergency Contact:</strong> For urgent matters outside office hours, call +254 123 456 789
-                    </p>
-                  </div>
                 </div>
 
-                {/* Location & Map */}
-                <div className="bg-gradient-to-br from-charity-orange-50 to-charity-green-50 p-8 rounded-3xl shadow-xl border border-charity-orange-100">
-                  <div className="flex items-center mb-6">
-                    <div className="w-12 h-12 bg-charity-orange-500 rounded-xl flex items-center justify-center mr-4">
-                      <MapPin className="h-6 w-6 text-white" />
-                    </div>
-                    <h3 className="text-2xl font-bold text-charity-neutral-800">
-                      Our Location
-                    </h3>
-                  </div>
-
-                  <div className="relative group cursor-pointer mb-6">
-                    <div className="w-full h-48 bg-gradient-to-br from-charity-green-200 to-charity-orange-200 rounded-2xl overflow-hidden relative">
-                      {/* Interactive map placeholder with Kenya outline */}
-                      <div className="absolute inset-0 flex items-center justify-center">
-                        <svg viewBox="0 0 300 200" className="w-full h-full opacity-60">
-                          <path
-                            d="M80,60 L120,50 L160,55 L200,65 L230,75 L240,90 L230,115 L220,140 L200,160 L180,170 L160,165 L140,155 L120,145 L100,135 L80,120 L70,100 L65,80 L70,65 Z"
-                            fill="currentColor"
-                            className="text-charity-green-400 group-hover:text-charity-green-500 transition-colors duration-300"
-                          />
-                          <circle cx="130" cy="110" r="4" fill="currentColor" className="text-charity-orange-600 animate-pulse" />
-                        </svg>
-                      </div>
-                      
-                      {/* Location marker */}
-                      <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 group-hover:scale-125 transition-transform duration-300">
-                        <div className="w-4 h-4 bg-charity-orange-500 rounded-full border-2 border-white shadow-lg"></div>
-                        <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-2 border-r-2 border-t-3 border-l-transparent border-r-transparent border-t-charity-orange-500"></div>
-                      </div>
-
-                      {/* Hover overlay */}
-                      <div className="absolute inset-0 bg-black/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                        <div className="bg-white/90 px-4 py-2 rounded-lg backdrop-blur-sm">
-                          <p className="text-sm text-charity-neutral-800 font-medium">
-                            📍 Nairobi, Kenya
+                {/* Quick Actions */}
+                <div className="bg-white p-8 rounded-3xl shadow-xl">
+                  <h3 className="text-2xl font-bold text-charity-neutral-800 mb-6">
+                    Quick Actions
+                  </h3>
+                  <div className="space-y-4">
+                    {quickActions.map((action, index) => (
+                      <button
+                        key={index}
+                        onClick={action.handler}
+                        className={`w-full p-4 rounded-2xl bg-gradient-to-r ${action.gradient} text-white transition-all duration-300 transform hover:scale-105 hover:shadow-xl`}
+                      >
+                        <div className="text-left">
+                          <h4 className="font-bold text-lg mb-1">
+                            {action.title}
+                          </h4>
+                          <p className="text-white/90 text-sm mb-2">
+                            {action.description}
                           </p>
+                          <span className="text-sm font-medium">
+                            {action.action} →
+                          </span>
                         </div>
-                      </div>
-                    </div>
+                      </button>
+                    ))}
                   </div>
-
-                  <button
-                    onClick={handleGetDirections}
-                    className="w-full px-6 py-3 bg-charity-orange-600 hover:bg-charity-orange-700 text-white rounded-xl font-semibold transition-all duration-300 transform hover:scale-105 flex items-center justify-center group"
-                  >
-                    <MapPin className="h-4 w-4 mr-2 group-hover:scale-110 transition-transform duration-200" />
-                    Get Directions
-                  </button>
-
-                  {/* Interactive Map Modal */}
-                  {showMap && (
-                    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4" onClick={() => setShowMap(false)}>
-                      <div className="bg-white rounded-2xl shadow-2xl max-w-4xl w-full max-h-[80vh] overflow-hidden" onClick={(e) => e.stopPropagation()}>
-                        <div className="p-6 border-b border-charity-neutral-200 flex justify-between items-center">
-                          <h3 className="text-2xl font-bold text-charity-neutral-800">Tabasamu Charity Location</h3>
-                          <button
-                            onClick={() => setShowMap(false)}
-                            className="w-8 h-8 bg-charity-neutral-100 hover:bg-charity-neutral-200 rounded-full flex items-center justify-center transition-colors duration-200"
-                          >
-                            ×
-                          </button>
-                        </div>
-                        <div className="p-6">
-                          <div className="mb-4">
-                            <p className="text-charity-neutral-700 mb-2"><strong>Address:</strong> 123 Charity Street, Nairobi, Kenya</p>
-                            <p className="text-charity-neutral-700 mb-2"><strong>Postal Code:</strong> P.O. Box 12345</p>
-                            <p className="text-charity-neutral-700"><strong>Coordinates:</strong> -1.2864°, 36.8172°</p>
-                          </div>
-                          <div className="w-full h-96 bg-gradient-to-br from-charity-green-200 to-charity-orange-200 rounded-xl overflow-hidden relative">
-                            <iframe
-                              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d127642.82090936383!2d36.71701949726562!3d-1.2864004999999998!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x182f1172d84d49a7%3A0xf7cf0254b297924c!2sNairobi%2C%20Kenya!5e0!3m2!1sen!2s!4v1703123456789!5m2!1sen!2s"
-                              width="100%"
-                              height="100%"
-                              style={{ border: 0 }}
-                              allowFullScreen
-                              loading="lazy"
-                              referrerPolicy="no-referrer-when-downgrade"
-                              title="Tabasamu Charity Location"
-                            />
-                            <div className="absolute top-4 right-4">
-                              <a
-                                href="https://www.google.com/maps/search/?api=1&query=-1.2864,36.8172"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="px-4 py-2 bg-charity-orange-600 hover:bg-charity-orange-700 text-white rounded-lg font-semibold transition-colors duration-200 shadow-lg"
-                              >
-                                Open in Maps
-                              </a>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  )}
                 </div>
 
                 {/* Social Media */}
-                <div className="bg-white p-8 rounded-3xl shadow-xl border border-charity-neutral-100">
+                <div className="bg-gradient-to-br from-charity-orange-50 to-charity-orange-100 p-8 rounded-3xl shadow-xl">
                   <h3 className="text-2xl font-bold text-charity-neutral-800 mb-6 text-center">
-                    Connect With Us
+                    Follow Our Journey
                   </h3>
-
                   <div className="flex justify-center gap-4">
-                    {[
-                      { icon: Facebook, color: "blue", hover: "hover:bg-blue-600" },
-                      { icon: Twitter, color: "cyan", hover: "hover:bg-cyan-500" },
-                      { icon: Instagram, color: "pink", hover: "hover:bg-pink-600" },
-                      { icon: Globe, color: "green", hover: "hover:bg-charity-green-600" },
-                    ].map((social, index) => (
-                      <a
+                    {socialLinks.map((social, index) => (
+                      <button
                         key={index}
-                        href="#"
-                        className={`w-14 h-14 bg-charity-orange-600 ${social.hover} text-white rounded-2xl flex items-center justify-center transition-all duration-300 transform hover:scale-110 hover:rotate-6 shadow-lg hover:shadow-xl`}
+                        onClick={social.handler}
+                        className={`w-14 h-14 ${social.color} text-white rounded-2xl flex items-center justify-center transition-all duration-300 transform hover:scale-125 hover:rotate-12 shadow-lg hover:shadow-xl`}
                       >
                         <social.icon className="h-6 w-6" />
-                      </a>
+                      </button>
                     ))}
                   </div>
+                  <p className="text-center text-charity-neutral-600 mt-4">
+                    Stay updated with our latest impact stories and community
+                    events
+                  </p>
                 </div>
               </div>
             </AnimatedSection>
@@ -627,67 +665,72 @@ const Contact = () => {
         </div>
       </section>
 
-      {/* FAQ Section */}
-      <section className="py-20 bg-gradient-to-br from-charity-neutral-50 to-white">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <AnimatedSection animation="slideUp">
-            <div className="text-center mb-16">
-              <h2 className="text-4xl font-bold text-charity-neutral-800 mb-4">
-                Frequently Asked Questions
-              </h2>
-              <p className="text-lg text-charity-neutral-600">
-                Quick answers to common questions about our organization and programs.
-              </p>
+      {/* Call to Action */}
+      <section className="py-24 bg-gradient-to-r from-charity-orange-600 to-charity-green-600 relative overflow-hidden">
+        {/* Animated background patterns */}
+        <div className="absolute inset-0">
+          {[...Array(15)].map((_, i) => (
+            <div
+              key={i}
+              className="absolute text-white/10 animate-pulse"
+              style={{
+                left: `${Math.random() * 100}%`,
+                top: `${Math.random() * 100}%`,
+                fontSize: "24px",
+                animationDelay: `${Math.random() * 3}s`,
+              }}
+            >
+              {i % 3 === 0 ? "🌟" : i % 3 === 1 ? "💫" : "✨"}
             </div>
-          </AnimatedSection>
+          ))}
+        </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {faqs.map((faq, index) => (
-              <AnimatedSection
-                key={index}
-                animation="scaleIn"
-                delay={index * 100}
-              >
-                <div className="bg-white p-6 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 border border-charity-neutral-100">
-                  <div className="flex items-start mb-4">
-                    <div className="w-10 h-10 bg-charity-orange-100 rounded-xl flex items-center justify-center mr-4 flex-shrink-0">
-                      <faq.icon className="h-5 w-5 text-charity-orange-600" />
-                    </div>
-                    <h3 className="text-lg font-bold text-charity-neutral-800 leading-tight">
-                      {faq.question}
-                    </h3>
-                  </div>
-                  <p className="text-charity-neutral-600 leading-relaxed ml-14">
-                    {faq.answer}
-                  </p>
-                </div>
-              </AnimatedSection>
-            ))}
-          </div>
-
-          <AnimatedSection animation="slideUp" delay={400}>
-            <div className="text-center mt-12">
-              <p className="text-charity-neutral-600 mb-6">
-                Don't see your question answered?
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <AnimatedSection animation="slideUp">
+            <div className="text-center text-white">
+              <h2 className="text-5xl font-bold mb-8">
+                Ready to Make History Together?
+              </h2>
+              <p className="text-2xl mb-12 opacity-95 max-w-3xl mx-auto leading-relaxed">
+                Every great change starts with a conversation. Let's start ours
+                today and create something extraordinary.
               </p>
-              <button 
-                onClick={() => document.getElementById('contact-form')?.scrollIntoView({ behavior: 'smooth' })}
-                className="inline-flex items-center px-8 py-4 bg-charity-orange-600 hover:bg-charity-orange-700 text-white rounded-full font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg"
-              >
-                <MessageCircle className="h-5 w-5 mr-2" />
-                Ask Us Anything
-              </button>
+              <div className="flex flex-col sm:flex-row gap-6 justify-center">
+                <button
+                  onClick={() =>
+                    document
+                      .getElementById("contact-methods")
+                      ?.scrollIntoView({ behavior: "smooth" })
+                  }
+                  className="inline-flex items-center px-10 py-5 bg-white text-charity-orange-600 hover:text-charity-orange-700 rounded-2xl font-bold text-xl transition-all duration-300 transform hover:scale-105 shadow-2xl hover:shadow-white/25"
+                >
+                  <MessageCircle className="mr-3 h-6 w-6" />
+                  Start Our Conversation
+                </button>
+                <button
+                  onClick={() =>
+                    redirectToPayment("donationUrl", {
+                      source: CAMPAIGN_SOURCES.contact,
+                      campaign: "final-cta",
+                    })
+                  }
+                  className="inline-flex items-center px-10 py-5 border-3 border-white text-white hover:bg-white hover:text-charity-orange-600 rounded-2xl font-bold text-xl transition-all duration-300 transform hover:scale-105"
+                >
+                  <Heart className="mr-3 h-6 w-6" />
+                  Make an Impact Now
+                </button>
+              </div>
             </div>
           </AnimatedSection>
         </div>
       </section>
 
-      {/* Add floating animation keyframes */}
-      <style jsx={true}>{`
+      {/* Floating animation CSS */}
+      <style>{`
         @keyframes float {
           0%, 100% { transform: translateY(0px) rotate(0deg); }
-          33% { transform: translateY(-10px) rotate(1deg); }
-          66% { transform: translateY(5px) rotate(-1deg); }
+          33% { transform: translateY(-15px) rotate(5deg); }
+          66% { transform: translateY(8px) rotate(-5deg); }
         }
         .animate-float {
           animation: float 6s ease-in-out infinite;
