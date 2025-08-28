@@ -614,8 +614,22 @@ const Index = () => {
 
       {/* How You Can Help Us */}
       <SectionReveal>
-        <section className="py-20 bg-charity-orange-600">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <section className="relative py-20 bg-charity-orange-600 overflow-hidden">
+          {/* Video Background */}
+          <video
+            autoPlay
+            muted
+            loop
+            playsInline
+            className="absolute inset-0 w-full h-full object-cover opacity-20"
+          >
+            <source
+              src="https://cdn.builder.io/o/assets%2F5c188e0e2be247ef8c2c4417614bca31%2F7fe226fed27a4bb0b3606d1e7fa32cd3?alt=media&token=76255cec-775e-4b87-8a70-383436b7842e&apiKey=5c188e0e2be247ef8c2c4417614bca31"
+              type="video/mp4"
+            />
+          </video>
+          <div className="absolute inset-0 bg-charity-orange-600/60"></div>
+          <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-16">
               <h2 className="text-4xl font-bold text-white mb-4">
                 How You Can Help Us?
@@ -712,8 +726,22 @@ const Index = () => {
 
       {/* Impact Statistics */}
       <SectionReveal>
-        <section className="py-20 bg-charity-green-700">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <section className="relative py-20 bg-charity-green-700 overflow-hidden">
+          {/* Video Background */}
+          <video
+            autoPlay
+            muted
+            loop
+            playsInline
+            className="absolute inset-0 w-full h-full object-cover opacity-20"
+          >
+            <source
+              src="https://cdn.builder.io/o/assets%2F5c188e0e2be247ef8c2c4417614bca31%2F03841d98032c4c409fdeae723b20cc36?alt=media&token=42493818-465d-4f1a-89d5-5c8b11b4fd81&apiKey=5c188e0e2be247ef8c2c4417614bca31"
+              type="video/mp4"
+            />
+          </video>
+          <div className="absolute inset-0 bg-charity-green-700/60"></div>
+          <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-16">
               <h2 className="text-4xl font-bold text-white mb-4">
                 LET'S SUPPORT US TO HELP THEM
