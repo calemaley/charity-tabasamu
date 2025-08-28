@@ -16,6 +16,7 @@ import {
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import AnimatedSection from "@/components/AnimatedSection";
+import { featuredPost } from "@shared/blog-data";
 
 const BlogPost = () => {
   const { slug } = useParams();
@@ -25,167 +26,34 @@ const BlogPost = () => {
       id: 1,
       author: "John Doe",
       date: "March 16, 2024",
-      content: "This is such an inspiring story! Maria's journey really shows the power of education.",
+      content:
+        "This is such an inspiring story! Maria's journey really shows the power of education.",
       replies: [
         {
           id: 11,
           author: "Sarah Johnson",
           date: "March 16, 2024",
-          content: "Thank you John! We're so proud of Maria and all our students who are making such incredible progress."
-        }
-      ]
+          content:
+            "Thank you John! We're so proud of Maria and all our students who are making such incredible progress.",
+        },
+      ],
     },
     {
       id: 2,
       author: "Emma Wilson",
       date: "March 15, 2024",
-      content: "I've been following Tabasamu's work for years and stories like this make me so proud to be a supporter.",
-      replies: []
-    }
+      content:
+        "I've been following Tabasamu's work for years and stories like this make me so proud to be a supporter.",
+      replies: [],
+    },
   ]);
   const [newComment, setNewComment] = useState("");
   const [replyingTo, setReplyingTo] = useState<number | null>(null);
   const [newReply, setNewReply] = useState("");
 
-  // Sample blog data - in a real app, this would come from an API or CMS
-  const blogPosts = [
-    {
-      id: 1,
-      slug: "transforming-lives-through-education",
-      title: "Transforming Lives Through Education",
-      subtitle: "Maria's Journey from Struggling Student to Community Leader",
-      excerpt:
-        "Follow Maria's incredible transformation from a struggling student to a community leader, made possible through our education support program.",
-      content: `
-        <p>In the heart of rural Kenya, Maria's story represents hope and determination. When we first met Maria three years ago, she was a 14-year-old girl struggling to attend school regularly due to her family's financial constraints.</p>
-
-        <p>Like many children in her community, Maria faced numerous challenges: lack of school supplies, long distances to walk to school, and pressure to help with household chores instead of focusing on her studies. Her dreams of becoming a teacher seemed impossible.</p>
-
-        <h3>The Turning Point</h3>
-        <p>Everything changed when our education support program reached Maria's village. Through our comprehensive approach, we were able to provide:</p>
-        <ul>
-          <li>School supplies and uniforms</li>
-          <li>Transportation assistance</li>
-          <li>After-school tutoring support</li>
-          <li>Nutritional meals during school hours</li>
-        </ul>
-
-        <p>But more importantly, we worked with Maria's family to understand the importance of education and how it could benefit the entire community.</p>
-
-        <h3>The Transformation</h3>
-        <p>With consistent support and encouragement, Maria's grades improved dramatically. She became one of the top students in her class and started helping other struggling students with their studies.</p>
-
-        <p>Today, Maria is in her final year of secondary school and has already been accepted to teacher training college on a full scholarship. She plans to return to her community as a qualified teacher, continuing the cycle of positive change.</p>
-
-        <h3>The Ripple Effect</h3>
-        <p>Maria's success has inspired other families in her community to prioritize education. Her younger siblings are now regular attendees at school, and she has become a role model for other girls in her village.</p>
-
-        <p>This is the power of education - it doesn't just transform individual lives, it transforms entire communities. Maria's story is one of hundreds we could share, each representing a family whose future has been forever changed through education.</p>
-      `,
-      image: "https://i.ibb.co/vxjcpZjD/Screenshot-from-2025-08-12-23-27-35.png",
-      category: "Education",
-      author: "Sarah Johnson",
-      date: "March 15, 2024",
-      readTime: "5 min read",
-      likes: 42,
-      comments: 12,
-      tags: ["education", "success-story", "community-impact", "kenya"],
-    },
-    {
-      id: 2,
-      slug: "mobile-clinics-reach-remote-areas",
-      title: "Mobile Clinics Reach Remote Areas",
-      subtitle: "Bringing Healthcare to Underserved Communities",
-      excerpt:
-        "Our healthcare initiative brings essential medical services to underserved populations across Kenya.",
-      content: `
-        <p>Access to healthcare is a fundamental human right, yet for many communities in rural Kenya, quality medical care remains out of reach. Our mobile clinic program is changing that reality, one village at a time.</p>
-        
-        <h3>The Challenge</h3>
-        <p>Rural communities often face significant barriers to healthcare:</p>
-        <ul>
-          <li>Long distances to the nearest health facility</li>
-          <li>Lack of transportation</li>
-          <li>High cost of medical care</li>
-          <li>Shortage of healthcare professionals</li>
-        </ul>
-        
-        <h3>Our Solution</h3>
-        <p>Our mobile clinics bring comprehensive healthcare services directly to remote communities. Each clinic is staffed with qualified medical professionals and equipped with essential medical supplies and equipment.</p>
-        
-        <p>Services provided include:</p>
-        <ul>
-          <li>General health screenings</li>
-          <li>Preventive care and vaccinations</li>
-          <li>Maternal and child health services</li>
-          <li>Treatment of common illnesses</li>
-          <li>Health education programs</li>
-        </ul>
-        
-        <h3>Impact by the Numbers</h3>
-        <p>In the past year alone, our mobile clinics have:</p>
-        <ul>
-          <li>Visited 45 remote communities</li>
-          <li>Provided care to over 3,000 patients</li>
-          <li>Delivered 150 babies safely</li>
-          <li>Vaccinated 500 children</li>
-          <li>Trained 60 community health workers</li>
-        </ul>
-        
-        <p>Each number represents a life touched, a family helped, and a community strengthened through improved health outcomes.</p>
-      `,
-      image: "https://i.ibb.co/vxjcpZjD/Screenshot-from-2025-08-12-23-27-35.png",
-      category: "Healthcare",
-      author: "Dr. Michael Brown",
-      date: "March 10, 2024",
-      readTime: "4 min read",
-      likes: 38,
-      comments: 8,
-      tags: ["healthcare", "mobile-clinics", "rural-health", "community-care"],
-    },
-    {
-      id: 3,
-      slug: "building-stronger-communities-together",
-      title: "Building Stronger Communities Together",
-      subtitle: "The Power of Community-Led Development",
-      excerpt:
-        "Community-led initiatives are creating sustainable solutions for local challenges and fostering independence.",
-      content: `
-        <p>True sustainable development happens when communities take ownership of their growth and future. Our community development programs are designed to empower local leaders and create lasting change from within.</p>
-        
-        <h3>The Philosophy</h3>
-        <p>We believe that the best solutions come from the communities themselves. Our role is to provide support, resources, and guidance while ensuring that local voices lead the way.</p>
-        
-        <h3>Community-Led Projects</h3>
-        <p>Some of our most successful initiatives include:</p>
-        <ul>
-          <li>Village savings and loan groups</li>
-          <li>Women's cooperatives for income generation</li>
-          <li>Youth leadership development programs</li>
-          <li>Environmental conservation projects</li>
-          <li>Local government capacity building</li>
-        </ul>
-        
-        <h3>Success Stories</h3>
-        <p>In Mwanza, a women's cooperative we helped establish now operates a successful tailoring business that employs 25 women and supports their families' education and healthcare needs.</p>
-        
-        <p>A youth group in Arusha has planted over 1,000 trees and established a tree nursery that generates income while helping restore their local environment.</p>
-        
-        <h3>The Multiplier Effect</h3>
-        <p>When communities are empowered to solve their own challenges, the impact extends far beyond the immediate project. Skills are shared, leadership capacity grows, and a culture of self-reliance takes root.</p>
-        
-        <p>This approach ensures that our work continues long after our direct involvement ends, creating truly sustainable change that benefits generations to come.</p>
-      `,
-      image: "https://i.ibb.co/vxjcpZjD/Screenshot-from-2025-08-12-23-27-35.png",
-      category: "Community",
-      author: "Emma Wilson",
-      date: "March 5, 2024",
-      readTime: "6 min read",
-      likes: 51,
-      comments: 15,
-      tags: ["community-development", "empowerment", "sustainability", "local-leadership"],
-    },
-  ];
+  // Use the actual blog data - for now we only have the featured post
+  // In a real app, this would come from an API or CMS with multiple posts
+  const blogPosts = [featuredPost];
 
   // Find the blog post by slug
   const post = blogPosts.find((p) => p.slug === slug);
@@ -198,11 +66,11 @@ const BlogPost = () => {
       navigator.share({
         title: post?.title,
         text: post?.excerpt,
-        url: window.location.href
+        url: window.location.href,
       });
     } else {
       navigator.clipboard.writeText(window.location.href);
-      alert('Link copied to clipboard!');
+      alert("Link copied to clipboard!");
     }
   };
 
@@ -211,9 +79,13 @@ const BlogPost = () => {
       const comment = {
         id: Date.now(),
         author: "Anonymous User", // In real app, this would be the logged-in user
-        date: new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }),
+        date: new Date().toLocaleDateString("en-US", {
+          year: "numeric",
+          month: "long",
+          day: "numeric",
+        }),
         content: newComment,
-        replies: []
+        replies: [],
       };
       setComments([comment, ...comments]);
       setNewComment("");
@@ -225,15 +97,21 @@ const BlogPost = () => {
       const reply = {
         id: Date.now(),
         author: "Anonymous User", // In real app, this would be the logged-in user
-        date: new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }),
-        content: newReply
+        date: new Date().toLocaleDateString("en-US", {
+          year: "numeric",
+          month: "long",
+          day: "numeric",
+        }),
+        content: newReply,
       };
 
-      setComments(prev => prev.map(comment =>
-        comment.id === commentId
-          ? { ...comment, replies: [...comment.replies, reply] }
-          : comment
-      ));
+      setComments((prev) =>
+        prev.map((comment) =>
+          comment.id === commentId
+            ? { ...comment, replies: [...comment.replies, reply] }
+            : comment,
+        ),
+      );
       setNewReply("");
       setReplyingTo(null);
     }
@@ -271,7 +149,7 @@ const BlogPost = () => {
   return (
     <>
       <Navigation />
-      
+
       {/* Hero Section */}
       <section className="pt-24 pb-12 bg-gradient-to-br from-charity-orange-50 to-charity-green-50">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -279,9 +157,13 @@ const BlogPost = () => {
             {/* Breadcrumb */}
             <nav className="mb-8">
               <div className="flex items-center space-x-2 text-sm text-charity-neutral-600">
-                <Link to="/" className="hover:text-charity-orange-600">Home</Link>
+                <Link to="/" className="hover:text-charity-orange-600">
+                  Home
+                </Link>
                 <span>/</span>
-                <Link to="/blog" className="hover:text-charity-orange-600">Blog</Link>
+                <Link to="/blog" className="hover:text-charity-orange-600">
+                  Blog
+                </Link>
                 <span>/</span>
                 <span className="text-charity-neutral-800">{post.title}</span>
               </div>
@@ -307,10 +189,10 @@ const BlogPost = () => {
             <h1 className="text-4xl md:text-5xl font-bold text-charity-neutral-800 mb-4 leading-tight">
               {post.title}
             </h1>
-            
+
             {/* Subtitle */}
             <p className="text-xl text-charity-neutral-600 mb-8 leading-relaxed">
-              {post.subtitle}
+              {post.excerpt || post.subtitle}
             </p>
 
             {/* Author and Social */}
@@ -320,20 +202,30 @@ const BlogPost = () => {
                   <User className="h-6 w-6 text-charity-orange-600" />
                 </div>
                 <div>
-                  <p className="font-medium text-charity-neutral-800">{post.author}</p>
-                  <p className="text-sm text-charity-neutral-500">Content Writer</p>
+                  <p className="font-medium text-charity-neutral-800">
+                    {post.author}
+                  </p>
+                  <p className="text-sm text-charity-neutral-500">
+                    Content Writer
+                  </p>
                 </div>
               </div>
-              
+
               <div className="flex items-center gap-4">
                 <button
                   onClick={handleLike}
                   className={`flex items-center gap-1 cursor-pointer transition-colors duration-200 ${
-                    isLiked ? 'text-red-500 hover:text-red-600' : 'text-charity-neutral-500 hover:text-charity-orange-600'
+                    isLiked
+                      ? "text-red-500 hover:text-red-600"
+                      : "text-charity-neutral-500 hover:text-charity-orange-600"
                   }`}
                 >
-                  <Heart className={`h-4 w-4 ${isLiked ? 'fill-current' : ''}`} />
-                  <span className="text-sm">{post.likes + (isLiked ? 1 : 0)}</span>
+                  <Heart
+                    className={`h-4 w-4 ${isLiked ? "fill-current" : ""}`}
+                  />
+                  <span className="text-sm">
+                    {post.likes + (isLiked ? 1 : 0)}
+                  </span>
                 </button>
                 <div className="flex items-center gap-1 text-charity-neutral-500">
                   <MessageCircle className="h-4 w-4" />
@@ -372,29 +264,40 @@ const BlogPost = () => {
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <AnimatedSection animation="slideUp">
             <div className="prose prose-lg prose-charity max-w-none">
-              <div 
-                className="text-charity-neutral-700 leading-relaxed"
-                dangerouslySetInnerHTML={{ __html: post.content }}
-              />
+              <div className="text-charity-neutral-700 leading-relaxed">
+                {Array.isArray(post.content) ? (
+                  post.content.map((paragraph, index) => (
+                    <p key={index} className="mb-6">
+                      {paragraph}
+                    </p>
+                  ))
+                ) : (
+                  <div dangerouslySetInnerHTML={{ __html: post.content }} />
+                )}
+              </div>
             </div>
           </AnimatedSection>
 
           {/* Tags */}
-          <AnimatedSection animation="slideUp" delay={200}>
-            <div className="mt-12 pt-8 border-t border-charity-neutral-200">
-              <h4 className="text-lg font-semibold text-charity-neutral-800 mb-4">Tags</h4>
-              <div className="flex flex-wrap gap-2">
-                {post.tags.map((tag, index) => (
-                  <span
-                    key={index}
-                    className="px-3 py-1 bg-charity-neutral-100 text-charity-neutral-600 rounded-full text-sm hover:bg-charity-orange-100 cursor-pointer transition-colors duration-200"
-                  >
-                    #{tag}
-                  </span>
-                ))}
+          {post.tags && post.tags.length > 0 && (
+            <AnimatedSection animation="slideUp" delay={200}>
+              <div className="mt-12 pt-8 border-t border-charity-neutral-200">
+                <h4 className="text-lg font-semibold text-charity-neutral-800 mb-4">
+                  Tags
+                </h4>
+                <div className="flex flex-wrap gap-2">
+                  {post.tags.map((tag, index) => (
+                    <span
+                      key={index}
+                      className="px-3 py-1 bg-charity-neutral-100 text-charity-neutral-600 rounded-full text-sm hover:bg-charity-orange-100 cursor-pointer transition-colors duration-200"
+                    >
+                      #{tag}
+                    </span>
+                  ))}
+                </div>
               </div>
-            </div>
-          </AnimatedSection>
+            </AnimatedSection>
+          )}
 
           {/* Comments Section */}
           <AnimatedSection animation="slideUp" delay={300}>
@@ -430,7 +333,10 @@ const BlogPost = () => {
               {/* Comments List */}
               <div className="space-y-6">
                 {comments.map((comment) => (
-                  <div key={comment.id} className="bg-white p-6 rounded-xl border border-charity-neutral-200">
+                  <div
+                    key={comment.id}
+                    className="bg-white p-6 rounded-xl border border-charity-neutral-200"
+                  >
                     {/* Comment Header */}
                     <div className="flex items-center justify-between mb-4">
                       <div className="flex items-center space-x-3">
@@ -438,12 +344,20 @@ const BlogPost = () => {
                           <User className="h-5 w-5 text-charity-orange-600" />
                         </div>
                         <div>
-                          <p className="font-medium text-charity-neutral-800">{comment.author}</p>
-                          <p className="text-sm text-charity-neutral-500">{comment.date}</p>
+                          <p className="font-medium text-charity-neutral-800">
+                            {comment.author}
+                          </p>
+                          <p className="text-sm text-charity-neutral-500">
+                            {comment.date}
+                          </p>
                         </div>
                       </div>
                       <button
-                        onClick={() => setReplyingTo(replyingTo === comment.id ? null : comment.id)}
+                        onClick={() =>
+                          setReplyingTo(
+                            replyingTo === comment.id ? null : comment.id,
+                          )
+                        }
                         className="flex items-center gap-1 text-charity-neutral-500 hover:text-charity-orange-600 transition-colors duration-200"
                       >
                         <Reply className="h-4 w-4" />
@@ -452,7 +366,9 @@ const BlogPost = () => {
                     </div>
 
                     {/* Comment Content */}
-                    <p className="text-charity-neutral-700 mb-4">{comment.content}</p>
+                    <p className="text-charity-neutral-700 mb-4">
+                      {comment.content}
+                    </p>
 
                     {/* Reply Form */}
                     {replyingTo === comment.id && (
@@ -486,17 +402,26 @@ const BlogPost = () => {
                     {comment.replies.length > 0 && (
                       <div className="mt-6 space-y-4 ml-8">
                         {comment.replies.map((reply) => (
-                          <div key={reply.id} className="p-4 bg-charity-neutral-50 rounded-lg border-l-4 border-charity-orange-200">
+                          <div
+                            key={reply.id}
+                            className="p-4 bg-charity-neutral-50 rounded-lg border-l-4 border-charity-orange-200"
+                          >
                             <div className="flex items-center space-x-3 mb-2">
                               <div className="w-8 h-8 bg-charity-orange-100 rounded-full flex items-center justify-center">
                                 <User className="h-4 w-4 text-charity-orange-600" />
                               </div>
                               <div>
-                                <p className="font-medium text-charity-neutral-800 text-sm">{reply.author}</p>
-                                <p className="text-xs text-charity-neutral-500">{reply.date}</p>
+                                <p className="font-medium text-charity-neutral-800 text-sm">
+                                  {reply.author}
+                                </p>
+                                <p className="text-xs text-charity-neutral-500">
+                                  {reply.date}
+                                </p>
                               </div>
                             </div>
-                            <p className="text-charity-neutral-700 text-sm">{reply.content}</p>
+                            <p className="text-charity-neutral-700 text-sm">
+                              {reply.content}
+                            </p>
                           </div>
                         ))}
                       </div>
@@ -510,65 +435,72 @@ const BlogPost = () => {
       </section>
 
       {/* Related Posts */}
-      <section className="py-16 bg-charity-neutral-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <AnimatedSection animation="slideUp">
-            <h3 className="text-3xl font-bold text-charity-neutral-800 mb-12 text-center">
-              Related Articles
-            </h3>
-          </AnimatedSection>
+      {relatedPosts.length > 0 && (
+        <section className="py-16 bg-charity-neutral-50">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <AnimatedSection animation="slideUp">
+              <h3 className="text-3xl font-bold text-charity-neutral-800 mb-12 text-center">
+                Related Articles
+              </h3>
+            </AnimatedSection>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {relatedPosts.map((relatedPost, index) => (
-              <AnimatedSection
-                key={relatedPost.id}
-                animation="scaleIn"
-                delay={index * 100}
-              >
-                <Link
-                  to={`/blog/${relatedPost.slug}`}
-                  className="block bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300 group"
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              {relatedPosts.map((relatedPost, index) => (
+                <AnimatedSection
+                  key={relatedPost.id}
+                  animation="scaleIn"
+                  delay={index * 100}
                 >
-                  <div className="relative overflow-hidden">
-                    <img
-                      src={relatedPost.image}
-                      alt={relatedPost.title}
-                      className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
-                    />
-                    <div className="absolute top-4 left-4 bg-charity-orange-600 text-white px-3 py-1 rounded-full text-sm">
-                      {relatedPost.category}
+                  <Link
+                    to={`/blog/${relatedPost.slug}`}
+                    className="block bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300 group"
+                  >
+                    <div className="relative overflow-hidden">
+                      <img
+                        src={relatedPost.image}
+                        alt={relatedPost.title}
+                        className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
+                      />
+                      <div className="absolute top-4 left-4 bg-charity-orange-600 text-white px-3 py-1 rounded-full text-sm">
+                        {relatedPost.category}
+                      </div>
                     </div>
-                  </div>
-                  <div className="p-6">
-                    <div className="flex items-center text-sm text-charity-neutral-500 mb-3">
-                      <Calendar className="h-4 w-4 mr-1" />
-                      {relatedPost.date}
+                    <div className="p-6">
+                      <div className="flex items-center text-sm text-charity-neutral-500 mb-3">
+                        <Calendar className="h-4 w-4 mr-1" />
+                        {relatedPost.date}
+                      </div>
+                      <h4 className="text-xl font-bold text-charity-neutral-800 mb-3 group-hover:text-charity-orange-600 transition-colors duration-200">
+                        {relatedPost.title}
+                      </h4>
+                      <p className="text-charity-neutral-600 text-sm">
+                        {(
+                          relatedPost.excerpt ||
+                          relatedPost.subtitle ||
+                          ""
+                        ).substring(0, 120)}
+                        ...
+                      </p>
                     </div>
-                    <h4 className="text-xl font-bold text-charity-neutral-800 mb-3 group-hover:text-charity-orange-600 transition-colors duration-200">
-                      {relatedPost.title}
-                    </h4>
-                    <p className="text-charity-neutral-600 text-sm">
-                      {relatedPost.excerpt.substring(0, 120)}...
-                    </p>
-                  </div>
-                </Link>
-              </AnimatedSection>
-            ))}
-          </div>
-
-          <AnimatedSection animation="slideUp" delay={400}>
-            <div className="text-center mt-12">
-              <Link
-                to="/blog"
-                className="inline-flex items-center px-6 py-3 bg-charity-orange-600 hover:bg-charity-orange-700 text-white rounded-lg transition-colors duration-200"
-              >
-                View All Articles
-                <ArrowRight className="ml-2 h-4 w-4" />
-              </Link>
+                  </Link>
+                </AnimatedSection>
+              ))}
             </div>
-          </AnimatedSection>
-        </div>
-      </section>
+
+            <AnimatedSection animation="slideUp" delay={400}>
+              <div className="text-center mt-12">
+                <Link
+                  to="/blog"
+                  className="inline-flex items-center px-6 py-3 bg-charity-orange-600 hover:bg-charity-orange-700 text-white rounded-lg transition-colors duration-200"
+                >
+                  View All Articles
+                  <ArrowRight className="ml-2 h-4 w-4" />
+                </Link>
+              </div>
+            </AnimatedSection>
+          </div>
+        </section>
+      )}
 
       <Footer />
     </>

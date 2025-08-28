@@ -309,74 +309,191 @@ const Volunteer = () => {
                 animation="scaleIn"
                 delay={index * 100}
               >
-                <div className="bg-white border border-charity-neutral-200 rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300">
-                  <div className="relative">
-                    <img
-                      src={opportunity.image}
-                      alt={opportunity.title}
-                      className="w-full h-48 object-cover"
-                    />
-                    <div className="absolute top-4 left-4 bg-charity-orange-600 text-white px-3 py-1 rounded-full text-sm font-medium">
-                      {opportunity.category}
-                    </div>
-                    {opportunity.urgent && (
-                      <div className="absolute top-4 right-4 bg-red-500 text-white px-3 py-1 rounded-full text-sm font-medium">
-                        Urgent Need
+                <div className="relative bg-white rounded-3xl overflow-hidden shadow-2xl hover:shadow-3xl transition-all duration-700 h-full flex flex-col group transform hover:-translate-y-6 hover:scale-105 cursor-pointer">
+                  {/* Unique gradient border for each category */}
+                  <div className={`absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-700 animate-pulse ${
+                    opportunity.category === 'Education' ? 'bg-gradient-to-r from-blue-400 via-purple-400 to-blue-400' :
+                    opportunity.category === 'Healthcare' ? 'bg-gradient-to-r from-green-400 via-teal-400 to-green-400' :
+                    'bg-gradient-to-r from-orange-400 via-red-400 to-orange-400'
+                  }`}></div>
+                  <div className="absolute inset-[3px] bg-white rounded-3xl z-10"></div>
+
+                  {/* Floating elements based on category */}
+                  <div className="absolute inset-0 z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none">
+                    {opportunity.category === 'Education' && [...Array(4)].map((_, i) => (
+                      <div
+                        key={i}
+                        className="absolute text-blue-400 animate-bounce"
+                        style={{
+                          left: `${20 + i * 20}%`,
+                          top: `${15 + (i % 2) * 30}%`,
+                          animationDelay: `${i * 0.4}s`,
+                          animationDuration: "2.5s",
+                          fontSize: '12px'
+                        }}
+                      >
+                        📚
                       </div>
-                    )}
+                    ))}
+                    {opportunity.category === 'Healthcare' && [...Array(4)].map((_, i) => (
+                      <div
+                        key={i}
+                        className="absolute text-green-400 animate-bounce"
+                        style={{
+                          left: `${20 + i * 20}%`,
+                          top: `${15 + (i % 2) * 30}%`,
+                          animationDelay: `${i * 0.4}s`,
+                          animationDuration: "2.5s",
+                          fontSize: '12px'
+                        }}
+                      >
+                        🏥
+                      </div>
+                    ))}
+                    {opportunity.category === 'Community' && [...Array(4)].map((_, i) => (
+                      <div
+                        key={i}
+                        className="absolute text-orange-400 animate-bounce"
+                        style={{
+                          left: `${20 + i * 20}%`,
+                          top: `${15 + (i % 2) * 30}%`,
+                          animationDelay: `${i * 0.4}s`,
+                          animationDuration: "2.5s",
+                          fontSize: '12px'
+                        }}
+                      >
+                        🤝
+                      </div>
+                    ))}
                   </div>
-                  
-                  <div className="p-6">
-                    <h3 className="text-xl font-bold text-charity-neutral-800 mb-2">
-                      {opportunity.title}
-                    </h3>
-                    
-                    <p className="text-charity-neutral-600 mb-4 text-sm">
-                      {opportunity.description}
-                    </p>
-                    
-                    <div className="space-y-2 mb-4 text-sm text-charity-neutral-600">
-                      <div className="flex items-center">
-                        <Clock className="h-4 w-4 mr-2" />
-                        {opportunity.duration}
+
+                  <div className="relative z-20 h-full flex flex-col">
+                    {/* Enhanced Image Section */}
+                    <div className="relative overflow-hidden rounded-t-3xl">
+                      <img
+                        src={opportunity.image}
+                        alt={opportunity.title}
+                        className="w-full h-56 object-cover group-hover:scale-125 transition-transform duration-1000"
+                      />
+
+                      {/* Dynamic overlay based on category */}
+                      <div className={`absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 ${
+                        opportunity.category === 'Education' ? 'bg-gradient-to-t from-blue-900/70 via-blue-500/20 to-transparent' :
+                        opportunity.category === 'Healthcare' ? 'bg-gradient-to-t from-green-900/70 via-green-500/20 to-transparent' :
+                        'bg-gradient-to-t from-orange-900/70 via-orange-500/20 to-transparent'
+                      }`}></div>
+
+                      {/* Category badge with unique styling */}
+                      <div className={`absolute top-4 left-4 px-4 py-2 rounded-2xl text-white text-sm font-bold shadow-2xl transform group-hover:scale-110 group-hover:rotate-3 transition-all duration-500 ${
+                        opportunity.category === 'Education' ? 'bg-gradient-to-r from-blue-500 to-purple-600' :
+                        opportunity.category === 'Healthcare' ? 'bg-gradient-to-r from-green-500 to-teal-600' :
+                        'bg-gradient-to-r from-orange-500 to-red-600'
+                      }`}>
+                        <opportunity.icon className="inline h-4 w-4 mr-1" />
+                        {opportunity.category}
                       </div>
-                      <div className="flex items-center">
-                        <MapPin className="h-4 w-4 mr-2" />
-                        {opportunity.location}
-                      </div>
-                      <div className="flex items-center">
-                        <Target className="h-4 w-4 mr-2" />
-                        {opportunity.impact}
+
+                      {/* Urgent badge with pulsing animation */}
+                      {opportunity.urgent && (
+                        <div className="absolute top-4 right-4 bg-gradient-to-r from-red-500 to-pink-600 text-white px-4 py-2 rounded-2xl text-sm font-bold shadow-2xl animate-pulse">
+                          🚨 Urgent Need
+                        </div>
+                      )}
+
+                      {/* Impact display on hover */}
+                      <div className="absolute bottom-4 left-4 right-4 opacity-0 group-hover:opacity-100 transition-all duration-700 transform translate-y-4 group-hover:translate-y-0">
+                        <div className="bg-white/95 backdrop-blur-sm rounded-2xl p-4 shadow-xl border border-white/20">
+                          <div className="flex items-center text-charity-neutral-800">
+                            <Target className="h-5 w-5 text-charity-orange-600 mr-2" />
+                            <span className="font-bold text-sm">{opportunity.impact}</span>
+                          </div>
+                        </div>
                       </div>
                     </div>
-                    
-                    <div className="mb-4">
-                      <div className="text-sm font-medium text-charity-neutral-700 mb-2">
-                        Key Skills:
+
+                    {/* Enhanced Content Section */}
+                    <div className="p-6 flex-grow flex flex-col">
+                      {/* Title with enhanced styling */}
+                      <div className="mb-4">
+                        <h3 className="text-2xl font-bold text-charity-neutral-800 mb-2 group-hover:text-charity-orange-600 transition-colors duration-300 transform group-hover:scale-105">
+                          {opportunity.title}
+                        </h3>
+                        <div className={`w-16 h-1 rounded-full transform origin-left group-hover:scale-x-150 transition-transform duration-500 ${
+                          opportunity.category === 'Education' ? 'bg-gradient-to-r from-blue-500 to-purple-500' :
+                          opportunity.category === 'Healthcare' ? 'bg-gradient-to-r from-green-500 to-teal-500' :
+                          'bg-gradient-to-r from-orange-500 to-red-500'
+                        }`}></div>
                       </div>
-                      <div className="flex flex-wrap gap-1">
-                        {opportunity.skills.slice(0, 3).map((skill, i) => (
-                          <span
-                            key={i}
-                            className="px-2 py-1 bg-charity-green-100 text-charity-green-700 text-xs rounded-full"
-                          >
-                            {skill}
-                          </span>
-                        ))}
-                        {opportunity.skills.length > 3 && (
-                          <span className="px-2 py-1 bg-charity-neutral-100 text-charity-neutral-600 text-xs rounded-full">
-                            +{opportunity.skills.length - 3} more
-                          </span>
-                        )}
+
+                      <p className="text-charity-neutral-600 mb-6 text-base leading-relaxed group-hover:text-charity-neutral-700 transition-colors duration-300">
+                        {opportunity.description}
+                      </p>
+
+                      {/* Enhanced info grid */}
+                      <div className="space-y-3 mb-6">
+                        <div className="flex items-center p-3 rounded-xl bg-charity-orange-50 group-hover:bg-charity-orange-100 transition-all duration-300 group-hover:shadow-md">
+                          <div className="w-10 h-10 rounded-full bg-charity-orange-500 flex items-center justify-center mr-3 group-hover:rotate-12 transition-transform duration-300">
+                            <Clock className="h-5 w-5 text-white" />
+                          </div>
+                          <div>
+                            <span className="text-charity-neutral-700 font-bold">Duration:</span>
+                            <p className="text-charity-neutral-600 text-sm">{opportunity.duration}</p>
+                          </div>
+                        </div>
+
+                        <div className="flex items-center p-3 rounded-xl bg-charity-green-50 group-hover:bg-charity-green-100 transition-all duration-300 group-hover:shadow-md">
+                          <div className="w-10 h-10 rounded-full bg-charity-green-500 flex items-center justify-center mr-3 group-hover:rotate-12 transition-transform duration-300">
+                            <MapPin className="h-5 w-5 text-white" />
+                          </div>
+                          <div>
+                            <span className="text-charity-neutral-700 font-bold">Location:</span>
+                            <p className="text-charity-neutral-600 text-sm">{opportunity.location}</p>
+                          </div>
+                        </div>
                       </div>
+
+                      {/* Skills section with enhanced styling */}
+                      <div className="mb-6">
+                        <div className="flex items-center mb-3">
+                          <Award className="h-5 w-5 text-charity-orange-500 mr-2" />
+                          <span className="text-sm font-bold text-charity-neutral-700">Required Skills:</span>
+                        </div>
+                        <div className="flex flex-wrap gap-2">
+                          {opportunity.skills.slice(0, 3).map((skill, i) => (
+                            <span
+                              key={i}
+                              className="px-3 py-2 bg-gradient-to-r from-charity-green-100 to-charity-green-200 text-charity-green-800 text-sm rounded-full font-medium border border-charity-green-300 transform hover:scale-110 transition-all duration-300 shadow-sm"
+                              style={{ animationDelay: `${i * 100}ms` }}
+                            >
+                              ✨ {skill}
+                            </span>
+                          ))}
+                          {opportunity.skills.length > 3 && (
+                            <span className="px-3 py-2 bg-gradient-to-r from-charity-neutral-100 to-charity-neutral-200 text-charity-neutral-700 text-sm rounded-full font-medium border border-charity-neutral-300 transform hover:scale-110 transition-all duration-300">
+                              +{opportunity.skills.length - 3} more
+                            </span>
+                          )}
+                        </div>
+                      </div>
+
+                      {/* Enhanced apply button */}
+                      <button
+                        onClick={() => setSelectedOpportunity(opportunity.id)}
+                        className={`w-full mt-auto relative px-6 py-4 text-white rounded-2xl transition-all duration-500 font-bold text-lg shadow-xl hover:shadow-2xl transform hover:scale-105 group-hover:animate-pulse overflow-hidden ${
+                          opportunity.category === 'Education' ? 'bg-gradient-to-r from-blue-600 to-purple-700 hover:from-blue-700 hover:to-purple-800' :
+                          opportunity.category === 'Healthcare' ? 'bg-gradient-to-r from-green-600 to-teal-700 hover:from-green-700 hover:to-teal-800' :
+                          'bg-gradient-to-r from-orange-600 to-red-700 hover:from-orange-700 hover:to-red-800'
+                        }`}
+                      >
+                        <div className="absolute inset-0 bg-gradient-to-r from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                        <div className="relative z-10 flex items-center justify-center">
+                          <Users className="h-5 w-5 mr-2 animate-bounce" />
+                          Apply for This Role
+                          <ArrowRight className="h-5 w-5 ml-2 group-hover:translate-x-2 transition-transform duration-300" />
+                        </div>
+                        <div className="absolute inset-0 rounded-2xl bg-white opacity-0 group-hover:opacity-10 transition-opacity duration-500"></div>
+                      </button>
                     </div>
-                    
-                    <button
-                      onClick={() => setSelectedOpportunity(opportunity.id)}
-                      className="w-full px-4 py-2 bg-charity-orange-600 hover:bg-charity-orange-700 text-white rounded-lg transition-colors duration-200 font-medium"
-                    >
-                      Apply for This Role
-                    </button>
                   </div>
                 </div>
               </AnimatedSection>

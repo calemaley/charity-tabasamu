@@ -1,7 +1,7 @@
 // vite.config.ts
-import { defineConfig } from 'vite';
-import react from '@vitejs/plugin-react';
-import path from 'path';
+import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react";
+import path from "path";
 
 export default defineConfig({
   plugins: [react()],
@@ -9,15 +9,16 @@ export default defineConfig({
     fs: {
       allow: [
         // Allow serving files from the project root
-        '..',
+        "..",
         // Explicitly allow node_modules from the project root
-        path.resolve(__dirname, '../node_modules')
-      ]
-    }
+        path.resolve(__dirname, "../node_modules"),
+      ],
+    },
   },
   resolve: {
     alias: {
-      '@': path.resolve(__dirname, 'client') // <-- Updated to point to /client
-    }
-  }
+      "@": path.resolve(__dirname, "client"), // <-- Updated to point to /client
+      "@shared": path.resolve(__dirname, "shared"), // <-- Add shared alias
+    },
+  },
 });
