@@ -44,7 +44,7 @@ export async function writePersistedState(state: SiteContent): Promise<void> {
   }
 }
 
-export function setupPersistence(appStore: typeof StoreType) {
+export function setupPersistence(appStore: AppStore) {
   // Load once on startup (fire-and-forget)
   readPersistedState().then((persisted) => {
     if (persisted) {
