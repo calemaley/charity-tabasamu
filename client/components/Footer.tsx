@@ -7,7 +7,9 @@ import {
   Phone,
   MapPin,
 } from "lucide-react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import { useContent } from "@/lib/content";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 
@@ -29,6 +31,25 @@ const Footer = () => {
       .addTo(map)
       .bindPopup("<b>Nairobi</b><br>Capital of Kenya");
   }, []);
+
+  const { subscribe } = useContent();
+  const [email, setEmail] = useState("");
+  const [status, setStatus] = useState<"idle" | "loading" | "ok" | "error">("idle");
+
+  const onSubscribe = async () => {
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      setStatus("error");
+      return;
+    }
+    setStatus("loading");
+    try {
+      await subscribe(email);
+      setStatus("ok");
+      setEmail("");
+    } catch {
+      setStatus("error");
+    }
+  };
 
   return (
     <footer className="bg-charity-neutral-800 text-white">
@@ -200,12 +221,20 @@ const Footer = () => {
               <input
                 type="email"
                 placeholder="Enter your email"
+                value={email}
+                onChange={(e) => { setStatus("idle"); setEmail(e.target.value); }}
                 className="flex-1 px-4 py-2 bg-charity-neutral-700 border border-charity-neutral-600 rounded-lg text-white placeholder-charity-neutral-400 focus:outline-none focus:ring-2 focus:ring-charity-orange-500"
               />
-              <button className="px-6 py-2 bg-charity-orange-600 hover:bg-charity-orange-700 text-white rounded-lg transition-colors duration-200 font-medium">
-                Subscribe
+              <button onClick={onSubscribe} disabled={status==="loading"} className="px-6 py-2 bg-charity-orange-600 hover:bg-charity-orange-700 disabled:opacity-60 text-white rounded-lg transition-colors duration-200 font-medium">
+                {status === "loading" ? "Subscribing..." : status === "ok" ? "Subscribed" : "Subscribe"}
               </button>
             </div>
+            {status === "error" && (
+              <div className="text-red-300 text-sm mt-2">Please enter a valid email or try again.</div>
+            )}
+            {status === "ok" && (
+              <div className="text-green-300 text-sm mt-2">Thanks! You’re subscribed.</div>
+            )}
           </div>
         </div>
 
