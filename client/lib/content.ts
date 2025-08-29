@@ -5,6 +5,8 @@ import type { SiteContent } from "@shared/site-content";
 const CONTENT_KEY = ["site-content"];
 
 function getAdminHeaders() {
+  const basic = localStorage.getItem("ADMIN_BASIC");
+  if (basic) return { Authorization: basic };
   const token = localStorage.getItem("ADMIN_TOKEN");
   return token ? { "X-Admin-Token": token } : {};
 }
