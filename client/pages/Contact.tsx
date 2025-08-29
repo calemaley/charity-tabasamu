@@ -111,10 +111,10 @@ const Contact = () => {
   };
 
   const handleDownloadBrochure = () => {
-    // Create a downloadable PDF link
     const link = document.createElement("a");
-    link.href = "/assets/tabasamu-brochure.pdf"; // You would need to add this file
+    link.href = "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf";
     link.download = "Tabasamu-Charity-Brochure.pdf";
+    link.target = "_blank";
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
