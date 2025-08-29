@@ -32,6 +32,10 @@ export function createServer() {
 
   app.get("/api/demo", handleDemo);
 
+  // Public submission APIs
+  app.post("/api/subscribe", subscribeEmail);
+  app.post("/api/contact", submitContact);
+
   // Content APIs
   app.get("/api/content", getPublicContent);
   app.get("/api/content/events", sseContentStream);
@@ -40,6 +44,8 @@ export function createServer() {
   app.get("/api/admin/state", getAdminState);
   app.put("/api/admin/state", updateAdminState);
   app.put("/api/admin/:section", updateSection);
+  app.get("/api/admin/subscriptions", listSubscriptions);
+  app.get("/api/admin/messages", listMessages);
 
   return app;
 }
