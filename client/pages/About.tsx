@@ -16,6 +16,7 @@ import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import AnimatedSection from "@/components/AnimatedSection";
 import { redirectToPayment, CAMPAIGN_SOURCES } from "@/lib/payment";
+import { cn } from "@/lib/utils";
 
 const About = () => {
   const [selectedMember, setSelectedMember] = useState<any>(null);
@@ -438,7 +439,10 @@ const About = () => {
                     <img
                       src={member.image}
                       alt={member.name}
-                      className="w-full h-80 object-cover group-hover:scale-110 transition-transform duration-700"
+                      className={cn(
+                        "w-full h-80 object-cover group-hover:scale-110 transition-transform duration-700",
+                        (member.name === "Judith Kwamboka" || member.name.startsWith("Lilliane")) ? "object-top" : "object-center",
+                      )}
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                       <div className="absolute bottom-4 left-4 text-white">
