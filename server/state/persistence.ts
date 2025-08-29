@@ -13,7 +13,11 @@ async function getBlobsStore() {
     const store = mod.getStore({ name: "site-content" });
     return store as {
       get: (key: string, opts?: { type?: "json" | "text" }) => Promise<any>;
-      set: (key: string, value: any, opts?: { addRandomSuffix?: boolean }) => Promise<void>;
+      set: (
+        key: string,
+        value: any,
+        opts?: { addRandomSuffix?: boolean },
+      ) => Promise<void>;
     };
   } catch {
     return null;

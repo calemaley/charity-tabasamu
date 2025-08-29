@@ -43,7 +43,10 @@ function getAdminHeaders() {
 }
 
 async function fetchWithFallback(path: string, init?: RequestInit) {
-  const bases = [getApiBase(), ...DEFAULT_BASES.filter((b) => b !== getApiBase())];
+  const bases = [
+    getApiBase(),
+    ...DEFAULT_BASES.filter((b) => b !== getApiBase()),
+  ];
   for (const base of bases) {
     try {
       const res = await fetch(`${base}${path}`, init);
