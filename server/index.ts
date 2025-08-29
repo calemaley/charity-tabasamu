@@ -2,6 +2,13 @@ import "dotenv/config";
 import express from "express";
 import cors from "cors";
 import { handleDemo } from "./routes/demo";
+import {
+  getPublicContent,
+  sseContentStream,
+  getAdminState,
+  updateAdminState,
+  updateSection,
+} from "./routes/admin";
 
 export function createServer() {
   const app = express();
@@ -18,6 +25,15 @@ export function createServer() {
   });
 
   app.get("/api/demo", handleDemo);
+
+  // Content APIs
+  app.get("/api/content", getPublicContent);
+  app.get("/api/content/events", sseContentStream);
+
+  // Admin APIs (optionally protected via ADMIN_TOKEN)
+  app.get("/api/admin/state", getAdminState);
+  app.put("/api/admin/state", updateAdminState);
+  app.put("/api/admin/:section", updateSection);
 
   return app;
 }
