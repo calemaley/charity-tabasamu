@@ -1,5 +1,9 @@
 import type { SiteContent } from "../../shared/site-content";
-import type { store as StoreType } from "./store";
+
+type AppStore = {
+  setState: (next: Partial<SiteContent>) => void;
+  on: (event: "change", cb: (state: SiteContent) => void) => void;
+};
 
 async function getBlobsStore() {
   try {
