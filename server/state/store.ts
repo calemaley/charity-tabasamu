@@ -72,8 +72,12 @@ class ContentStore extends EventEmitter {
         { number: "87+", label: "Happy Volunteers" },
       ],
       featuredEvent,
+      upcomingEvents: [],
+      pastEvents: [],
       featuredBlog: featuredPost,
       children: allChildren,
+      subscriptions: [],
+      messages: [],
     };
   }
 
