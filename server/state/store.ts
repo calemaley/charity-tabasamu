@@ -1,8 +1,8 @@
 import { EventEmitter } from "events";
-import { featuredPost } from "@shared/blog-data";
-import { featuredEvent } from "@shared/programs-data";
-import { allChildren } from "@shared/children-data";
-import type { SiteContent } from "@shared/site-content";
+import { featuredPost } from "../../shared/blog-data";
+import { featuredEvent } from "../../shared/programs-data";
+import { allChildren } from "../../shared/children-data";
+import type { SiteContent } from "../../shared/site-content";
 
 class ContentStore extends EventEmitter {
   private state: SiteContent;
