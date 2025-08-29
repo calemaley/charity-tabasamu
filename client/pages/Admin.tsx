@@ -383,3 +383,55 @@ function ArrayEditor({ title, values, onChange }: { title: string; values: any[]
     </div>
   );
 }
+
+function SubscriptionsViewer({ items }: { items: SiteContent["subscriptions"] }) {
+  return (
+    <div className="overflow-x-auto">
+      <table className="min-w-full text-sm">
+        <thead>
+          <tr className="text-left text-charity-neutral-600">
+            <th className="p-2">Email</th>
+            <th className="p-2">Created At</th>
+          </tr>
+        </thead>
+        <tbody>
+          {items.map((s, i) => (
+            <tr key={i} className="border-t">
+              <td className="p-2">{s.email}</td>
+              <td className="p-2">{new Date(s.createdAt).toLocaleString()}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+}
+
+function MessagesViewer({ items }: { items: SiteContent["messages"] }) {
+  return (
+    <div className="overflow-x-auto">
+      <table className="min-w-full text-sm">
+        <thead>
+          <tr className="text-left text-charity-neutral-600">
+            <th className="p-2">From</th>
+            <th className="p-2">Email</th>
+            <th className="p-2">Subject</th>
+            <th className="p-2">Type</th>
+            <th className="p-2">Time</th>
+          </tr>
+        </thead>
+        <tbody>
+          {items.map((m) => (
+            <tr key={m.id} className="border-t">
+              <td className="p-2">{m.name}</td>
+              <td className="p-2">{m.email}</td>
+              <td className="p-2">{m.subject}</td>
+              <td className="p-2">{m.type}</td>
+              <td className="p-2">{new Date(m.createdAt).toLocaleString()}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+}
