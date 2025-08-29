@@ -9,6 +9,12 @@ import {
   updateAdminState,
   updateSection,
 } from "./routes/admin";
+import {
+  subscribeEmail,
+  submitContact,
+  listSubscriptions,
+  listMessages,
+} from "./routes/public";
 
 export function createServer() {
   const app = express();
