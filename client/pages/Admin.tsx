@@ -301,6 +301,31 @@ function BlogEditor({ post, onSave }: { post: SiteContent["featuredBlog"]; onSav
   );
 }
 
+function EventsListEditor({ list, onSave }: { list: SiteContent["upcomingEvents"]; onSave: (arr: SiteContent["upcomingEvents"]) => void }) {
+  const [events, setEvents] = useState(list);
+  return (
+    <div className="space-y-4">
+      {events.map((ev, i) => (
+        <div key={i} className="border rounded p-4 bg-charity-neutral-50">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+            <input className="border rounded px-3 py-2" value={ev.title} onChange={(e) => { const next=[...events]; next[i] = { ...next[i], title: e.target.value }; setEvents(next); }} placeholder="Title" />
+            <input className="border rounded px-3 py-2" value={ev.subtitle} onChange={(e) => { const next=[...events]; next[i] = { ...next[i], subtitle: e.target.value }; setEvents(next); }} placeholder="Subtitle" />
+            <input className="border rounded px-3 py-2" value={ev.date} onChange={(e) => { const next=[...events]; next[i] = { ...next[i], date: e.target.value }; setEvents(next); }} placeholder="Date" />
+            <input className="border rounded px-3 py-2" value={ev.venue} onChange={(e) => { const next=[...events]; next[i] = { ...next[i], venue: e.target.value }; setEvents(next); }} placeholder="Venue" />
+            <input className="border rounded px-3 py-2 md:col-span-2" value={ev.image} onChange={(e) => { const next=[...events]; next[i] = { ...next[i], image: e.target.value }; setEvents(next); }} placeholder="Image URL" />
+            <textarea className="border rounded px-3 py-2 md:col-span-2" rows={2} value={ev.fullDescription} onChange={(e) => { const next=[...events]; next[i] = { ...next[i], fullDescription: e.target.value }; setEvents(next); }} placeholder="Description" />
+          </div>
+          <div className="text-right mt-2"><button className="text-red-600" onClick={() => setEvents(events.filter((_, idx) => idx !== i))}>Remove</button></div>
+        </div>
+      ))}
+      <div className="flex gap-2">
+        <button className="px-3 py-2 border rounded" onClick={() => setEvents([...events, { title: "", subtitle: "", date: "", venue: "", image: "", theme: "", message: "", itemsNeeded: [], contact: "", paymentLink: "", fullDescription: "", schedule: [], impactGoals: [] } as any])}>Add Event</button>
+        <button className="px-4 py-2 bg-charity-green-600 text-white rounded" onClick={() => onSave(events)}>Save</button>
+      </div>
+    </div>
+  );
+}
+
 function ChildrenEditor({ childrenList, onSave }: { childrenList: SiteContent["children"]; onSave: (arr: SiteContent["children"]) => void }) {
   const [list, setList] = useState(childrenList);
   return (
