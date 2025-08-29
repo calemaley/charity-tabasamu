@@ -20,62 +20,113 @@ export default function Admin() {
   const [tokenInput, setTokenInput] = useState("");
   const [userInput, setUserInput] = useState("");
   const [passInput, setPassInput] = useState("");
+  const [authed, setAuthed] = useState<boolean>(false);
+  const [authError, setAuthError] = useState<string>("");
 
   useEffect(() => {
-    const existing = localStorage.getItem("ADMIN_TOKEN");
-    if (existing) setTokenInput(existing);
-    const existingUser = localStorage.getItem("ADMIN_USERNAME");
-    if (existingUser) setUserInput(existingUser);
+    const existing = localStorage.getItem("ADMIN_BASIC") || localStorage.getItem("ADMIN_TOKEN");
+    if (!existing) return;
+    // verify
+    fetch("/api/admin/state", { headers: getHeaders() })
+      .then((r) => {
+        if (r.ok) setAuthed(true);
+      })
+      .catch(() => {});
   }, []);
+
+  const getHeaders = () => {
+    const basic = localStorage.getItem("ADMIN_BASIC");
+    if (basic) return { Authorization: basic } as any;
+    const token = localStorage.getItem("ADMIN_TOKEN");
+    return token ? ({ "X-Admin-Token": token } as any) : ({} as any);
+  };
+
+  const login = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setAuthError("");
+    const basic = btoa(`${userInput}:${passInput}`);
+    localStorage.setItem("ADMIN_BASIC", `Basic ${basic}`);
+    localStorage.removeItem("ADMIN_TOKEN");
+    try {
+      const res = await fetch("/api/admin/state", { headers: { Authorization: `Basic ${basic}` } });
+      if (res.ok) {
+        setAuthed(true);
+        return;
+      }
+      setAuthError("Invalid credentials");
+    } catch (err) {
+      setAuthError("Network error");
+    }
+  };
 
   const saveToken = () => {
     localStorage.setItem("ADMIN_TOKEN", tokenInput.trim());
     localStorage.removeItem("ADMIN_BASIC");
-    alert("Admin token saved in this browser");
+    setAuthed(true);
   };
 
-  const saveBasic = () => {
-    const basic = btoa(`${userInput}:${passInput}`);
-    localStorage.setItem("ADMIN_BASIC", `Basic ${basic}`);
-    localStorage.setItem("ADMIN_USERNAME", userInput);
-    localStorage.removeItem("ADMIN_TOKEN");
-    setTokenInput("");
-    alert("Username/password saved for this browser");
-  };
-
-  const clearAuth = () => {
+  const logout = () => {
     localStorage.removeItem("ADMIN_BASIC");
     localStorage.removeItem("ADMIN_TOKEN");
-    localStorage.removeItem("ADMIN_USERNAME");
-    setUserInput("");
-    setPassInput("");
-    setTokenInput("");
+    setAuthed(false);
   };
 
+  if (!authed) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-charity-orange-100 to-charity-green-100">
+        <div className="bg-white rounded-2xl shadow-2xl p-8 w-full max-w-md">
+          <h1 className="text-2xl font-bold mb-6 text-center">Admin Login</h1>
+          <form onSubmit={login} className="space-y-4">
+            <div>
+              <label className="block text-sm font-medium mb-1">Username</label>
+              <input className="border rounded px-3 py-2 w-full" value={userInput} onChange={(e) => setUserInput(e.target.value)} />
+            </div>
+            <div>
+              <label className="block text-sm font-medium mb-1">Password</label>
+              <input type="password" className="border rounded px-3 py-2 w-full" value={passInput} onChange={(e) => setPassInput(e.target.value)} />
+            </div>
+            {authError && <div className="text-red-600 text-sm">{authError}</div>}
+            <button type="submit" className="w-full px-4 py-2 bg-charity-orange-600 text-white rounded">Login</button>
+          </form>
+          <div className="mt-6">
+            <div className="text-center text-sm text-charity-neutral-600 mb-2">Or use one-time token</div>
+            <div className="flex gap-2">
+              <input className="border rounded px-3 py-2 flex-1" placeholder="X-Admin-Token" value={tokenInput} onChange={(e) => setTokenInput(e.target.value)} />
+              <button className="px-4 py-2 bg-charity-green-600 text-white rounded" onClick={saveToken}>Continue</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   if (isLoading || !data) return <div className="p-6">Loading...</div>;
+
+  const metrics = [
+    { label: "Hero Slides", value: data.hero.images.length, color: "bg-charity-orange-600" },
+    { label: "Children", value: data.children.length, color: "bg-charity-green-600" },
+    { label: "Upcoming Events", value: data.upcomingEvents.length, color: "bg-emerald-600" },
+    { label: "Past Events", value: data.pastEvents.length, color: "bg-slate-600" },
+    { label: "Subscriptions", value: data.subscriptions.length, color: "bg-indigo-600" },
+    { label: "Messages", value: data.messages.length, color: "bg-rose-600" },
+  ];
 
   return (
     <div className="min-h-screen bg-charity-neutral-50">
       <Navigation />
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-28 pb-10">
-        <div className="mb-6 grid grid-cols-1 md:grid-cols-2 gap-3 items-end">
-          <div className="flex items-center gap-2">
-            <input
-              className="border rounded px-3 py-2 w-80"
-              placeholder="X-Admin-Token (optional)"
-              value={tokenInput}
-              onChange={(e) => setTokenInput(e.target.value)}
-            />
-            <button className="px-4 py-2 bg-charity-orange-600 text-white rounded" onClick={saveToken}>
-              Save Token
-            </button>
-          </div>
-          <div className="flex items-center gap-2">
-            <input className="border rounded px-3 py-2 w-40" placeholder="Username" value={userInput} onChange={(e) => setUserInput(e.target.value)} />
-            <input className="border rounded px-3 py-2 w-60" placeholder="Password" type="password" value={passInput} onChange={(e) => setPassInput(e.target.value)} />
-            <button className="px-4 py-2 bg-charity-green-600 text-white rounded" onClick={saveBasic}>Save Credentials</button>
-            <button className="px-3 py-2 border rounded" onClick={clearAuth}>Clear</button>
-          </div>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-28 pb-10">
+        <div className="flex items-center justify-between mb-6">
+          <h1 className="text-2xl font-bold">Admin Dashboard</h1>
+          <button className="px-3 py-2 border rounded" onClick={logout}>Logout</button>
+        </div>
+
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-8">
+          {metrics.map((m) => (
+            <div key={m.label} className="bg-white rounded-xl shadow p-4">
+              <div className="text-sm text-charity-neutral-500">{m.label}</div>
+              <div className={`mt-2 text-3xl font-bold text-white rounded-lg inline-block px-3 ${m.color}`}>{m.value}</div>
+            </div>
+          ))}
         </div>
 
         <Section title="Hero Carousel">
@@ -98,12 +149,28 @@ export default function Admin() {
           <EventEditor event={data.featuredEvent} onSave={(event) => updateSection("featuredEvent", event)} />
         </Section>
 
+        <Section title="Upcoming Events">
+          <EventsListEditor list={data.upcomingEvents} onSave={(list) => updateSection("upcomingEvents", list as any)} />
+        </Section>
+
+        <Section title="Past Events">
+          <EventsListEditor list={data.pastEvents} onSave={(list) => updateSection("pastEvents", list as any)} />
+        </Section>
+
         <Section title="Featured Blog">
           <BlogEditor post={data.featuredBlog} onSave={(post) => updateSection("featuredBlog", post)} />
         </Section>
 
         <Section title="Children (Full List)">
           <ChildrenEditor childrenList={data.children} onSave={(children) => updateSection("children", children)} />
+        </Section>
+
+        <Section title="Email Subscriptions">
+          <SubscriptionsViewer items={data.subscriptions} />
+        </Section>
+
+        <Section title="Contact Messages">
+          <MessagesViewer items={data.messages} />
         </Section>
       </div>
       <Footer />
