@@ -15,14 +15,15 @@ import {
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import AnimatedSection from "@/components/AnimatedSection";
-import { featuredEvent } from "@shared/programs-data";
+import { useContent } from "@/lib/content";
 
 const Programs = () => {
   const [showEventModal, setShowEventModal] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState<any>(null);
+  const { data } = useContent();
 
-  // Mock data for upcoming events (can be moved to shared data later)
-  const upcomingEvents = [
+  const featuredEvent = data?.featuredEvent;
+  const upcomingEvents = data?.upcomingEvents ?? [
     {
       id: "mombasa-2025",
       title: "MOMBASA Edition",
@@ -99,8 +100,7 @@ const Programs = () => {
     },
   ];
 
-  // Mock data for past events
-  const pastEvents = [
+  const pastEvents = data?.pastEvents ?? [
     {
       id: "kisumu-2024",
       title: "KISUMU Edition",
