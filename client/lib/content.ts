@@ -43,5 +43,13 @@ export function useContent() {
       { method: "PUT", headers: { "Content-Type": "application/json", ...getAdminHeaders() }, body: JSON.stringify(patch) });
   };
 
-  return { ...query, updateSection, updateState };
+  const subscribe = async (email: string) => {
+    await fetch(`/api/subscribe`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ email }) });
+  };
+
+  const sendMessage = async (payload: { name: string; email: string; subject?: string; message: string; type?: string }) => {
+    await fetch(`/api/contact`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload) });
+  };
+
+  return { ...query, updateSection, updateState, subscribe, sendMessage };
 }
