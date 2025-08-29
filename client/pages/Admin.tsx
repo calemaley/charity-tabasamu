@@ -18,15 +18,38 @@ function Section({ title, children }: { title: string; children: React.ReactNode
 export default function Admin() {
   const { data, isLoading, updateSection } = useContent();
   const [tokenInput, setTokenInput] = useState("");
+  const [userInput, setUserInput] = useState("");
+  const [passInput, setPassInput] = useState("");
 
   useEffect(() => {
     const existing = localStorage.getItem("ADMIN_TOKEN");
     if (existing) setTokenInput(existing);
+    const existingUser = localStorage.getItem("ADMIN_USERNAME");
+    if (existingUser) setUserInput(existingUser);
   }, []);
 
   const saveToken = () => {
     localStorage.setItem("ADMIN_TOKEN", tokenInput.trim());
+    localStorage.removeItem("ADMIN_BASIC");
     alert("Admin token saved in this browser");
+  };
+
+  const saveBasic = () => {
+    const basic = btoa(`${userInput}:${passInput}`);
+    localStorage.setItem("ADMIN_BASIC", `Basic ${basic}`);
+    localStorage.setItem("ADMIN_USERNAME", userInput);
+    localStorage.removeItem("ADMIN_TOKEN");
+    setTokenInput("");
+    alert("Username/password saved for this browser");
+  };
+
+  const clearAuth = () => {
+    localStorage.removeItem("ADMIN_BASIC");
+    localStorage.removeItem("ADMIN_TOKEN");
+    localStorage.removeItem("ADMIN_USERNAME");
+    setUserInput("");
+    setPassInput("");
+    setTokenInput("");
   };
 
   if (isLoading || !data) return <div className="p-6">Loading...</div>;
@@ -35,16 +58,24 @@ export default function Admin() {
     <div className="min-h-screen bg-charity-neutral-50">
       <Navigation />
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-28 pb-10">
-        <div className="mb-6 flex items-center gap-2">
-          <input
-            className="border rounded px-3 py-2 w-80"
-            placeholder="X-Admin-Token (optional)"
-            value={tokenInput}
-            onChange={(e) => setTokenInput(e.target.value)}
-          />
-          <button className="px-4 py-2 bg-charity-orange-600 text-white rounded" onClick={saveToken}>
-            Save Token
-          </button>
+        <div className="mb-6 grid grid-cols-1 md:grid-cols-2 gap-3 items-end">
+          <div className="flex items-center gap-2">
+            <input
+              className="border rounded px-3 py-2 w-80"
+              placeholder="X-Admin-Token (optional)"
+              value={tokenInput}
+              onChange={(e) => setTokenInput(e.target.value)}
+            />
+            <button className="px-4 py-2 bg-charity-orange-600 text-white rounded" onClick={saveToken}>
+              Save Token
+            </button>
+          </div>
+          <div className="flex items-center gap-2">
+            <input className="border rounded px-3 py-2 w-40" placeholder="Username" value={userInput} onChange={(e) => setUserInput(e.target.value)} />
+            <input className="border rounded px-3 py-2 w-60" placeholder="Password" type="password" value={passInput} onChange={(e) => setPassInput(e.target.value)} />
+            <button className="px-4 py-2 bg-charity-green-600 text-white rounded" onClick={saveBasic}>Save Credentials</button>
+            <button className="px-3 py-2 border rounded" onClick={clearAuth}>Clear</button>
+          </div>
         </div>
 
         <Section title="Hero Carousel">
