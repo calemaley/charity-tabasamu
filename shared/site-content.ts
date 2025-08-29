@@ -18,6 +18,22 @@ export interface StatItem {
   label: string;
 }
 
+export interface Subscription {
+  email: string;
+  createdAt: string;
+}
+
+export interface ContactMessage {
+  id: string;
+  name: string;
+  email: string;
+  subject: string;
+  message: string;
+  type: string;
+  createdAt: string;
+  read?: boolean;
+}
+
 export interface SiteContent {
   hero: {
     images: HeroImage[];
@@ -31,6 +47,10 @@ export interface SiteContent {
   help: HelpItem[];
   stats: StatItem[];
   featuredEvent: FeaturedEvent;
+  upcomingEvents: FeaturedEvent[];
+  pastEvents: FeaturedEvent[];
   featuredBlog: BlogPost;
   children: Child[]; // full list; UI can choose featured subset
+  subscriptions: Subscription[];
+  messages: ContactMessage[];
 }
