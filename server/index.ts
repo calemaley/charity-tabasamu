@@ -15,6 +15,8 @@ import {
   listSubscriptions,
   listMessages,
 } from "./routes/public";
+import { setupPersistence } from "./state/persistence";
+import { store } from "./state/store";
 
 export function createServer() {
   const app = express();
@@ -23,6 +25,9 @@ export function createServer() {
   app.use(cors());
   app.use(express.json());
   app.use(express.urlencoded({ extended: true }));
+
+  // Initialize persistence (non-blocking)
+  setupPersistence(store);
 
   // Example API routes
   app.get("/api/ping", (_req, res) => {
