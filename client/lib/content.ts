@@ -34,21 +34,41 @@ export function useContent() {
     key: K,
     value: SiteContent[K],
   ) => {
-    await fetch(`/api/admin/${String(key)}`,
-      { method: "PUT", headers: { "Content-Type": "application/json", ...getAdminHeaders() }, body: JSON.stringify(value) });
+    await fetch(`/api/admin/${String(key)}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json", ...getAdminHeaders() },
+      body: JSON.stringify(value),
+    });
   };
 
   const updateState = async (patch: Partial<SiteContent>) => {
-    await fetch(`/api/admin/state`,
-      { method: "PUT", headers: { "Content-Type": "application/json", ...getAdminHeaders() }, body: JSON.stringify(patch) });
+    await fetch(`/api/admin/state`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json", ...getAdminHeaders() },
+      body: JSON.stringify(patch),
+    });
   };
 
   const subscribe = async (email: string) => {
-    await fetch(`/api/subscribe`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ email }) });
+    await fetch(`/api/subscribe`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email }),
+    });
   };
 
-  const sendMessage = async (payload: { name: string; email: string; subject?: string; message: string; type?: string }) => {
-    await fetch(`/api/contact`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload) });
+  const sendMessage = async (payload: {
+    name: string;
+    email: string;
+    subject?: string;
+    message: string;
+    type?: string;
+  }) => {
+    await fetch(`/api/contact`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    });
   };
 
   return { ...query, updateSection, updateState, subscribe, sendMessage };

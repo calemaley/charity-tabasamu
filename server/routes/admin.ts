@@ -29,7 +29,8 @@ function checkAuth(req: any) {
 
   // Allow Basic auth
   const basic = parseBasicAuth(req.headers["authorization"]);
-  if (user && pass && basic && basic.user === user && basic.pass === pass) return true;
+  if (user && pass && basic && basic.user === user && basic.pass === pass)
+    return true;
 
   return false;
 }

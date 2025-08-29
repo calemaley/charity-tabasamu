@@ -147,7 +147,9 @@ const Index = () => {
   };
 
   const prevSlide = () => {
-    setCurrentSlide((prev) => (prev - 1 + heroImages.length) % heroImages.length);
+    setCurrentSlide(
+      (prev) => (prev - 1 + heroImages.length) % heroImages.length,
+    );
   };
 
   return (
@@ -165,7 +167,11 @@ const Index = () => {
                   index === currentSlide ? "opacity-100" : "opacity-0",
                 )}
               >
-                <img src={image.src} alt="" className="w-full h-full object-cover" />
+                <img
+                  src={image.src}
+                  alt=""
+                  className="w-full h-full object-cover"
+                />
                 <div className="absolute inset-0 bg-black/40" />
               </div>
             ))}
@@ -235,14 +241,24 @@ const Index = () => {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
               <div className="relative">
                 <div className="relative overflow-hidden rounded-2xl shadow-2xl transform rotate-3 hover:rotate-0 transition-transform duration-300">
-                  <img src={data?.about.image} alt="About Us" className="w-full h-96 object-cover" />
+                  <img
+                    src={data?.about.image}
+                    alt="About Us"
+                    className="w-full h-96 object-cover"
+                  />
                   <div className="absolute inset-0 bg-gradient-to-t from-charity-orange-500/20 to-transparent" />
                 </div>
               </div>
               <div className="space-y-6">
-                <h2 className="text-4xl font-bold text-charity-neutral-800">{data?.about.heading}</h2>
-                <p className="text-lg text-charity-neutral-600 leading-relaxed">{data?.about.paragraph1}</p>
-                <p className="text-charity-neutral-600">{data?.about.paragraph2}</p>
+                <h2 className="text-4xl font-bold text-charity-neutral-800">
+                  {data?.about.heading}
+                </h2>
+                <p className="text-lg text-charity-neutral-600 leading-relaxed">
+                  {data?.about.paragraph1}
+                </p>
+                <p className="text-charity-neutral-600">
+                  {data?.about.paragraph2}
+                </p>
                 <Link
                   to="/about"
                   className="inline-flex items-center px-6 py-3 bg-charity-orange-600 hover:bg-charity-orange-700 text-white rounded-lg transition-colors duration-200 font-medium"
@@ -402,9 +418,13 @@ const Index = () => {
         <section className="py-20 bg-white">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-16">
-              <h2 className="text-4xl font-bold text-charity-neutral-800 mb-4">Meet Our Children</h2>
+              <h2 className="text-4xl font-bold text-charity-neutral-800 mb-4">
+                Meet Our Children
+              </h2>
               <p className="text-lg text-charity-neutral-600 max-w-2xl mx-auto">
-                Every child has a unique story and dreams waiting to be fulfilled. Meet some of the amazing children who need your support to achieve their goals.
+                Every child has a unique story and dreams waiting to be
+                fulfilled. Meet some of the amazing children who need your
+                support to achieve their goals.
               </p>
             </div>
 
@@ -413,13 +433,21 @@ const Index = () => {
                 <div
                   key={child.id}
                   className="bg-white rounded-2xl overflow-hidden shadow-xl hover:shadow-2xl hover:scale-105 transition-all duration-500 group cursor-pointer transform hover:-translate-y-2"
-                  onClick={() => (window.location.href = `/sponsor?child=${child.id}`)}
+                  onClick={() =>
+                    (window.location.href = `/sponsor?child=${child.id}`)
+                  }
                 >
                   <div className="relative overflow-hidden">
-                    <img src={child.image} alt={child.name} className="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-700" />
+                    <img
+                      src={child.image}
+                      alt={child.name}
+                      className="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-700"
+                    />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                       <div className="absolute bottom-4 left-4 text-white">
-                        <span className="text-sm font-medium">Dreams of being a {child.dreamJob}</span>
+                        <span className="text-sm font-medium">
+                          Dreams of being a {child.dreamJob}
+                        </span>
                       </div>
                     </div>
                     <div className="absolute top-4 right-4 bg-charity-green-500 text-white px-3 py-1 rounded-full text-sm font-medium shadow-lg">
@@ -438,10 +466,15 @@ const Index = () => {
                     </div>
 
                     <div className="mb-4">
-                      <div className="text-sm font-medium text-charity-neutral-700 mb-2">Interests:</div>
+                      <div className="text-sm font-medium text-charity-neutral-700 mb-2">
+                        Interests:
+                      </div>
                       <div className="flex flex-wrap gap-2">
                         {child.interests.map((interest, i) => (
-                          <span key={i} className="px-3 py-1 bg-charity-green-100 text-charity-green-700 text-sm rounded-full font-medium">
+                          <span
+                            key={i}
+                            className="px-3 py-1 bg-charity-green-100 text-charity-green-700 text-sm rounded-full font-medium"
+                          >
                             {interest}
                           </span>
                         ))}
@@ -450,9 +483,16 @@ const Index = () => {
 
                     <div className="mb-6 p-4 bg-charity-orange-50 rounded-xl">
                       <div className="text-center">
-                        <span className="text-charity-neutral-700 font-medium text-sm block mb-1">Monthly Support:</span>
-                        <div className="text-2xl font-bold text-charity-orange-600">KES {Number(child.monthlyNeedKES).toLocaleString()}</div>
-                        <div className="text-xs text-charity-neutral-500">≈ ${Math.round(Number(child.monthlyNeedKES) / 135)} USD</div>
+                        <span className="text-charity-neutral-700 font-medium text-sm block mb-1">
+                          Monthly Support:
+                        </span>
+                        <div className="text-2xl font-bold text-charity-orange-600">
+                          KES {Number(child.monthlyNeedKES).toLocaleString()}
+                        </div>
+                        <div className="text-xs text-charity-neutral-500">
+                          ≈ ${Math.round(Number(child.monthlyNeedKES) / 135)}{" "}
+                          USD
+                        </div>
                       </div>
                     </div>
 
@@ -485,7 +525,13 @@ const Index = () => {
       <SectionReveal>
         <section className="relative py-20 bg-charity-orange-600 overflow-hidden">
           {/* Video Background */}
-          <video autoPlay muted loop playsInline className="absolute inset-0 w-full h-full object-cover opacity-20">
+          <video
+            autoPlay
+            muted
+            loop
+            playsInline
+            className="absolute inset-0 w-full h-full object-cover opacity-20"
+          >
             <source
               src="https://cdn.builder.io/o/assets%2F5c188e0e2be247ef8c2c4417614bca31%2F7fe226fed27a4bb0b3606d1e7fa32cd3?alt=media&token=76255cec-775e-4b87-8a70-383436b7842e&apiKey=5c188e0e2be247ef8c2c4417614bca31"
               type="video/mp4"
@@ -494,14 +540,19 @@ const Index = () => {
           <div className="absolute inset-0 bg-charity-orange-600/60"></div>
           <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-16">
-              <h2 className="text-4xl font-bold text-white mb-4">How You Can Help Us?</h2>
+              <h2 className="text-4xl font-bold text-white mb-4">
+                How You Can Help Us?
+              </h2>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
               {helpItems.map((item, index) => {
                 const IconComponent = item.icon;
                 return (
-                  <div key={index} className="text-center text-white group cursor-pointer">
+                  <div
+                    key={index}
+                    className="text-center text-white group cursor-pointer"
+                  >
                     <div className="w-20 h-20 mx-auto mb-6 bg-white/20 group-hover:bg-white/30 rounded-full flex items-center justify-center group-hover:scale-110 group-hover:rotate-12 transition-all duration-500 group-hover:shadow-xl">
                       <IconComponent className="h-10 w-10 group-hover:scale-125 group-hover:text-yellow-200 transition-all duration-300" />
                     </div>
@@ -527,7 +578,9 @@ const Index = () => {
         <section className="py-20 bg-white">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex justify-between items-center mb-12">
-              <h2 className="text-4xl font-bold text-charity-neutral-800">Featured Events</h2>
+              <h2 className="text-4xl font-bold text-charity-neutral-800">
+                Featured Events
+              </h2>
               <Link
                 to="/programs#featured-event"
                 className="flex items-center text-charity-orange-600 hover:text-charity-orange-700 font-medium group"
@@ -538,20 +591,27 @@ const Index = () => {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-              {[{
-                image: data?.featuredEvent.image,
-                title: `${data?.featuredEvent.title} - ${data?.featuredEvent.subtitle}`,
-                description: data?.featuredEvent.fullDescription.split("\n\n")[0] ?? "",
-                date: data?.featuredEvent.date,
-                venue: data?.featuredEvent.venue,
-              }].map((program, index) => (
+              {[
+                {
+                  image: data?.featuredEvent.image,
+                  title: `${data?.featuredEvent.title} - ${data?.featuredEvent.subtitle}`,
+                  description:
+                    data?.featuredEvent.fullDescription.split("\n\n")[0] ?? "",
+                  date: data?.featuredEvent.date,
+                  venue: data?.featuredEvent.venue,
+                },
+              ].map((program, index) => (
                 <Link
                   key={index}
                   to="/programs#featured-event"
                   className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 cursor-pointer group block"
                 >
                   <div className="relative overflow-hidden">
-                    <img src={program.image} alt={program.title} className="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-300" />
+                    <img
+                      src={program.image}
+                      alt={program.title}
+                      className="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-300"
+                    />
                     <div className="absolute top-4 right-4 bg-red-500 text-white px-4 py-2 rounded-lg font-bold transform rotate-3">
                       {program.date}
                     </div>
@@ -568,7 +628,9 @@ const Index = () => {
                     </div>
                   </div>
                   <div className="p-6">
-                    <p className="text-charity-neutral-600 leading-relaxed">{program.description}</p>
+                    <p className="text-charity-neutral-600 leading-relaxed">
+                      {program.description}
+                    </p>
                     <div className="mt-4 text-charity-orange-600 font-medium flex items-center group-hover:translate-x-1 transition-transform duration-200">
                       Learn More <ArrowRight className="ml-2 h-4 w-4" />
                     </div>
@@ -584,7 +646,13 @@ const Index = () => {
       <SectionReveal>
         <section className="relative py-20 bg-charity-green-700 overflow-hidden">
           {/* Video Background */}
-          <video autoPlay muted loop playsInline className="absolute inset-0 w-full h-full object-cover opacity-20">
+          <video
+            autoPlay
+            muted
+            loop
+            playsInline
+            className="absolute inset-0 w-full h-full object-cover opacity-20"
+          >
             <source
               src="https://cdn.builder.io/o/assets%2F5c188e0e2be247ef8c2c4417614bca31%2F03841d98032c4c409fdeae723b20cc36?alt=media&token=42493818-465d-4f1a-89d5-5c8b11b4fd81&apiKey=5c188e0e2be247ef8c2c4417614bca31"
               type="video/mp4"
@@ -593,13 +661,20 @@ const Index = () => {
           <div className="absolute inset-0 bg-charity-green-700/60"></div>
           <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-16">
-              <h2 className="text-4xl font-bold text-white mb-4">LET'S SUPPORT US TO HELP THEM</h2>
-              <p className="text-xl text-white/90">Join your hands with us for a better life and future</p>
+              <h2 className="text-4xl font-bold text-white mb-4">
+                LET'S SUPPORT US TO HELP THEM
+              </h2>
+              <p className="text-xl text-white/90">
+                Join your hands with us for a better life and future
+              </p>
             </div>
 
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
               {stats.map((stat, index) => (
-                <div key={index} className="text-center text-white group cursor-pointer">
+                <div
+                  key={index}
+                  className="text-center text-white group cursor-pointer"
+                >
                   <div className="bg-white/10 rounded-xl p-6 group-hover:bg-white/20 group-hover:scale-110 group-hover:-translate-y-2 transition-all duration-500 border border-white/20 group-hover:border-white/40">
                     <div className="text-5xl font-bold mb-2 group-hover:text-yellow-100 group-hover:scale-110 transition-all duration-300">
                       {stat.number}
@@ -632,22 +707,27 @@ const Index = () => {
         <section className="py-20 bg-gradient-to-br from-charity-neutral-50 to-charity-orange-50">
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-12">
-              <h2 className="text-4xl font-bold text-charity-neutral-800 mb-4">Latest Story</h2>
+              <h2 className="text-4xl font-bold text-charity-neutral-800 mb-4">
+                Latest Story
+              </h2>
               <p className="text-lg text-charity-neutral-600 max-w-2xl mx-auto">
-                Discover inspiring stories of hope, transformation, and the power of community support
+                Discover inspiring stories of hope, transformation, and the
+                power of community support
               </p>
             </div>
 
-            {[{
-              id: data?.featuredBlog.id,
-              image: data?.featuredBlog.image,
-              category: data?.featuredBlog.category,
-              date: data?.featuredBlog.date,
-              title: data?.featuredBlog.title,
-              snippet: data?.featuredBlog.excerpt,
-              author: data?.featuredBlog.author,
-              slug: data?.featuredBlog.slug,
-            }].map((blog, index) => (
+            {[
+              {
+                id: data?.featuredBlog.id,
+                image: data?.featuredBlog.image,
+                category: data?.featuredBlog.category,
+                date: data?.featuredBlog.date,
+                title: data?.featuredBlog.title,
+                snippet: data?.featuredBlog.excerpt,
+                author: data?.featuredBlog.author,
+                slug: data?.featuredBlog.slug,
+              },
+            ].map((blog, index) => (
               <Link
                 key={index}
                 to="/blog"
@@ -656,7 +736,11 @@ const Index = () => {
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-0">
                   {/* Image Section */}
                   <div className="relative overflow-hidden h-80 lg:h-auto">
-                    <img src={blog.image} alt={blog.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
+                    <img
+                      src={blog.image}
+                      alt={blog.title}
+                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                    />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent opacity-60 group-hover:opacity-40 transition-opacity duration-300" />
 
                     {/* Category Badge */}
@@ -723,7 +807,8 @@ const Index = () => {
                       {/* Decorative Quote */}
                       <div className="mt-8 p-4 bg-charity-orange-50 rounded-xl border-l-4 border-charity-orange-500 opacity-0 group-hover:opacity-100 transform translate-y-4 group-hover:translate-y-0 transition-all duration-500">
                         <p className="text-charity-orange-700 italic font-medium text-sm">
-                          "Every act of kindness is a push forward towards a brighter future."
+                          "Every act of kindness is a push forward towards a
+                          brighter future."
                         </p>
                       </div>
                     </div>

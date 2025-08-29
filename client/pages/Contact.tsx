@@ -61,7 +61,13 @@ const Contact = () => {
       setTimeout(() => {
         setIsSubmitted(false);
       }, 5000);
-      setFormData({ name: "", email: "", subject: "", message: "", type: "general" });
+      setFormData({
+        name: "",
+        email: "",
+        subject: "",
+        message: "",
+        type: "general",
+      });
     } catch {
       alert("Failed to send message. Please try again.");
     }
@@ -113,7 +119,8 @@ const Contact = () => {
 
   const handleDownloadBrochure = () => {
     const link = document.createElement("a");
-    link.href = "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf";
+    link.href =
+      "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf";
     link.download = "Tabasamu-Charity-Brochure.pdf";
     link.target = "_blank";
     document.body.appendChild(link);

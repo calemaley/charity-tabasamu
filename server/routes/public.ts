@@ -3,7 +3,11 @@ import { store } from "../state/store";
 
 export const subscribeEmail: RequestHandler = (req, res) => {
   const { email } = req.body || {};
-  if (!email || typeof email !== "string" || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+  if (
+    !email ||
+    typeof email !== "string" ||
+    !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
+  ) {
     return res.status(400).json({ error: "Invalid email" });
   }
   const entry = { email, createdAt: new Date().toISOString() };
@@ -13,8 +17,15 @@ export const subscribeEmail: RequestHandler = (req, res) => {
 };
 
 export const submitContact: RequestHandler = (req, res) => {
-  const { name = "", email = "", subject = "", message = "", type = "general" } = req.body || {};
-  if (!name || !email || !message) return res.status(400).json({ error: "Missing fields" });
+  const {
+    name = "",
+    email = "",
+    subject = "",
+    message = "",
+    type = "general",
+  } = req.body || {};
+  if (!name || !email || !message)
+    return res.status(400).json({ error: "Missing fields" });
   const entry = {
     id: crypto.randomUUID(),
     name,
