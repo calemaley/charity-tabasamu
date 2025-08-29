@@ -24,6 +24,7 @@ import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import AnimatedSection from "@/components/AnimatedSection";
 import { redirectToPayment, CAMPAIGN_SOURCES } from "@/lib/payment";
+import { useContent } from "@/lib/content";
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -33,6 +34,7 @@ const Contact = () => {
     message: "",
     type: "general",
   });
+  const { sendMessage } = useContent();
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [currentTime, setCurrentTime] = useState(new Date());
@@ -51,19 +53,18 @@ const Contact = () => {
     };
   }, []);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsSubmitted(true);
-    setTimeout(() => {
-      setIsSubmitted(false);
-      setFormData({
-        name: "",
-        email: "",
-        subject: "",
-        message: "",
-        type: "general",
-      });
-    }, 5000);
+    try {
+      await sendMessage(formData);
+      setIsSubmitted(true);
+      setTimeout(() => {
+        setIsSubmitted(false);
+      }, 5000);
+      setFormData({ name: "", email: "", subject: "", message: "", type: "general" });
+    } catch {
+      alert("Failed to send message. Please try again.");
+    }
   };
 
   const handleChange = (
