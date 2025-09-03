@@ -1,23 +1,33 @@
 // vite.config.ts
-import { defineConfig } from 'vite';
-import react from '@vitejs/plugin-react';
-import path from 'path';
+import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react";
+import path from "path";
+import { createServer as createApiServer } from "./server";
 
 export default defineConfig({
-  plugins: [react()],
+  plugins: [
+    react(),
+    {
+      name: "express-middleware",
+      configureServer(vite) {
+        const app = createApiServer();
+        vite.middlewares.use(app);
+      },
+    },
+  ],
   server: {
     fs: {
-      allow: [
-        // Allow serving files from the project root
-        '..',
-        // Explicitly allow node_modules from the project root
-        path.resolve(__dirname, '../node_modules')
-      ]
-    }
+      allow: ["..", path.resolve(__dirname, "../node_modules")],
+    },
+  },
+  build: {
+    outDir: "dist/spa",
+    emptyOutDir: true,
   },
   resolve: {
     alias: {
-      '@': path.resolve(__dirname, 'client') // <-- Updated to point to /client
-    }
-  }
+      "@": path.resolve(__dirname, "client"),
+      "@shared": path.resolve(__dirname, "shared"),
+    },
+  },
 });

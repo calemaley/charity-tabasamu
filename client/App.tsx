@@ -15,10 +15,11 @@ import GetInvolved from "./pages/GetInvolved";
 import Sponsor from "./pages/Sponsor";
 import Donate from "./pages/Donate";
 import Volunteer from "./pages/Volunteer";
+import Children from "./pages/Children";
 import Blog from "./pages/Blog";
-import BlogPost from "./pages/BlogPost";
 import Contact from "./pages/Contact";
 import NotFound from "./pages/NotFound";
+import Admin from "./pages/Admin";
 
 const queryClient = new QueryClient();
 
@@ -32,8 +33,14 @@ const App = () => (
           <Route path="/" element={<Index />} />
           <Route path="/about" element={<About />} />
           <Route path="/programs" element={<Programs />} />
-          <Route path="/programs/school-volunteering" element={<SchoolVolunteering />} />
-          <Route path="/programs/hospital-internships" element={<HospitalInternships />} />
+          <Route
+            path="/programs/school-volunteering"
+            element={<SchoolVolunteering />}
+          />
+          <Route
+            path="/programs/hospital-internships"
+            element={<HospitalInternships />}
+          />
           <Route path="/programs/*" element={<Programs />} />
           <Route path="/get-involved" element={<GetInvolved />} />
           <Route path="/get-involved/sponsor" element={<Sponsor />} />
@@ -42,10 +49,11 @@ const App = () => (
           <Route path="/sponsor" element={<Sponsor />} />
           <Route path="/donate" element={<Donate />} />
           <Route path="/volunteer" element={<Volunteer />} />
+          <Route path="/children" element={<Children />} />
           <Route path="/get-involved/*" element={<GetInvolved />} />
           <Route path="/blog" element={<Blog />} />
-          <Route path="/blog/:slug" element={<BlogPost />} />
           <Route path="/contact" element={<Contact />} />
+          <Route path="/admin" element={<Admin />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
